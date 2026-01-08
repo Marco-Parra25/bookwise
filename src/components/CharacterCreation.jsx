@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const AVATARS = [
   { emoji: "🧙", name: "Mago" },
@@ -61,15 +62,31 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-6">
-      <div className="max-w-xl w-full">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden">
+      {/* Imagen de fondo épica */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
+          }}
+        >
+          {/* Overlay con gradiente para mejor legibilidad - más transparente */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/60 via-purple-600/60 to-pink-600/60 dark:from-indigo-900/70 dark:via-purple-900/70 dark:to-pink-900/70"></div>
+          {/* Efecto de brillo sutil */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+        </div>
+      </div>
+      
+      <ThemeToggle />
+      <div className="max-w-xl w-full relative z-10">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 transition-colors">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">✨</div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               {initialCharacter ? "Edita tu Personaje" : "Crea tu Personaje Lector"}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               {initialCharacter
                 ? "Modifica tu nombre y avatar"
                 : "Elige un nombre y un avatar para comenzar tu aventura"}
@@ -79,7 +96,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Input */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
+              <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
                 Nombre de tu personaje
               </label>
               <input
@@ -91,17 +108,17 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
                 }}
                 placeholder="Ej: Alex, Luna, Max..."
                 maxLength={20}
-                className="w-full rounded-xl border-2 border-gray-300 px-4 py-3 text-lg focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+                className="w-full rounded-xl border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-lg focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-colors"
                 autoFocus
               />
               {error && (
-                <p className="mt-2 text-sm text-red-600">{error}</p>
+                <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
               )}
             </div>
 
             {/* Avatar Selection */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
+              <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Elige tu avatar
               </label>
               <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
@@ -112,12 +129,12 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
                     onClick={() => setSelectedAvatar(avatar.emoji)}
                     className={`aspect-square rounded-xl border-4 transition-all transform hover:scale-110 ${
                       selectedAvatar === avatar.emoji
-                        ? "border-indigo-600 bg-indigo-50 scale-110"
-                        : "border-gray-200 bg-white hover:border-indigo-300"
+                        ? "border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-900 scale-110"
+                        : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500"
                     }`}
                   >
                     <div className="text-4xl">{avatar.emoji}</div>
-                    <div className="text-xs mt-1 text-gray-600">{avatar.name}</div>
+                    <div className="text-xs mt-1 text-gray-600 dark:text-gray-300">{avatar.name}</div>
                   </button>
                 ))}
               </div>
@@ -125,11 +142,11 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
 
             {/* Preview */}
             {name.trim() && (
-              <div className="rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 p-6 border-2 border-indigo-200">
+              <div className="rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 p-6 border-2 border-indigo-200 dark:border-indigo-700">
                 <div className="text-center">
                   <div className="text-6xl mb-2">{selectedAvatar}</div>
-                  <div className="text-xl font-bold text-gray-900">{name.trim()}</div>
-                  <div className="text-sm text-gray-600 mt-1">
+                  <div className="text-xl font-bold text-gray-900 dark:text-gray-100">{name.trim()}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                     {initialCharacter
                       ? `Nivel ${initialCharacter.level} • ${initialCharacter.xp} XP`
                       : "Nivel 1 • 0 XP"}
@@ -144,7 +161,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="flex-1 py-4 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold text-lg hover:bg-gray-50 transition"
+                  className="flex-1 py-4 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                 >
                   Cancelar
                 </button>

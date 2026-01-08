@@ -1,95 +1,165 @@
-# 📚 Bookwise
+# 📚 Bookwise - Sistema de Recomendaciones de Libros
 
-Una aplicación web moderna para crear perfiles de lectura personalizados y recibir recomendaciones de libros basadas en tus preferencias.
+Una aplicación web moderna y gamificada para crear perfiles de lectura personalizados y recibir recomendaciones inteligentes de libros.
 
-## 🚀 Características
+## ✨ Características
 
-- **Perfil de Lector Personalizado**: Crea tu perfil con edad, tiempo de lectura diario, objetivos y preferencias
-- **Sistema de Tags**: Agrega gustos literarios personalizados (misterio, fantasía, romance, etc.)
-- **Recomendaciones Inteligentes**: Recibe sugerencias de libros basadas en tu perfil
-- **Interfaz Moderna**: Diseño limpio y responsivo con Tailwind CSS
-- **Plan de Lectura Anual**: Genera un plan personalizado según tus objetivos
+- 🎮 **Sistema Gamificado**: Crea tu personaje, gana XP, sube de nivel y desbloquea badges
+- 🤖 **Recomendaciones con IA**: Usa Gemini AI para recomendaciones personalizadas
+- 📚 **Catálogo de Bibliometro**: Integración con catálogo de Bibliometro vía Firebase
+- 🏆 **Sistema de Recompensas**: Gana XP leyendo libros y generando recomendaciones
+- 📍 **Ubicaciones de Bibliotecas**: Encuentra dónde conseguir cada libro en Santiago
+- 🌙 **Modo Oscuro**: Interfaz con soporte para tema claro/oscuro
+- 📱 **Responsive**: Diseño adaptado para móviles y tablets
 
-## 🛠️ Tecnologías
+## 🏗️ Arquitectura
 
-- **React 19** - Biblioteca de UI
-- **Vite** - Build tool y dev server
-- **Tailwind CSS v4** - Framework de estilos
-- **PostCSS** - Procesamiento de CSS
+### Frontend
+- React 19 + Vite
+- Tailwind CSS v4
+- Desplegado en Vercel
+- Consume API externa configurada en `VITE_API_URL`
 
-## 📦 Instalación
+## 🚀 Inicio Rápido
 
-1. Clona el repositorio:
+### Prerrequisitos
+
+- Node.js v18 o superior
+- npm o yarn
+
+### Instalación
+
 ```bash
+# Clonar el repositorio
 git clone https://github.com/tu-usuario/bookwise.git
 cd bookwise
-```
 
-2. Instala las dependencias:
-```bash
+# Instalar dependencias
 npm install
+
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env y agregar la URL de tu backend
 ```
 
-3. Inicia el servidor de desarrollo:
+### Desarrollo
+
 ```bash
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-4. Abre tu navegador en `http://localhost:5173`
+La aplicación estará disponible en `http://localhost:5173`
 
-## 📝 Scripts Disponibles
+### Producción
 
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run preview` - Previsualiza la build de producción
-- `npm run lint` - Ejecuta el linter
+```bash
+# Construir para producción
+npm run build
 
-## 🎯 Uso
+# Previsualizar build
+npm run preview
+```
 
-1. Completa el formulario de perfil con:
-   - Tu edad (8-90 años)
-   - Minutos de lectura por día (5-240)
-   - Objetivo de lectura (entretenimiento, aprendizaje, hábito, etc.)
-   - Dificultad máxima preferida (1-5)
-   - Preferencia de longitud de libros
-   - Tags de gustos literarios
+## ⚙️ Configuración
 
-2. Haz clic en "Generar recomendaciones" para recibir sugerencias personalizadas
+### Variables de Entorno
+
+Crea un archivo `.env` en la raíz:
+
+```env
+# URL de la API (backend externo)
+VITE_API_URL=http://localhost:3001
+```
+
+**Para producción en Vercel:**
+- Configura `VITE_API_URL` en las variables de entorno de Vercel
+- Apunta a tu API desplegada
+
+## 🚢 Despliegue en Vercel
+
+### Opción 1: Desde GitHub (Recomendado)
+
+1. **Conecta tu repositorio a Vercel:**
+   - Ve a [Vercel](https://vercel.com)
+   - Importa tu repositorio de GitHub
+   - Vercel detectará automáticamente que es un proyecto Vite
+
+2. **Configura Variables de Entorno:**
+   - En la configuración del proyecto en Vercel
+   - Agrega: `VITE_API_URL` = `https://tu-backend.com`
+
+3. **Despliega:**
+   - Vercel desplegará automáticamente en cada push a `main`
+
+### Opción 2: Desde CLI
+
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Desplegar
+vercel
+```
 
 ## 📁 Estructura del Proyecto
 
 ```
 bookwise/
 ├── src/
-│   ├── components/
-│   │   └── ProfileForm.jsx    # Componente del formulario de perfil
-│   ├── App.jsx                # Componente principal
-│   ├── main.jsx               # Punto de entrada
-│   └── index.css              # Estilos globales con Tailwind
-├── public/                    # Archivos estáticos
-├── tailwind.config.js         # Configuración de Tailwind
-├── postcss.config.js          # Configuración de PostCSS
-└── vite.config.js             # Configuración de Vite
+│   ├── components/          # Componentes React
+│   │   ├── WelcomeScreen.jsx
+│   │   ├── CharacterCreation.jsx
+│   │   ├── CharacterProfile.jsx
+│   │   ├── ProfileForm.jsx
+│   │   └── ThemeToggle.jsx
+│   ├── hooks/               # Custom hooks
+│   │   └── useTheme.js
+│   ├── services/            # Servicios API
+│   │   └── api.js
+│   ├── utils/               # Utilidades
+│   │   └── storage.js
+│   ├── App.jsx              # Componente principal
+│   ├── main.jsx             # Punto de entrada
+│   └── index.css            # Estilos globales
+├── public/                  # Archivos estáticos
+├── .env.example            # Ejemplo de variables de entorno
+├── vercel.json             # Configuración de Vercel
+├── vite.config.js          # Configuración de Vite
+└── package.json            # Dependencias
 ```
 
-## 🤝 Contribuir
+## 🎮 Funcionalidades
 
-Las contribuciones son bienvenidas. Por favor:
+### Sistema Gamificado
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+- **Creación de Personaje**: Elige nombre y avatar
+- **Sistema de XP**: Gana experiencia leyendo libros
+- **Niveles**: Sube de nivel automáticamente
+- **Badges**: Desbloquea logros especiales
+- **Recompensas**: XP por generar recomendaciones
 
-## 📄 Licencia
+### Recomendaciones
 
-Este proyecto está bajo la Licencia MIT.
+- **Perfil Personalizado**: Basado en edad, gustos y objetivos
+- **IA Inteligente**: Recomendaciones con Gemini AI
+- **Explicaciones**: Cada recomendación incluye por qué es perfecta para ti
+- **Bibliotecas**: Muestra dónde conseguir cada libro
 
-## 👤 Autor
+## 🔧 Scripts Disponibles
 
-Desarrollado como parte de un proyecto de tesis.
+- `npm run dev` - Inicia servidor de desarrollo
+- `npm run build` - Construye para producción
+- `npm run preview` - Previsualiza build de producción
+- `npm run lint` - Ejecuta el linter
 
----
 
-⭐ Si te gusta este proyecto, ¡dale una estrella!
+## 🛠️ Tecnologías
+
+- **React 19** - Biblioteca de UI
+- **Vite** - Build tool y dev server
+- **Tailwind CSS v4** - Framework de estilos
+
+## 📝 Licencia
+
+ISC
