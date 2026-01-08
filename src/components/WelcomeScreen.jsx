@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function WelcomeScreen({ onStart }) {
   const [step, setStep] = useState(0);
@@ -8,10 +9,10 @@ export default function WelcomeScreen({ onStart }) {
       title: "¡Bienvenido a Bookwise! 📚",
       content: (
         <div className="space-y-4">
-          <p className="text-lg text-gray-700">
+          <p className="text-lg text-gray-700 dark:text-gray-200">
             Una aventura épica te espera... pero no con espadas y dragones, sino con <strong>libros y conocimiento</strong>.
           </p>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Cada libro que leas te dará experiencia, recompensas y hará crecer tu personaje lector.
           </p>
         </div>
@@ -25,29 +26,29 @@ export default function WelcomeScreen({ onStart }) {
             <div className="flex items-start gap-3">
               <span className="text-2xl">1️⃣</span>
               <div>
-                <p className="font-semibold text-gray-900">Crea tu personaje</p>
-                <p className="text-sm text-gray-600">Elige tu nombre y personaliza tu avatar</p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">Crea tu personaje</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Elige tu nombre y personaliza tu avatar</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <span className="text-2xl">2️⃣</span>
               <div>
-                <p className="font-semibold text-gray-900">Completa tu perfil</p>
-                <p className="text-sm text-gray-600">Cuéntanos qué te gusta leer</p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">Completa tu perfil</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Cuéntanos qué te gusta leer</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <span className="text-2xl">3️⃣</span>
               <div>
-                <p className="font-semibold text-gray-900">Recibe recomendaciones</p>
-                <p className="text-sm text-gray-600">Te sugerimos libros perfectos para ti</p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">Recibe recomendaciones</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Te sugerimos libros perfectos para ti</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <span className="text-2xl">4️⃣</span>
               <div>
-                <p className="font-semibold text-gray-900">¡Lee y gana recompensas!</p>
-                <p className="text-sm text-gray-600">Cada libro completado te da XP, badges y más</p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">¡Lee y gana recompensas!</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Cada libro completado te da XP, badges y más</p>
               </div>
             </div>
           </div>
@@ -88,13 +89,29 @@ export default function WelcomeScreen({ onStart }) {
   const currentStep = steps[step];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-6">
-      <div className="max-w-2xl w-full">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden">
+      {/* Imagen de fondo épica */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=2128&q=80)',
+          }}
+        >
+          {/* Overlay con gradiente para mejor legibilidad - más transparente */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/60 via-purple-600/60 to-pink-600/60 dark:from-indigo-900/70 dark:via-purple-900/70 dark:to-pink-900/70"></div>
+          {/* Efecto de brillo sutil */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+        </div>
+      </div>
+      
+      <ThemeToggle />
+      <div className="max-w-2xl w-full relative z-10">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 transition-colors">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">📖</div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               {currentStep.title}
             </h1>
           </div>
@@ -111,7 +128,7 @@ export default function WelcomeScreen({ onStart }) {
                 key={i}
                 onClick={() => setStep(i)}
                 className={`h-2 rounded-full transition-all ${
-                  i === step ? "w-8 bg-indigo-600" : "w-2 bg-gray-300"
+                  i === step ? "w-8 bg-indigo-600 dark:bg-indigo-400" : "w-2 bg-gray-300 dark:bg-gray-600"
                 }`}
                 aria-label={`Ir al paso ${i + 1}`}
               />
@@ -123,7 +140,7 @@ export default function WelcomeScreen({ onStart }) {
             {step > 0 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
+                className="px-6 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 ← Anterior
               </button>

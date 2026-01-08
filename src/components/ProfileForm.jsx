@@ -116,10 +116,10 @@ export default function ProfileForm({
   }
 
   return (
-    <div className="w-full max-w-2xl">
-      <div className="rounded-3xl bg-white shadow-xl border border-gray-100 overflow-hidden">
+    <div className="w-full max-w-2xl mx-auto">
+      <div className="rounded-3xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors">
         {/* Header con gradiente */}
-        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white">
+        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-800 dark:via-purple-800 dark:to-pink-800 p-8 text-white">
           <div className="flex items-center gap-3 mb-2">
             <span className="text-4xl">📝</span>
             <h2 className="text-2xl md:text-3xl font-bold">
@@ -131,7 +131,7 @@ export default function ProfileForm({
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 bg-gradient-to-b from-white to-gray-50">
+        <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
           {/* Row 1 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="🎂 Edad" icon="🎂">
@@ -141,7 +141,7 @@ export default function ProfileForm({
                 max={90}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-900 bg-white transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 hover:border-gray-300"
+                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500"
                 placeholder="Ej: 21"
               />
             </Field>
@@ -153,7 +153,7 @@ export default function ProfileForm({
                 max={240}
                 value={minutesPerDay}
                 onChange={(e) => setMinutesPerDay(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-900 bg-white transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 hover:border-gray-300"
+                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500"
                 placeholder="Ej: 20"
               />
             </Field>
@@ -165,7 +165,7 @@ export default function ProfileForm({
               <select
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-900 bg-white transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 hover:border-gray-300 cursor-pointer"
+                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500 cursor-pointer"
               >
                 <option value="entretener">🎮 Entretenerme</option>
                 <option value="aprender">📚 Aprender</option>
@@ -178,14 +178,14 @@ export default function ProfileForm({
             <Field label="📊 Dificultad máxima" icon="📊">
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm font-medium mb-3">
-                  <span className="text-green-600">🟢 Fácil</span>
-                  <span className="font-bold text-indigo-600 text-xl bg-indigo-50 px-4 py-1 rounded-full">
+                  <span className="text-green-600 dark:text-green-400">🟢 Fácil</span>
+                  <span className="font-bold text-indigo-600 dark:text-indigo-400 text-xl bg-indigo-50 dark:bg-indigo-900 px-4 py-1 rounded-full">
                     {difficultyMax}
                   </span>
-                  <span className="text-red-600">🔴 Difícil</span>
+                  <span className="text-red-600 dark:text-red-400">🔴 Difícil</span>
                 </div>
                 <div className="relative">
-                  <div className="absolute inset-0 h-3 bg-gradient-to-r from-green-300 via-yellow-300 to-red-300 rounded-full"></div>
+                  <div className="absolute inset-0 h-3 bg-gradient-to-r from-green-300 via-yellow-300 to-red-300 dark:from-green-600 dark:via-yellow-600 dark:to-red-600 rounded-full"></div>
                   <input
                     type="range"
                     min={1}
@@ -198,7 +198,7 @@ export default function ProfileForm({
                     }}
                   />
                 </div>
-                <div className="flex justify-between text-xs text-gray-500 font-medium">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
                   <span>1</span>
                   <span>2</span>
                   <span>3</span>
@@ -226,19 +226,25 @@ export default function ProfileForm({
                   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
                   border: 2px solid white;
                 }
+                .dark .slider::-webkit-slider-thumb {
+                  border: 2px solid #1f2937;
+                }
+                .dark .slider::-moz-range-thumb {
+                  border: 2px solid #1f2937;
+                }
               `}</style>
             </Field>
           </div>
 
           {/* Preferences */}
-          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-100 p-5">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 border-2 border-indigo-100 dark:border-indigo-800 p-5">
             <div className="flex items-start gap-3">
               <span className="text-2xl">📏</span>
               <div>
-                <div className="text-sm font-semibold text-gray-900">
+                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                   Preferencia de longitud
                 </div>
-                <div className="text-xs text-gray-600 mt-1">
+                <div className="text-xs text-gray-600 dark:text-gray-300 mt-1">
                   Si activas "cortos", prioriza libros con menos páginas.
                 </div>
               </div>
@@ -260,7 +266,7 @@ export default function ProfileForm({
                   }`}></div>
                 </div>
               </div>
-              <span className="text-sm font-medium text-gray-800 group-hover:text-indigo-600 transition">
+              <span className="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
                 Prefiero libros cortos
               </span>
             </label>
@@ -292,12 +298,12 @@ export default function ProfileForm({
               )}
             </div>
 
-            <div className="rounded-2xl border-2 border-gray-200 bg-white p-4 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200 transition">
+            <div className="rounded-2xl border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 p-4 focus-within:border-indigo-500 dark:focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-200 dark:focus-within:ring-indigo-800 transition">
               <div className="flex flex-wrap gap-2">
                 {tags.map((t) => (
                   <span
                     key={t}
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 text-sm font-medium shadow-md hover:shadow-lg transition"
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white px-4 py-2 text-sm font-medium shadow-md hover:shadow-lg transition"
                   >
                     {t}
                     <button
@@ -322,7 +328,7 @@ export default function ProfileForm({
                       setTagInput("");
                     }
                   }}
-                  className="min-w-[180px] flex-1 px-3 py-2 text-sm outline-none bg-transparent placeholder-gray-400"
+                  className="min-w-[180px] flex-1 px-3 py-2 text-sm outline-none bg-transparent placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100"
                   placeholder="Escribe tus gustos aquí..."
                 />
               </div>
@@ -330,7 +336,7 @@ export default function ProfileForm({
 
             {/* suggested */}
             <div className="mt-4">
-              <div className="text-xs font-medium text-gray-700 mb-3 flex items-center gap-2">
+              <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                 <span>💡</span>
                 <span>Sugerencias rápidas:</span>
               </div>
@@ -345,8 +351,8 @@ export default function ProfileForm({
                       className={[
                         "text-xs px-4 py-2 rounded-full border-2 font-medium transition-all transform hover:scale-105",
                         active
-                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-transparent shadow-md"
-                          : "bg-white text-gray-700 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50",
+                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white border-transparent shadow-md"
+                          : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900",
                       ].join(" ")}
                       title={active ? "Quitar" : "Agregar"}
                     >
@@ -359,9 +365,9 @@ export default function ProfileForm({
           </div>
 
           {/* Submit */}
-          <div className="pt-4 border-t-2 border-gray-100">
+          <div className="pt-4 border-t-2 border-gray-100 dark:border-gray-700">
             <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <span className="text-lg">💡</span>
                 <span>Tip: mientras más tags, mejores recomendaciones.</span>
               </div>
@@ -385,7 +391,7 @@ export default function ProfileForm({
 function Field({ label, children, icon }) {
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-900 mb-2">
+      <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
         {label}
       </label>
       <div>{children}</div>

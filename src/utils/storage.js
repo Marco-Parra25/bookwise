@@ -91,3 +91,33 @@ export function getBooksRead() {
   return character?.booksReadIds || [];
 }
 
+export function addXPForRecommendations(xpAmount) {
+  const character = loadCharacter();
+  if (!character) return false;
+
+  // Verificar si ya ganó XP por recomendaciones hoy (evitar spam)
+  const today = new Date().toDateString();
+  if (!character.lastRecommendationXP) {
+    character.lastRecommendationXP = {};
+  }
+
+  if (character.lastRecommendationXP.date === today) {
+    return false; // Ya ganó XP hoy
+  }
+
+  character.xp += xpAmount;
+  character.lastRecommendationXP = {
+    date: today,
+    xp: xpAmount,
+  };
+
+  // Calcular nivel
+  while (character.xp >= character.xpToNextLevel) {
+    character.xp -= character.xpToNextLevel;
+    character.level += 1;
+    character.xpToNextLevel = Math.floor(character.xpToNextLevel * 1.5);
+  }
+
+  return saveCharacter(character);
+}
+
