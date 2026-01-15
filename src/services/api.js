@@ -14,4 +14,14 @@ export async function fetchRecommendations(profile) {
 
   return res.json();
 }
-  
+
+export async function searchBooks(query) {
+  const res = await fetch(`${API_BASE_URL}/api/books/search?q=${encodeURIComponent(query)}`);
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Error al buscar libros");
+  }
+
+  return res.json();
+}

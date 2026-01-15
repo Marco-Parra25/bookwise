@@ -3,6 +3,7 @@ import WelcomeScreen from "./components/WelcomeScreen";
 import CharacterCreation from "./components/CharacterCreation";
 import CharacterProfile from "./components/CharacterProfile";
 import ProfileForm from "./components/ProfileForm";
+import BookSearch from "./components/BookSearch";
 import ThemeToggle from "./components/ThemeToggle";
 import { useTheme } from "./hooks/useTheme";
 import { fetchRecommendations } from "./services/api";
@@ -19,7 +20,7 @@ import {
 export default function App() {
   // Inicializar tema
   useTheme();
-  
+
   const [character, setCharacter] = useState(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCharacterCreation, setShowCharacterCreation] = useState(false);
@@ -69,7 +70,7 @@ export default function App() {
     try {
       const data = await fetchRecommendations(profileData);
       setRecs(data.recommendations ?? []);
-      
+
       // Otorgar XP por generar recomendaciones (solo primera vez del día)
       if (data.xpGained && shouldSave) {
         const xpAdded = addXPForRecommendations(data.xpGained);
@@ -77,7 +78,7 @@ export default function App() {
           // Recargar personaje actualizado
           const updatedCharacter = loadCharacter();
           setCharacter(updatedCharacter);
-          
+
           // Mostrar notificación
           setTimeout(() => {
             alert(`✨ ¡Ganaste ${data.xpGained} XP por generar recomendaciones! 🎉`);
@@ -97,7 +98,7 @@ export default function App() {
       // Recargar personaje actualizado
       const updatedCharacter = loadCharacter();
       setCharacter(updatedCharacter);
-      
+
       // Mostrar notificación de éxito
       alert(`¡Felicidades! Has ganado XP por leer "${book.title}" 🎉`);
     } else {
@@ -118,6 +119,8 @@ export default function App() {
   function handleCancelEdit() {
     setShowCharacterCreation(false);
   }
+
+  const [activeTab, setActiveTab] = useState("profile"); // 'profile' | 'search'
 
   // Pantalla de bienvenida
   if (showWelcome) {
@@ -145,7 +148,7 @@ export default function App() {
     <div className="min-h-screen relative p-6 transition-colors">
       {/* Fondo épico sutil */}
       <div className="fixed inset-0 z-0">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
           style={{
             backgroundImage: 'url(https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
@@ -154,24 +157,60 @@ export default function App() {
         ></div>
         <div className="absolute inset-0 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-sm"></div>
       </div>
-      
+
       <ThemeToggle />
       <div className="max-w-6xl mx-auto space-y-6 relative z-10">
-        {/* Perfil del personaje */}
-        <CharacterProfile character={character} onEdit={handleEditCharacter} />
-
-        {/* Formulario de perfil (si no hay perfil guardado) */}
-        {!profile && (
-          <div className="flex justify-center">
-            <ProfileForm
-              onSubmitProfile={handleProfile}
-              initialProfile={loadProfile()}
-            />
+        {/* Navigation Tabs */}
+        {profile && (
+          <div className="flex justify-center mb-6">
+            <div className="bg-white dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 shadow-sm inline-flex">
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'profile'
+                  ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
+              >
+                Mi Perfil & Recomendaciones
+              </button>
+              <button
+                onClick={() => setActiveTab('search')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'search'
+                  ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
+              >
+                Explorar Catálogo 🔍
+              </button>
+            </div>
           </div>
         )}
 
+        {/* View: Search */}
+        {profile && activeTab === 'search' && (
+          <BookSearch onBookRead={handleBookRead} />
+        )}
+
+        {/* View: Profile (Default) */}
+        {activeTab === 'profile' && (
+          <>
+            {/* Perfil del personaje */}
+            <CharacterProfile character={character} onEdit={handleEditCharacter} />
+
+            {/* Formulario de perfil (si no hay perfil guardado) */}
+            {!profile && (
+              <div className="flex justify-center">
+                <ProfileForm
+                  onSubmitProfile={handleProfile}
+                  initialProfile={loadProfile()}
+                />
+              </div>
+            )}
+          </>
+        )}
+
         {/* Recomendaciones */}
-        {profile && (
+        {profile && activeTab === 'profile' && (
           <div className="rounded-2xl border dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm p-6 transition-colors">
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -182,14 +221,22 @@ export default function App() {
                   Libros personalizados según tus gustos
                 </p>
               </div>
-              {recs.length > 0 && (
+              <div className="flex gap-2">
                 <button
-                  onClick={() => handleProfile(profile, false)}
+                  onClick={() => setProfile(null)}
                   className="text-sm px-4 py-2 rounded-lg border dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
                 >
-                  Actualizar
+                  ⚙️ Editar Gustos
                 </button>
-              )}
+                {recs.length > 0 && (
+                  <button
+                    onClick={() => handleProfile(profile, false)}
+                    className="text-sm px-4 py-2 rounded-lg border dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+                  >
+                    🔄 Actualizar
+                  </button>
+                )}
+              </div>
             </div>
 
             {loading && (
@@ -214,9 +261,8 @@ export default function App() {
                 return (
                   <div
                     key={b.id}
-                    className={`rounded-xl border dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-all ${
-                      isRead ? "opacity-75 bg-green-50 dark:bg-green-900 border-green-200 dark:border-green-700" : ""
-                    }`}
+                    className={`rounded-xl border dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-all ${isRead ? "opacity-75 bg-green-50 dark:bg-green-900 border-green-200 dark:border-green-700" : ""
+                      }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1">
@@ -276,11 +322,10 @@ export default function App() {
                           {b.libraries.slice(0, 2).map((lib, idx) => (
                             <div
                               key={idx}
-                              className={`text-xs p-2 rounded-lg border ${
-                                lib.available
-                                  ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
-                                  : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 opacity-60"
-                              }`}
+                              className={`text-xs p-2 rounded-lg border ${lib.available
+                                ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
+                                : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 opacity-60"
+                                }`}
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1">
