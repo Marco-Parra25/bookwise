@@ -58,13 +58,13 @@ export default function CharacterProfile({ character, onEdit }) {
           <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {badges.filter((b) => b.unlocked).length}
           </div>
-          <div className="text-xs text-gray-600 dark:text-gray-300">Badges obtenidos</div>
+          <div className="text-xs text-gray-600 dark:text-gray-300">Insignias obtenidas</div>
         </div>
       </div>
 
       {/* Badges */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Badges</h3>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Insignias</h3>
         <div className="flex flex-wrap gap-2">
           {badges.map((badge) => (
             <div
