@@ -5,7 +5,6 @@ import CharacterProfile from "./components/CharacterProfile";
 import ProfileForm from "./components/ProfileForm";
 import BookSearch from "./components/BookSearch";
 import ThemeToggle from "./components/ThemeToggle";
-import { useTheme } from "./hooks/useTheme";
 import { fetchRecommendations } from "./services/api";
 import {
   loadCharacter,
@@ -18,9 +17,6 @@ import {
 } from "./utils/storage";
 
 export default function App() {
-  // Inicializar tema
-  useTheme();
-
   const [character, setCharacter] = useState(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCharacterCreation, setShowCharacterCreation] = useState(false);
