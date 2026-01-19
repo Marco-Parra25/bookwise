@@ -319,42 +319,55 @@ export default function App() {
                           <span>Dónde encontrarlo:</span>
                         </div>
                         <div className="space-y-2">
-                          {b.libraries.slice(0, 2).map((lib, idx) => (
-                            <div
-                              key={idx}
-                              className={`text-xs p-2 rounded-lg border ${lib.available
-                                ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
-                                : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 opacity-60"
-                                }`}
-                            >
-                              <div className="flex items-start justify-between gap-2">
-                                <div className="flex-1">
-                                  <div className="font-medium text-gray-900 dark:text-gray-100">
-                                    {lib.name}
-                                  </div>
-                                  <div className="text-gray-600 dark:text-gray-400 mt-0.5">
-                                    {lib.address}
-                                  </div>
-                                  {lib.distance && (
-                                    <div className="text-gray-500 dark:text-gray-500 text-[10px] mt-0.5">
-                                      📍 {lib.distance}
+                          {b.libraries.slice(0, 2).map((lib, idx) => {
+                            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lib.address || lib.name)}`;
+
+                            return (
+                              <div
+                                key={idx}
+                                className={`text-xs p-2 rounded-lg border ${lib.available
+                                  ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800"
+                                  : "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 opacity-60"
+                                  }`}
+                              >
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="flex-1">
+                                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                                      {lib.name}
                                     </div>
-                                  )}
-                                </div>
-                                <div className="flex-shrink-0">
-                                  {lib.available ? (
-                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-800 text-green-700 dark:text-green-300 font-medium">
-                                      Disponible
-                                    </span>
-                                  ) : (
-                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 font-medium">
-                                      No disponible
-                                    </span>
-                                  )}
+                                    <div className="text-gray-600 dark:text-gray-400 mt-0.5">
+                                      {lib.address}
+                                    </div>
+                                    {lib.distance && (
+                                      <div className="text-gray-500 dark:text-gray-500 text-[10px] mt-0.5">
+                                        📍 {lib.distance}
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="flex-shrink-0 flex items-center gap-1.5">
+                                    {lib.available ? (
+                                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-800 text-green-700 dark:text-green-300 font-medium">
+                                        Disponible
+                                      </span>
+                                    ) : (
+                                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400 font-medium">
+                                        No disponible
+                                      </span>
+                                    )}
+                                    <a
+                                      href={mapsUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center gap-1"
+                                      title="Abrir en Google Maps"
+                                    >
+                                      🗺️ Mapa
+                                    </a>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                           {b.libraries.length > 2 && (
                             <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                               +{b.libraries.length - 2} biblioteca(s) más
