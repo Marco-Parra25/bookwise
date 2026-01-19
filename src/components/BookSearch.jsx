@@ -93,6 +93,25 @@ export default function BookSearch({ onBookRead }) {
                                 </div>
                             )}
 
+                            {/* Disponibilidad (Bibliometro) */}
+                            {book.locations && book.locations.length > 0 && (
+                                <div className="mt-3">
+                                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                        Disponibilidad:
+                                    </p>
+                                    <div className="flex flex-wrap gap-1">
+                                        {book.locations.map((loc, idx) => (
+                                            <span
+                                                key={idx}
+                                                className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800"
+                                            >
+                                                📍 {loc.branch} ({loc.stock})
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="mt-auto pt-4 flex items-center justify-between">
                                 <span className="text-xs text-gray-500 dark:text-gray-400">
                                     {book.pages ? `${book.pages} pág.` : ''}
