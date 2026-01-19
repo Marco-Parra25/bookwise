@@ -48,7 +48,7 @@ export default function WelcomeScreen({ onStart }) {
               <span className="text-2xl">4️⃣</span>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-gray-100">¡Lee y gana recompensas!</p>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Cada libro completado te da XP, badges y más</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Cada libro completado te da XP, insignias y más</p>
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function WelcomeScreen({ onStart }) {
             </div>
             <div className="rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 p-4 text-white">
               <div className="text-3xl mb-2">🎖️</div>
-              <div className="font-semibold">Badges</div>
+              <div className="font-semibold">Insignias</div>
               <div className="text-sm opacity-90">Logros especiales</div>
             </div>
             <div className="rounded-xl bg-gradient-to-br from-blue-400 to-cyan-500 p-4 text-white">
