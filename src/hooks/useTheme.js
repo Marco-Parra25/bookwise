@@ -21,10 +21,15 @@ export function useTheme() {
       root.classList.remove("dark");
     }
     localStorage.setItem("bookwise_theme", theme);
+    console.log("Tema actualizado:", theme, "Clase dark en html:", root.classList.contains("dark"));
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    setTheme((prev) => {
+      const newTheme = prev === "dark" ? "light" : "dark";
+      console.log("Toggle tema:", prev, "->", newTheme);
+      return newTheme;
+    });
   };
 
   return { theme, toggleTheme, isDark: theme === "dark" };
