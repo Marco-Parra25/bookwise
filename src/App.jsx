@@ -5,6 +5,7 @@ import CharacterProfile from "./components/CharacterProfile";
 import ProfileForm from "./components/ProfileForm";
 import BookSearch from "./components/BookSearch";
 import ThemeToggle from "./components/ThemeToggle";
+import WorldMap from "./components/WorldMap";
 import { useTheme } from "./hooks/useTheme";
 import { fetchRecommendations } from "./services/api";
 import {
@@ -194,6 +195,18 @@ export default function App() {
         {/* View: Profile (Default) */}
         {activeTab === 'profile' && (
           <>
+            {/* World Map Visualization */}
+            {character && (
+              <div className="mb-8">
+                <WorldMap
+                  level={character.level}
+                  xp={character.xp}
+                  xpToNextLevel={character.xpToNextLevel}
+                  booksRead={character.booksRead}
+                />
+              </div>
+            )}
+
             {/* Perfil del personaje */}
             <CharacterProfile character={character} onEdit={handleEditCharacter} />
 
