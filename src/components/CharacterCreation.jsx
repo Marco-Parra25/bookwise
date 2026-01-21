@@ -25,7 +25,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
 
   function handleSubmit(e) {
     e.preventDefault();
-    
+
     if (!name.trim()) {
       setError("¡Necesitas un nombre para tu personaje!");
       return;
@@ -43,61 +43,44 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
 
     const character = initialCharacter
       ? {
-          ...initialCharacter,
-          name: name.trim(),
-          avatar: selectedAvatar,
-        }
+        ...initialCharacter,
+        name: name.trim(),
+        avatar: selectedAvatar,
+      }
       : {
-          name: name.trim(),
-          avatar: selectedAvatar,
-          level: 1,
-          xp: 0,
-          xpToNextLevel: 100,
-          booksRead: 0,
-          badges: [],
-          createdAt: new Date().toISOString(),
-        };
+        name: name.trim(),
+        avatar: selectedAvatar,
+        level: 1,
+        xp: 0,
+        xpToNextLevel: 100,
+        booksRead: 0,
+        badges: [],
+        createdAt: new Date().toISOString(),
+      };
 
     onComplete(character);
   }
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden">
-      {/* Imagen de fondo épica */}
-      <div className="absolute inset-0 z-0">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
-          }}
-        >
-          {/* Overlay con gradiente para mejor legibilidad - más transparente */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/60 via-purple-600/60 to-pink-600/60 dark:from-indigo-900/70 dark:via-purple-900/70 dark:to-pink-900/70"></div>
-          {/* Efecto de brillo sutil */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
-        </div>
-      </div>
-      
+    <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden animate-aurora">
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-0"></div>
+
       <ThemeToggle />
       <div className="max-w-xl w-full relative z-10">
-        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 transition-colors">
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4">✨</div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              {initialCharacter ? "Edita tu Personaje" : "Crea tu Personaje Lector"}
+        <div className="glass-heavy rounded-[2.5rem] p-8 md:p-12 border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          <div className="text-center mb-10">
+            <p className="rpg-label text-cyan-400 mb-2 tracking-[0.3em]">Forja de Identidad</p>
+            <h1 className="text-4xl md:text-5xl font-black magic-text tracking-tighter">
+              {initialCharacter ? "RECTIFICAR PERSONAJE" : "CREA TU LEYENDA"}
             </h1>
-            <p className="text-gray-600 dark:text-gray-300">
-              {initialCharacter
-                ? "Modifica tu nombre y avatar"
-                : "Elige un nombre y un avatar para comenzar tu aventura"}
-            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Name Input */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                Nombre de tu personaje
+              <label className="rpg-label text-[10px] text-gray-400 mb-3 block">
+                Nombre de tu receptáculo
               </label>
               <input
                 type="text"
@@ -106,72 +89,83 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
                   setName(e.target.value);
                   setError("");
                 }}
-                placeholder="Ej: Alex, Luna, Max..."
+                placeholder="Ingresa tu nombre..."
                 maxLength={20}
-                className="w-full rounded-xl border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-lg focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-colors"
+                className="w-full rounded-2xl bg-black/40 border-2 border-white/5 text-white px-6 py-4 text-xl focus:outline-none focus:border-neon-500 shadow-inner transition-all placeholder:text-white/10"
                 autoFocus
               />
               {error && (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="mt-3 text-[10px] font-black uppercase text-red-500 tracking-wider animate-pulse flex items-center gap-2">
+                  <span>⚠️</span> {error}
+                </p>
               )}
             </div>
 
             {/* Avatar Selection */}
             <div>
-              <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Elige tu avatar
+              <label className="rpg-label text-[10px] text-gray-400 mb-4 block">
+                Sintonía Espiritual (Avatar)
               </label>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 max-h-[240px] overflow-y-auto pr-2 custom-scrollbar">
                 {AVATARS.map((avatar) => (
                   <button
                     key={avatar.emoji}
                     type="button"
                     onClick={() => setSelectedAvatar(avatar.emoji)}
-                    className={`aspect-square rounded-xl border-4 transition-all transform hover:scale-110 ${
-                      selectedAvatar === avatar.emoji
-                        ? "border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-900 scale-110"
-                        : "border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500"
-                    }`}
+                    className={`aspect-square rounded-2xl glass transition-all transform hover:scale-110 flex flex-col items-center justify-center gap-1 group border-2 ${selectedAvatar === avatar.emoji
+                      ? "border-neon-500 bg-neon-500/10 scale-110 shadow-[0_0_15px_rgba(0,242,255,0.3)]"
+                      : "border-white/5 hover:border-white/20"
+                      }`}
                   >
-                    <div className="text-4xl">{avatar.emoji}</div>
-                    <div className="text-xs mt-1 text-gray-600 dark:text-gray-300">{avatar.name}</div>
+                    <div className="text-3xl group-hover:animate-bounce">{avatar.emoji}</div>
+                    <div className="text-[8px] font-black text-gray-500 group-hover:text-white transition-colors uppercase tracking-widest">{avatar.name}</div>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Preview */}
+            {/* Preview HUD */}
             {name.trim() && (
-              <div className="rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 p-6 border-2 border-indigo-200 dark:border-indigo-700">
-                <div className="text-center">
-                  <div className="text-6xl mb-2">{selectedAvatar}</div>
-                  <div className="text-xl font-bold text-gray-900 dark:text-gray-100">{name.trim()}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                    {initialCharacter
-                      ? `Nivel ${initialCharacter.level} • ${initialCharacter.xp} XP`
-                      : "Nivel 1 • 0 XP"}
+              <div className="rounded-3xl glass p-6 border border-white/10 relative overflow-hidden group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-neon-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl glass border border-white/10 flex items-center justify-center text-4xl shadow-xl overflow-hidden">
+                    {selectedAvatar?.startsWith('http') ? (
+                      <img src={selectedAvatar} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      selectedAvatar
+                    )}
+                  </div>
+                  <div className="text-left">
+                    <div className="rpg-label text-[10px] text-cyan-400 mb-0.5">Vista Previa de Rango</div>
+                    <div className="text-2xl font-black text-white tracking-tighter uppercase">{name.trim()}</div>
+                    <div className="rpg-label text-[9px] opacity-60 mt-1">
+                      {initialCharacter
+                        ? `Nivel ${initialCharacter.level} • ${initialCharacter.xp} XP`
+                        : "NIVEL 1 • INICIADO"}
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Submit */}
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {initialCharacter && onCancel && (
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="flex-1 py-4 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                  className="flex-1 py-5 rounded-2xl glass border border-white/5 text-gray-400 font-black uppercase tracking-widest hover:text-white hover:bg-white/5 transition text-xs"
                 >
-                  Cancelar
+                  ABORTAR
                 </button>
               )}
               <button
                 type="submit"
                 disabled={!name.trim()}
-                className={`${initialCharacter && onCancel ? "flex-1" : "w-full"} py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold text-lg hover:from-indigo-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`${initialCharacter && onCancel ? "flex-[1.5]" : "w-full"} py-5 rounded-2xl bg-white text-black font-black uppercase tracking-widest hover:bg-neon-500 transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed text-xs`}
               >
-                {initialCharacter ? "Guardar Cambios 💾" : "Crear Personaje 🎮"}
+                {initialCharacter ? "SINCRONIZAR NÚCLEO" : "MANIFESTAR AVATAR"}
               </button>
             </div>
           </form>

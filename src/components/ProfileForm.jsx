@@ -1,400 +1,187 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-const DEFAULT_SUGGESTED_TAGS = [
-  "misterio",
-  "suspenso",
-  "fantasía",
-  "ciencia ficción",
-  "romance",
-  "terror",
-  "historia",
-  "autoayuda",
-  "psicología",
-  "negocios",
-  "biografías",
-  "aventura",
-];
+export default function ProfileForm({ onSubmitProfile, initialProfile }) {
+  const [step, setStep] = useState(0);
+  const [selections, setSelections] = useState({
+    movieGenre: "",
+    hobby: "",
+    mood: "",
+    age: initialProfile?.age ?? 20,
+    time: initialProfile?.minutesPerDay ?? 20,
+  });
 
-function normalizeTag(tag) {
-  return tag.trim().toLowerCase();
-}
-
-export default function ProfileForm({
-  onSubmitProfile,
-  suggestedTags = DEFAULT_SUGGESTED_TAGS,
-  initialProfile,
-}) {
-  const [age, setAge] = useState(initialProfile?.age ?? 20);
-  const [minutesPerDay, setMinutesPerDay] = useState(
-    initialProfile?.minutesPerDay ?? 20
-  );
-  const [goal, setGoal] = useState(initialProfile?.goal ?? "entretener");
-  const [prefersShort, setPrefersShort] = useState(
-    initialProfile?.prefersShort ?? true
-  );
-  const [difficultyMax, setDifficultyMax] = useState(
-    initialProfile?.difficultyMax ?? 3
-  );
-
-  const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState(initialProfile?.tags ?? ["misterio"]);
-
-  const tagsSet = useMemo(() => new Set(tags.map(normalizeTag)), [tags]);
-
-  function addTag(raw) {
-    const t = normalizeTag(raw);
-    if (!t) return;
-    if (t.length > 25) return; // evita tags gigantes
-    if (tagsSet.has(t)) return;
-    setTags((prev) => [...prev, t]);
-  }
-
-  function removeTag(tagToRemove) {
-    const t = normalizeTag(tagToRemove);
-    setTags((prev) => prev.filter((x) => normalizeTag(x) !== t));
-  }
-
-  function onTagKeyDown(e) {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addTag(tagInput);
-      setTagInput("");
+  const STEPS = [
+    {
+      title: "¿Qué tipo de historias te gustan?",
+      subtitle: "Si tu vida fuera una película, ¿cómo sería?",
+      field: "movieGenre",
+      options: [
+        { id: "accion", label: "Acción y Explosiones", icon: "💥", tags: ["aventura", "suspenso", "thriller"] },
+        { id: "misterio", label: "Misterio y Detective", icon: "🕵️‍♂️", tags: ["misterio", "criminal", "policial"] },
+        { id: "romance", label: "Historias de Amor", icon: "💖", tags: ["romance", "drama", "sentimental"] },
+        { id: "ciencia-ficcion", label: "Viajes al Futuro / Espacio", icon: "🚀", tags: ["ciencia ficción", "distopía", "tecnología"] },
+        { id: "comedia", label: "Algo para reír", icon: "😂", tags: ["humor", "comedia", "relatos cortos"] },
+        { id: "terror", label: "Sustos y Pesadillas", icon: "👻", tags: ["terror", "horror", "sobrenatural"] },
+      ]
+    },
+    {
+      title: "¿Qué te apasiona en el mundo real?",
+      subtitle: "Dinos qué haces en tu tiempo libre.",
+      field: "hobby",
+      options: [
+        { id: "videojuegos", label: "Videojuegos y Tecnología", icon: "🎮", tags: ["tecnología", "cyberpunk", "negocios"] },
+        { id: "naturaleza", label: "Viajes y Naturaleza", icon: "🌿", tags: ["naturaleza", "viajes", "geografía"] },
+        { id: "historia", label: "Aprender del Pasado", icon: "🏛️", tags: ["historia", "biografía", "histórico"] },
+        { id: "deportes", label: "Deportes y Salud", icon: "⚽", tags: ["salud", "deporte", "motivación"] },
+        { id: "arte", label: "Arte y Creatividad", icon: "🎨", tags: ["arte", "diseño", "música"] },
+        { id: "personas", label: "Entender a la Gente", icon: "🧠", tags: ["psicología", "autoayuda", "sociedad"] },
+      ]
+    },
+    {
+      title: "¿Cómo quieres sentirte al leer?",
+      subtitle: "Elige la vibra de tu próxima lectura.",
+      field: "mood",
+      options: [
+        { id: "relajado", label: "Relajado y en Calma", icon: "🛁", tags: ["bienestar", "poesía", "naturaleza"] },
+        { id: "empoderado", label: "Motivado y con Energía", icon: "🔥", tags: ["liderazgo", "negocios", "superación"] },
+        { id: "intrigado", label: "Con el cerebro a mil", icon: "🧠", tags: ["filosofía", "ciencia", "ensayo"] },
+        { id: "conmovido", label: "Emocionado hasta las lágrimas", icon: "💧", tags: ["drama", "clásicos", "biografías"] },
+      ]
     }
-    if (e.key === "Backspace" && !tagInput && tags.length > 0) {
-      // borra el último tag si el input está vacío
-      removeTag(tags[tags.length - 1]);
-    }
-  }
+  ];
 
-  function addManyFromInput(raw) {
-    raw
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean)
-      .forEach(addTag);
-  }
+  const handleSelect = (field, value) => {
+    setSelections(prev => ({ ...prev, [field]: value }));
+    if (step < STEPS.length - 1) {
+      setStep(step + 1);
+    } else {
+      setStep(STEPS.length); // Ir al paso final (edad/tiempo)
+    }
+  };
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // Collect tags from all selections
+    const movieTags = STEPS[0].options.find(o => o.id === selections.movieGenre)?.tags || [];
+    const hobbyTags = STEPS[1].options.find(o => o.id === selections.hobby)?.tags || [];
+    const moodTags = STEPS[2].options.find(o => o.id === selections.mood)?.tags || [];
 
-    // Validaciones mínimas
-    const safeAge = Number(age);
-    const safeMinutes = Number(minutesPerDay);
-    const safeDifficulty = Number(difficultyMax);
-
-    if (!Number.isFinite(safeAge) || safeAge < 8 || safeAge > 90) {
-      alert("Edad inválida (8 a 90).");
-      return;
-    }
-    if (!Number.isFinite(safeMinutes) || safeMinutes < 5 || safeMinutes > 240) {
-      alert("Minutos por día inválidos (5 a 240).");
-      return;
-    }
-    if (
-      !Number.isFinite(safeDifficulty) ||
-      safeDifficulty < 1 ||
-      safeDifficulty > 5
-    ) {
-      alert("Dificultad máx inválida (1 a 5).");
-      return;
-    }
-    if (tags.length === 0) {
-      alert("Agrega al menos 1 gusto (tag).");
-      return;
-    }
+    // Merge and deduplicate
+    const finalTags = Array.from(new Set([...movieTags, ...hobbyTags, ...moodTags]));
 
     const profile = {
-      age: safeAge,
-      minutesPerDay: safeMinutes,
-      goal,
-      prefersShort,
-      difficultyMax: safeDifficulty,
-      tags: tags.map(normalizeTag),
+      age: Number(selections.age),
+      minutesPerDay: Number(selections.time),
+      goal: "entretener",
+      prefersShort: selections.time < 30, // Heuristic
+      difficultyMax: selections.hobby === "historia" || selections.hobby === "personas" ? 4 : 3,
+      tags: finalTags
     };
 
-    onSubmitProfile?.(profile);
-  }
+    onSubmitProfile(profile);
+  };
+
+  const current = STEPS[step];
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="rounded-3xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors">
-        {/* Header con gradiente */}
-        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-800 dark:via-purple-800 dark:to-pink-800 p-8 text-white">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-4xl">📝</span>
-            <h2 className="text-2xl md:text-3xl font-bold">
-              Crea tu Perfil Lector
-            </h2>
-          </div>
-          <p className="text-indigo-100 text-sm md:text-base">
-            Cuéntanos sobre ti y te recomendaremos los mejores libros para tu aventura
-          </p>
+    <div className="w-full mx-auto flex flex-col justify-center">
+      <div className="rounded-[2rem] overflow-hidden transition-all duration-500">
+
+        {/* Progress Bar */}
+        <div className="h-1.5 bg-white/5 w-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-[var(--atm-accent)] to-magic-500 transition-all duration-500 shadow-[0_0_10px_var(--atm-glow)]"
+            style={{ width: `${(step / (STEPS.length)) * 100}%` }}
+          ></div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-6 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 transition-colors">
-          {/* Row 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label="🎂 Edad" icon="🎂">
-              <input
-                type="number"
-                min={8}
-                max={90}
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500"
-                placeholder="Ej: 21"
-              />
-            </Field>
+        {step < STEPS.length ? (
+          <div className="p-6 md:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-black text-white mb-2 leading-tight uppercase tracking-tighter">
+                {current.title}
+              </h2>
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest italic">
+                {current.subtitle}
+              </p>
+            </div>
 
-            <Field label="⏱️ Minutos de lectura por día" icon="⏱️">
-              <input
-                type="number"
-                min={5}
-                max={240}
-                value={minutesPerDay}
-                onChange={(e) => setMinutesPerDay(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500"
-                placeholder="Ej: 20"
-              />
-            </Field>
-          </div>
+            <div className="grid grid-cols-1 gap-3">
+              {current.options.map(opt => (
+                <button
+                  key={opt.id}
+                  onClick={() => handleSelect(current.field, opt.id)}
+                  className={`
+                    group relative p-4 rounded-2xl border transition-all duration-300 transform active:scale-95
+                    ${selections[current.field] === opt.id
+                      ? 'border-[var(--atm-accent)] bg-[var(--atm-accent)]/10 shadow-[0_0_15px_var(--atm-glow)]'
+                      : 'border-white/5 bg-white/5 hover:border-white/20 hover:bg-white/10'}
+                  `}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl group-hover:rotate-12 transition-transform">{opt.icon}</span>
+                    <span className="font-bold text-sm text-gray-200 uppercase tracking-tight">{opt.label}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
 
-          {/* Row 2 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label="🎯 Objetivo" icon="🎯">
-              <select
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 transition-all focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 hover:border-gray-300 dark:hover:border-gray-500 cursor-pointer"
+            {step > 0 && (
+              <button
+                onClick={() => setStep(step - 1)}
+                className="mt-6 text-[10px] text-gray-500 hover:text-white font-black uppercase tracking-widest flex items-center gap-2 transition"
               >
-                <option value="entretener">🎮 Entretenerme</option>
-                <option value="aprender">📚 Aprender</option>
-                <option value="habito">🔄 Crear hábito</option>
-                <option value="productividad">⚡ Productividad</option>
-                <option value="emocional">💚 Bienestar emocional</option>
-              </select>
-            </Field>
+                ← Volver
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="p-6 md:p-8 animate-in zoom-in duration-500 text-center">
+            <h2 className="text-xl font-black text-white mb-6 uppercase tracking-widest">
+              ¡Invocación Final! 🚀
+            </h2>
 
-            <Field label="📊 Dificultad máxima" icon="📊">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm font-medium mb-3">
-                  <span className="text-green-600 dark:text-green-400">🟢 Fácil</span>
-                  <span className="font-bold text-indigo-600 dark:text-indigo-400 text-xl bg-indigo-50 dark:bg-indigo-900 px-4 py-1 rounded-full">
-                    {difficultyMax}
-                  </span>
-                  <span className="text-red-600 dark:text-red-400">🔴 Difícil</span>
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-0 h-3 bg-gradient-to-r from-green-300 via-yellow-300 to-red-300 dark:from-green-600 dark:via-yellow-600 dark:to-red-600 rounded-full"></div>
+            <div className="space-y-6 max-w-sm mx-auto">
+              <div className="text-left">
+                <label className="rpg-label block mb-2">Tu edad</label>
+                <input
+                  type="number"
+                  value={selections.age}
+                  onChange={(e) => setSelections(prev => ({ ...prev, age: e.target.value }))}
+                  className="w-full text-xl font-black bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:hud-border text-white transition-all outline-none"
+                />
+              </div>
+
+              <div className="text-left">
+                <label className="rpg-label block mb-2">Minutos de lectura / día</label>
+                <div className="flex items-center gap-4">
                   <input
                     type="range"
-                    min={1}
-                    max={5}
-                    value={difficultyMax}
-                    onChange={(e) => setDifficultyMax(e.target.value)}
-                    className="relative w-full h-3 bg-transparent appearance-none cursor-pointer slider"
-                    style={{
-                      background: 'transparent'
-                    }}
+                    min="5" max="120" step="5"
+                    value={selections.time}
+                    onChange={(e) => setSelections(prev => ({ ...prev, time: e.target.value }))}
+                    className="flex-1 accent-[var(--atm-accent)] h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
                   />
+                  <span className="w-12 font-black text-[var(--atm-accent)] text-xs">{selections.time}m</span>
                 </div>
-                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 font-medium">
-                  <span>1</span>
-                  <span>2</span>
-                  <span>3</span>
-                  <span>4</span>
-                  <span>5</span>
-                </div>
-              </div>
-              <style>{`
-                .slider::-webkit-slider-thumb {
-                  appearance: none;
-                  width: 20px;
-                  height: 20px;
-                  border-radius: 50%;
-                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                  cursor: pointer;
-                  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                  border: 2px solid white;
-                }
-                .slider::-moz-range-thumb {
-                  width: 20px;
-                  height: 20px;
-                  border-radius: 50%;
-                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                  cursor: pointer;
-                  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                  border: 2px solid white;
-                }
-                .dark .slider::-webkit-slider-thumb {
-                  border: 2px solid #1f2937;
-                }
-                .dark .slider::-moz-range-thumb {
-                  border: 2px solid #1f2937;
-                }
-              `}</style>
-            </Field>
-          </div>
-
-          {/* Preferences */}
-          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 border-2 border-indigo-100 dark:border-indigo-800 p-5">
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">📏</span>
-              <div>
-                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  Preferencia de longitud
-                </div>
-                <div className="text-xs text-gray-600 dark:text-gray-300 mt-1">
-                  Si activas "cortos", prioriza libros con menos páginas.
-                </div>
-              </div>
-            </div>
-
-            <label className="inline-flex items-center gap-3 select-none cursor-pointer group">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={prefersShort}
-                  onChange={(e) => setPrefersShort(e.target.checked)}
-                  className="sr-only"
-                />
-                <div className={`w-14 h-7 rounded-full transition-all duration-300 ${
-                  prefersShort ? 'bg-gradient-to-r from-indigo-600 to-purple-600' : 'bg-gray-300'
-                }`}>
-                  <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 mt-0.5 ${
-                    prefersShort ? 'translate-x-7' : 'translate-x-0.5'
-                  }`}></div>
-                </div>
-              </div>
-              <span className="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
-                Prefiero libros cortos
-              </span>
-            </label>
-          </div>
-
-          {/* Tags */}
-          <div>
-            <div className="flex items-end justify-between gap-4 mb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🏷️</span>
-                <div>
-                  <div className="text-sm font-semibold text-gray-900">
-                    Gustos (tags)
-                  </div>
-                  <div className="text-xs text-gray-600">
-                    Escribe un gusto y presiona <b>Enter</b> o <b>,</b> para agregar.
-                  </div>
-                </div>
-              </div>
-
-              {tags.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setTags([])}
-                  className="text-xs px-3 py-2 rounded-lg border-2 border-red-200 text-red-600 bg-red-50 hover:bg-red-100 font-medium transition"
-                >
-                  Limpiar todo
-                </button>
-              )}
-            </div>
-
-            <div className="rounded-2xl border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 p-4 focus-within:border-indigo-500 dark:focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-200 dark:focus-within:ring-indigo-800 transition">
-              <div className="flex flex-wrap gap-2">
-                {tags.map((t) => (
-                  <span
-                    key={t}
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white px-4 py-2 text-sm font-medium shadow-md hover:shadow-lg transition"
-                  >
-                    {t}
-                    <button
-                      type="button"
-                      onClick={() => removeTag(t)}
-                      className="opacity-90 hover:opacity-100 hover:scale-110 transition-transform"
-                      aria-label={`Eliminar ${t}`}
-                      title="Eliminar"
-                    >
-                      ✕
-                    </button>
-                  </span>
-                ))}
-
-                <input
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={onTagKeyDown}
-                  onBlur={() => {
-                    if (tagInput.trim()) {
-                      addManyFromInput(tagInput);
-                      setTagInput("");
-                    }
-                  }}
-                  className="min-w-[180px] flex-1 px-3 py-2 text-sm outline-none bg-transparent placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-100"
-                  placeholder="Escribe tus gustos aquí..."
-                />
-              </div>
-            </div>
-
-            {/* suggested */}
-            <div className="mt-4">
-              <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                <span>💡</span>
-                <span>Sugerencias rápidas:</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {suggestedTags.map((t) => {
-                  const active = tagsSet.has(normalizeTag(t));
-                  return (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => (active ? removeTag(t) : addTag(t))}
-                      className={[
-                        "text-xs px-4 py-2 rounded-full border-2 font-medium transition-all transform hover:scale-105",
-                        active
-                          ? "bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-500 dark:to-purple-500 text-white border-transparent shadow-md"
-                          : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900",
-                      ].join(" ")}
-                      title={active ? "Quitar" : "Agregar"}
-                    >
-                      {t}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Submit */}
-          <div className="pt-4 border-t-2 border-gray-100 dark:border-gray-700">
-            <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <span className="text-lg">💡</span>
-                <span>Tip: mientras más tags, mejores recomendaciones.</span>
               </div>
 
               <button
-                type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-8 py-4 text-base font-semibold hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-100"
+                onClick={handleSubmit}
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-[var(--atm-accent)]/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <span>✨</span>
-                <span>Generar Recomendaciones</span>
-                <span>🚀</span>
+                🔮 Ver Destino
+              </button>
+
+              <button
+                onClick={() => setStep(STEPS.length - 1)}
+                className="text-[10px] text-gray-500 hover:text-white font-black uppercase tracking-widest transition"
+              >
+                ← Revisar elecciones
               </button>
             </div>
           </div>
-        </form>
+        )}
       </div>
-    </div>
-  );
-}
-
-function Field({ label, children, icon }) {
-  return (
-    <div>
-      <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
-        {label}
-      </label>
-      <div>{children}</div>
     </div>
   );
 }

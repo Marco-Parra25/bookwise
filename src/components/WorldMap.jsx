@@ -1,38 +1,47 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
-export default function WorldMap({ level, xp, xpToNextLevel, booksRead = 0, history = [] }) {
-    // --- v4.0 GOD TIER UPGRADE: 3D PERSPECTIVE, WEATHER SYSTEMS, FLOATING ISLANDS ---
+const BIOMES = [
+    {
+        name: "Bosque Ancestral",
+        start: 1, end: 5,
+        bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300",
+        color: "#2ecc71", accent: "#27ae60", icon: "🌲",
+        weather: "fireflies"
+    },
+    {
+        name: "Ruinas Olvidadas",
+        start: 6, end: 10,
+        bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910",
+        color: "#e67e22", accent: "#d35400", icon: "🔥",
+        weather: "embers"
+    },
+    {
+        name: "Tundra de Cristal",
+        start: 11, end: 15,
+        bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
+        color: "#a29bfe", accent: "#6c5ce7", icon: "❄️",
+        weather: "snow"
+    },
+    {
+        name: "Reino de los Cielos",
+        start: 16, end: 99,
+        bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d",
+        color: "#74b9ff", accent: "#0984e3", icon: "🏰",
+        weather: "clouds"
+    },
+];
 
-    const BIOMES = [
-        {
-            name: "Bosque Ancestral",
-            start: 1, end: 5,
-            bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300",
-            color: "#2ecc71", accent: "#27ae60", icon: "🌲",
-            weather: "fireflies"
-        },
-        {
-            name: "Ruinas Olvidadas",
-            start: 6, end: 10,
-            bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910",
-            color: "#e67e22", accent: "#d35400", icon: "🔥",
-            weather: "embers"
-        },
-        {
-            name: "Tundra de Cristal",
-            start: 11, end: 15,
-            bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
-            color: "#a29bfe", accent: "#6c5ce7", icon: "❄️",
-            weather: "snow"
-        },
-        {
-            name: "Reino de los Cielos",
-            start: 16, end: 99,
-            bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d",
-            color: "#74b9ff", accent: "#0984e3", icon: "🏰",
-            weather: "clouds"
-        },
-    ];
+const EMPTY_ARRAY = [];
+
+export default function WorldMap({
+    level,
+    xp,
+    xpToNextLevel,
+    booksRead = 0,
+    history = EMPTY_ARRAY,
+    avatar = "🧙‍♂️"
+}) {
+    // --- v4.0 GOD TIER UPGRADE: 3D PERSPECTIVE, WEATHER SYSTEMS, FLOATING ISLANDS ---
 
     const currentBiome = BIOMES.find(b => level >= b.start && level <= b.end) || BIOMES[BIOMES.length - 1];
     const LEVELS_PER_SCREEN = 5;
@@ -218,7 +227,13 @@ export default function WorldMap({ level, xp, xpToNextLevel, booksRead = 0, hist
                                     <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 z-50 filter drop-shadow-2xl">
                                         <div className="relative">
                                             <div className="text-6xl animate-bounce" style={{ animationDuration: '2s' }}>
-                                                🧙‍♂️
+                                                {avatar?.startsWith('http') ? (
+                                                    <div className="w-20 h-20 rounded-2xl overflow-hidden glass border-2 border-yellow-400 shadow-2xl scale-75">
+                                                        <img src={avatar} alt="Character" className="w-full h-full object-cover" />
+                                                    </div>
+                                                ) : (
+                                                    <span>{avatar || "🧙‍♂️"}</span>
+                                                )}
                                             </div>
                                             {/* Aura Ring */}
                                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-2 border-yellow-400 rounded-full animate-ping opacity-20"></div>
