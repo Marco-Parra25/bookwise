@@ -32,77 +32,114 @@ export default function BookSearch({ onBookRead }) {
     }
 
     return (
-        <div className="space-y-6">
-            <div className="rounded-2xl border dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm p-6 transition-colors">
-                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">Explorar Catálogo</h2>
+        <div className="space-y-8">
+            <div className="glass p-8 rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
+                <div className="flex items-center gap-3 mb-6 relative z-10">
+                    <span className="text-3xl filter drop-shadow-md">🔍</span>
+                    <h2 className="text-2xl font-black text-white tracking-tight uppercase">Explorar Catálogo</h2>
+                </div>
 
-                <form onSubmit={handleSearch} className="flex gap-2">
+                <form onSubmit={handleSearch} className="flex gap-4 relative z-10">
                     <input
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Buscar por título, autor..."
-                        className="flex-1 px-4 py-2 rounded-lg border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Busca tu próximo tomo de sabiduría..."
+                        className="flex-1 px-6 py-4 rounded-2xl bg-black/40 border-2 border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-neon-500 focus:ring-4 focus:ring-neon-500/20 active:scale-[0.99] transition-all"
                     />
                     <button
                         type="submit"
                         disabled={loading}
-                        className="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors disabled:opacity-50"
+                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-500 to-indigo-600 text-black font-black uppercase tracking-widest hover:shadow-[0_0_30px_rgba(0,242,255,0.4)] hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
                     >
                         {loading ? 'Buscando...' : 'Buscar'}
                     </button>
                 </form>
 
                 {error && (
-                    <div className="mt-4 text-red-600 dark:text-red-400 text-sm">
-                        {error}
+                    <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-widest animate-pulse">
+                        ⚠️ Error en la Matrix: {error}
                     </div>
                 )}
 
                 {!loading && searched && results.length === 0 && !error && (
-                    <div className="mt-8 text-center text-gray-500 text-sm">
-                        No se encontraron libros con esa búsqueda.
+                    <div className="mt-12 text-center text-gray-400/50 italic py-10 border-2 border-dashed border-white/10 rounded-3xl">
+                        No se encontraron libros. Quizás el destino aún no los ha escrito.
                     </div>
                 )}
 
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
                     {results.map((book) => (
                         <div
                             key={book.id}
-                            className="flex flex-col rounded-xl border dark:border-gray-700 p-4 bg-white dark:bg-gray-800 hover:shadow-md transition-all"
+                            className="group/card flex flex-col rounded-[2rem] border-2 border-white/5 bg-white/5 hover:bg-white/10 hover:border-neon-500/30 hover:shadow-[0_0_40px_rgba(0,242,255,0.1)] transition-all duration-500 p-6"
                         >
-                            <div className="flex justify-between items-start gap-3">
+                            <div className="flex justify-between items-start gap-4 mb-4">
                                 <div className="flex-1">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">
+                                    <h3 className="text-lg font-black text-white leading-tight group-hover/card:magic-text transition-colors">
                                         {book.title}
                                     </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    <div className="rpg-label text-[10px] mt-2 opacity-60 group-hover/card:opacity-100 transition-opacity">
                                         {book.author}
-                                    </p>
+                                    </div>
                                 </div>
                                 {book.source === 'bibliometro' && (
-                                    <span className="text-[10px] px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 font-medium">
-                                        Bibliometro
-                                    </span>
+                                    <div className="bg-red-500/20 border border-red-500/30 text-red-400 text-[8px] font-black uppercase tracking-tighter px-2 py-1 rounded">
+                                        BIBLIOMETRO
+                                    </div>
                                 )}
                             </div>
 
                             {book.imageUrl && (
-                                <div className="mt-3 h-32 w-full bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-                                    <img src={book.imageUrl} alt={book.title} className="h-full object-contain" />
+                                <div className="mt-2 h-48 w-full bg-black/40 rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center p-4 relative group-hover/card:border-neon-500/20 transition-all">
+                                    <img
+                                        src={book.imageUrl}
+                                        alt={book.title}
+                                        className="h-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] transform group-hover/card:scale-110 group-hover/card:rotate-2 transition-transform duration-500"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
                                 </div>
                             )}
 
-                            <div className="mt-auto pt-4 flex items-center justify-between">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                    {book.pages ? `${book.pages} pág.` : ''}
+                            {/* Disponibilidad (Bibliometro) */}
+                            {book.locations && book.locations.length > 0 && (
+                                <div className="mt-6 space-y-3">
+                                    <p className="rpg-label text-[9px] opacity-70">Santuarios Custodios:</p>
+                                    <div className="space-y-2">
+                                        {book.locations.map((loc, idx) => {
+                                            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.branch)}`;
+                                            return (
+                                                <div key={idx} className="flex items-center justify-between p-3 rounded-xl glass border border-white/5 hover:border-neon-500/20 transition-all group/loc">
+                                                    <div className="flex-1">
+                                                        <div className="text-[10px] font-black text-white uppercase tracking-tight">{loc.branch}</div>
+                                                        <div className="text-[8px] text-neon-500/80 font-bold uppercase">{loc.stock}</div>
+                                                    </div>
+                                                    <a
+                                                        href={mapsUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="h-8 w-8 flex items-center justify-center rounded-lg glass border border-white/10 text-sm hover:bg-neon-500 hover:text-black transition-all shadow-lg"
+                                                        title="Localizar Santuario"
+                                                    >
+                                                        🗺️
+                                                    </a>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="mt-auto pt-8 flex items-center justify-between">
+                                <span className="font-mono text-[10px] text-gray-500 uppercase">
+                                    {book.pages ? `${book.pages} páginas de saber` : 'Volumen desconocido'}
                                 </span>
                                 {onBookRead && (
                                     <button
                                         onClick={() => onBookRead(book)}
-                                        className="text-xs px-3 py-1 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+                                        className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95"
                                     >
-                                        Marcar leído
+                                        Consumir Saber
                                     </button>
                                 )}
                             </div>

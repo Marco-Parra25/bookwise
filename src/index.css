@@ -1,2 +1,218 @@
 @import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg-deep: #0a0b1e;
+  --bg-card: rgba(16, 18, 35, 0.6);
+  --accent-gold: #f1c40f;
+  --accent-neon: #00f2ff;
+  --accent-magic: #a29bfe;
+  --text-primary: #f8f9fa;
+  --text-secondary: #a0a0a0;
+  --border-glass: rgba(255, 255, 255, 0.1);
+
+  /* Dynamic Atmosphere Colors (Default: Night/Nadir) */
+  --atm-start: #0a0c10;
+  --atm-end: #1a1c24;
+  --atm-accent: #00f2ff;
+  --atm-glow: rgba(0, 243, 255, 0.15);
+
+  --glass-bg: rgba(13, 17, 23, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+@theme {
+  --color-gold-500: #f1c40f;
+  --color-magic-500: #a29bfe;
+  --color-neon-500: #00f2ff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--border-glass);
+}
+
+.glass-heavy {
+  background: rgba(10, 11, 30, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* AAA Animations */
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float-y {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes neon-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(0, 242, 255, 0.2), inset 0 0 5px rgba(0, 242, 255, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), inset 0 0 10px rgba(0, 242, 255, 0.3);
+  }
+}
+
+.animate-aurora {
+  background: linear-gradient(-45deg, var(--atm-start), var(--atm-end), var(--atm-start));
+  background-size: 400% 400%;
+  animation: aurora 15s ease infinite;
+}
+
+.animate-float-slow {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+.neon-border {
+  border: 1px solid var(--accent-neon);
+  animation: neon-glow 3s infinite;
+}
+
+/* Scrollbar Stylings */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-neon);
+}
+
+/* Custom UI Elements */
+.rpg-label {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.magic-text {
+  background: linear-gradient(to right, var(--accent-neon), var(--accent-magic));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- CYBER-HUD EFFECTS --- */
+
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg,
+      rgba(255, 0, 0, 0.03),
+      rgba(0, 255, 0, 0.01),
+      rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.3;
+}
+
+.hud-border {
+  border: 1px solid var(--atm-accent);
+  box-shadow: 0 0 15px var(--atm-glow), inset 0 0 10px var(--atm-glow);
+}
+
+.glitch-hover:hover {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    text-shadow: -2px 2px #ff00c1, 2px -2px #00fff9;
+  }
+
+  25% {
+    transform: translate(-2px, 2px);
+  }
+
+  50% {
+    transform: translate(2px, -2px);
+  }
+
+  75% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Dynamic State Classes */
+.atm-vesper {
+  --atm-start: #2c1a36;
+  --atm-end: #8a3d3d;
+  --atm-accent: #ff8c42;
+  --atm-glow: rgba(255, 140, 66, 0.3);
+}
+
+.atm-zenith {
+  --atm-start: #004e92;
+  --atm-end: #000428;
+  --atm-accent: #00d2ff;
+  --atm-glow: rgba(0, 210, 255, 0.3);
+}
+
+.atm-twilight {
+  --atm-start: #1a0a2e;
+  --atm-end: #4a1942;
+  --atm-accent: #ff4d00;
+  --atm-glow: rgba(255, 77, 0, 0.3);
+}
+
+.atm-nadir {
+  --atm-start: #050505;
+  --atm-end: #1a0b2e;
+  --atm-accent: #c026d3;
+  --atm-glow: rgba(192, 38, 211, 0.3);
+}
