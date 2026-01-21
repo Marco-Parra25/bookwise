@@ -50,23 +50,25 @@ export default function App() {
       setShowWelcome(true);
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-        syncWithSupabase(session.user);
-      }
-    });
+    if (supabase) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          setUser(session.user);
+          syncWithSupabase(session.user);
+        }
+      });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        syncWithSupabase(session.user);
-      } else {
-        setUser(null);
-      }
-    });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+          syncWithSupabase(session.user);
+        } else {
+          setUser(null);
+        }
+      });
 
-    return () => subscription.unsubscribe();
+      return () => subscription.unsubscribe();
+    }
   }, []);
 
   async function syncWithSupabase(supabaseUser) {
@@ -227,7 +229,7 @@ export default function App() {
     if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
       localStorage.removeItem("bookwise_character");
       localStorage.removeItem("bookwise_profile");
-      await supabase.auth.signOut();
+      if (supabase) await supabase.auth.signOut();
       setCharacter(null);
       setProfile(null);
       setUser(null);

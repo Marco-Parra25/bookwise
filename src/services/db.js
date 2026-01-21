@@ -5,6 +5,7 @@ export const db = {
      * Fetch profile for the current user
      */
     async getProfile(userId) {
+        if (!supabase) return null;
         const { data, error } = await supabase
             .from('profiles')
             .select('*')
@@ -19,6 +20,7 @@ export const db = {
      * Create or update a profile
      */
     async upsertProfile(userId, profileData) {
+        if (!supabase) return null;
         const { data, error } = await supabase
             .from('profiles')
             .upsert({
@@ -37,6 +39,7 @@ export const db = {
      * Get reading history for the current user
      */
     async getReadingHistory(userId) {
+        if (!supabase) return [];
         const { data, error } = await supabase
             .from('reading_history')
             .select('*')
@@ -51,6 +54,7 @@ export const db = {
      * Add a book to reading history
      */
     async addReadingHistory(userId, book, xpGained = 10) {
+        if (!supabase) return null;
         const { data, error } = await supabase
             .from('reading_history')
             .insert({
