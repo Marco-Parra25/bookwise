@@ -25,9 +25,6 @@ import { db } from "./services/db";
 import { supabase } from "./services/supabase";
 
 export default function App() {
-  // Inicializar tema
-  useTheme();
-
   const [character, setCharacter] = useState(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showCharacterCreation, setShowCharacterCreation] = useState(false);
