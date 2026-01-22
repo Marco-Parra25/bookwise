@@ -115,8 +115,8 @@ export default function App() {
       if (timeLeft <= 0) return clearInterval(interval);
 
       const particleCount = 50 * (timeLeft / duration);
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() * 0.5 } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() * 0.5 } });
     }, 250);
   };
 
@@ -173,6 +173,14 @@ export default function App() {
     if (success) {
       const updatedCharacter = loadCharacter();
       setCharacter(updatedCharacter);
+
+      // Feedback inmediato
+      checkLevelUp(oldChar, updatedCharacter);
+      if (updatedCharacter.level === oldChar.level) {
+        alert(`¡Felicidades! Has ganado XP por leer "${book.title}" 🎉`);
+      }
+
+      // Sincronización en segundo plano
       if (user) {
         try {
           await db.addReadingHistory(user.id, book);
@@ -182,16 +190,11 @@ export default function App() {
             xp_to_next_level: updatedCharacter.xpToNextLevel,
             books_read_count: updatedCharacter.booksRead
           });
-          // Update local history state
           const newHistory = await db.getReadingHistory(user.id);
           if (newHistory) setReadingHistory(newHistory);
         } catch (err) {
           console.error("Error saving book to cloud:", err);
         }
-      }
-      checkLevelUp(oldChar, updatedCharacter);
-      if (updatedCharacter.level === oldChar.level) {
-        alert(`¡Felicidades! Has ganado XP por leer "${book.title}" 🎉`);
       }
     } else {
       alert("Este libro ya fue marcado como leído.");
