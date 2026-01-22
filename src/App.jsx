@@ -190,6 +190,7 @@ export default function App() {
             xp_to_next_level: updatedCharacter.xpToNextLevel,
             books_read_count: updatedCharacter.booksRead
           });
+          // Update local history state
           const newHistory = await db.getReadingHistory(user.id);
           if (newHistory) setReadingHistory(newHistory);
         } catch (err) {
