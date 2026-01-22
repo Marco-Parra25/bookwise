@@ -43,9 +43,10 @@ export default function WorldMap({
 }) {
     // --- v4.0 GOD TIER UPGRADE: 3D PERSPECTIVE, WEATHER SYSTEMS, FLOATING ISLANDS ---
 
-    const currentBiome = BIOMES.find(b => level >= b.start && level <= b.end) || BIOMES[BIOMES.length - 1];
+    const progressionLevel = (booksRead || 0) + 1;
+    const currentBiome = BIOMES.find(b => progressionLevel >= b.start && progressionLevel <= b.end) || BIOMES[BIOMES.length - 1];
     const LEVELS_PER_SCREEN = 5;
-    const currentScreenIndex = Math.floor((level - 1) / LEVELS_PER_SCREEN);
+    const currentScreenIndex = Math.floor((progressionLevel - 1) / LEVELS_PER_SCREEN);
     const startLevelView = (currentScreenIndex * LEVELS_PER_SCREEN) + 1;
 
     // Generate Nodes with "Height" for 3D effect
@@ -63,15 +64,15 @@ export default function WorldMap({
                 x: isEven ? 70 : 30,
                 y: 85 - (relativeIndex * 15),
                 z: relativeIndex * 10, // Simulated depth
-                locked: i > level,
-                current: i === level,
-                completed: i < level,
+                locked: i > progressionLevel,
+                current: i === progressionLevel,
+                completed: i < progressionLevel,
                 isBoss,
                 book: bookData ? bookData.title : null
             });
         }
         return list;
-    }, [level, startLevelView, history]);
+    }, [progressionLevel, startLevelView, history]);
 
     // Advanced Particle System
     const [particles, setParticles] = useState([]);
