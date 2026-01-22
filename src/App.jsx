@@ -32,8 +32,8 @@ export default function App() {
   const [recs, setRecs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState("profile"); // 'profile' | 'search'
+  const [readingHistory, setReadingHistory] = useState([]);
 
   // Cargar datos al iniciar
   useEffect(() => {
@@ -50,23 +50,25 @@ export default function App() {
       setShowWelcome(true);
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-        syncWithSupabase(session.user);
-      }
-    });
+    if (supabase) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          setUser(session.user);
+          syncWithSupabase(session.user);
+        }
+      });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        syncWithSupabase(session.user);
-      } else {
-        setUser(null);
-      }
-    });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+          syncWithSupabase(session.user);
+        } else {
+          setUser(null);
+        }
+      });
 
-    return () => subscription.unsubscribe();
+      return () => subscription.unsubscribe();
+    }
   }, []);
 
   async function syncWithSupabase(supabaseUser) {
@@ -84,10 +86,12 @@ export default function App() {
         setCharacter(syncedCharacter);
         saveCharacter(syncedCharacter);
         if (dbProfile.preferences) {
-          setProfile(dbProfile.preferences);
-          saveProfile(dbProfile.preferences);
           handleProfile(dbProfile.preferences, false);
         }
+        // Load reading history from Supabase
+        const history = await db.getReadingHistory(supabaseUser.id);
+        if (history) setReadingHistory(history);
+
         setShowWelcome(false);
         setShowCharacterCreation(false);
       } else if (!character) {
@@ -178,6 +182,9 @@ export default function App() {
             xp_to_next_level: updatedCharacter.xpToNextLevel,
             books_read_count: updatedCharacter.booksRead
           });
+          // Update local history state
+          const newHistory = await db.getReadingHistory(user.id);
+          if (newHistory) setReadingHistory(newHistory);
         } catch (err) {
           console.error("Error saving book to cloud:", err);
         }
@@ -227,7 +234,7 @@ export default function App() {
     if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
       localStorage.removeItem("bookwise_character");
       localStorage.removeItem("bookwise_profile");
-      await supabase.auth.signOut();
+      if (supabase) await supabase.auth.signOut();
       setCharacter(null);
       setProfile(null);
       setUser(null);
@@ -316,6 +323,7 @@ export default function App() {
                         xp={character.xp}
                         xpToNextLevel={character.xpToNextLevel}
                         booksRead={character.booksRead}
+                        history={readingHistory}
                         avatar={character.avatar}
                       />
                     </MotionCard>
