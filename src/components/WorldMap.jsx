@@ -132,11 +132,16 @@ export default function WorldMap({
                 {/* --- LAYER 1: 3D BACKGROUND PARALLAX --- */}
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-110"
-                    style={{ backgroundImage: `url(${currentBiome.bg})` }}
+                    style={{
+                        backgroundImage: `url(${currentBiome.bg})`,
+                        backgroundColor: currentBiome.color // Fallback color if image fails
+                    }}
                 >
-                    <div className="absolute inset-0 bg-white/10 dark:bg-black/30 backdrop-blur-[2px]"></div>
-                    {/* Vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-black/90 via-transparent to-white/60 dark:to-black/60"></div>
+                    {/* Light Overlay for blending */}
+                    <div className="absolute inset-0 bg-current opacity-10 mix-blend-overlay"></div>
+
+                    {/* Vignette - Reduced opacity for better visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/60 dark:from-black/80 via-transparent to-white/20 dark:to-black/40"></div>
                 </div>
 
                 {/* 2. AMBIENT CREATURES LAYER */}

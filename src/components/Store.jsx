@@ -19,6 +19,10 @@ const ITEMS_DB = [
     // --- BEARDS / MASKS ---
     { id: "mask_fox", name: "Máscara Kitsune", price: 800, category: "beard", icon: "🦊", rarity: "rare", desc: "Astuta como un zorro." },
     { id: "beard_santa", name: "Barba Sabia", price: 400, category: "beard", icon: "🎅", rarity: "common", desc: "Canas ganadas con experiencia." },
+
+    // --- CONSUMABLES (MAGIC) ---
+    { id: "potion_xp", name: "Poción Sapiencia", price: 300, category: "magic", icon: "🧪", rarity: "epic", desc: "+500 XP Instantáneos. Sabe a tinta.", type: "consumable", effect: "xp_boost", value: 500 },
+    { id: "scroll_levelup", name: "Pergamino Ascensión", price: 2000, category: "magic", icon: "📜", rarity: "legendary", desc: "Sube 1 Nivel completos. Magia prohibida.", type: "consumable", effect: "level_up" },
 ];
 
 export default function Store({ onUpdateProfile, currentCoins, inventory, equipped }) {
@@ -33,7 +37,7 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
     const handlePurchase = (item) => {
         const res = purchaseItem(item);
         if (res.success) {
-            setMsg(`¡Comprado: ${item.name}!`);
+            setMsg(res.message);  // Shows "Effect applied!" for consumables
             onUpdateProfile(); // Refresh app state
         } else {
             setMsg(res.message);
@@ -73,6 +77,7 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
                     { id: "hat", label: "Cabezas", icon: "🎩" },
                     { id: "glasses", label: "Ojos", icon: "👓" },
                     { id: "beard", label: "Rostros", icon: "🎭" },
+                    { id: "magic", label: "Magia", icon: "✨" },
                 ].map(cat => (
                     <button
                         key={cat.id}

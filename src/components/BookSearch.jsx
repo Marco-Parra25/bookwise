@@ -76,12 +76,24 @@ export default function BookSearch({ onBookRead }) {
                         >
                             <div className="flex justify-between items-start gap-4 mb-4">
                                 <div className="flex-1">
-                                    <h3 className="text-lg font-black text-white leading-tight group-hover/card:magic-text transition-colors">
-                                        {book.title}
-                                    </h3>
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <h3 className="text-lg font-black text-white leading-tight group-hover/card:magic-text transition-colors">
+                                            {book.title}
+                                        </h3>
+                                        {book.category && (
+                                            <span className="px-2 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[9px] font-black uppercase tracking-wider">
+                                                {book.category}
+                                            </span>
+                                        )}
+                                    </div>
                                     <div className="rpg-label text-[10px] mt-2 opacity-60 group-hover/card:opacity-100 transition-opacity">
                                         {book.author}
                                     </div>
+                                    {(book.description || book.summary) && (
+                                        <p className="text-[11px] text-gray-400 mt-3 line-clamp-3 leading-relaxed opacity-80 group-hover/card:opacity-100 border-l-2 border-white/10 pl-3">
+                                            {book.description || book.summary}
+                                        </p>
+                                    )}
                                 </div>
                                 {book.source === 'bibliometro' && (
                                     <div className="bg-red-500/20 border border-red-500/30 text-red-400 text-[8px] font-black uppercase tracking-tighter px-2 py-1 rounded">

@@ -141,15 +141,42 @@ export function purchaseItem(item) {
     return { success: false, message: "No tienes suficiente Lumina" };
   }
 
-  if (!character.inventory) character.inventory = [];
-  if (character.inventory.includes(item.id)) {
-    return { success: false, message: "Ya posees este objeto" };
+  // Handle Inventory Check for Non-Consumables
+  if (item.type !== 'consumable') {
+    if (!character.inventory) character.inventory = [];
+    if (character.inventory.includes(item.id)) {
+      return { success: false, message: "Ya posees este objeto" };
+    }
+    character.inventory.push(item.id);
   }
 
+  // Deduct Cost
   character.coins -= item.price;
-  character.inventory.push(item.id);
+
+  // Handle Consumable Effects
+  if (item.type === 'consumable') {
+    if (item.effect === 'level_up') {
+      character.level += 1;
+      character.xp = 0; // Reset XP for new level
+      character.xpToNextLevel = Math.floor(character.xpToNextLevel * 1.5);
+    } else if (item.effect === 'xp_boost') {
+      character.xp += (item.value || 500);
+      // Check level up from boost
+      while (character.xp >= character.xpToNextLevel) {
+        character.xp -= character.xpToNextLevel;
+        character.level += 1;
+        character.xpToNextLevel = Math.floor(character.xpToNextLevel * 1.5);
+      }
+    }
+  }
+
   saveCharacter(character);
-  return { success: true, message: "¡Compra exitosa!", coins: character.coins };
+
+  const msg = item.type === 'consumable'
+    ? `¡Efecto aplicado: ${item.name}!`
+    : "¡Compra exitosa!";
+
+  return { success: true, message: msg, coins: character.coins };
 }
 
 export function equipItem(category, itemId) {

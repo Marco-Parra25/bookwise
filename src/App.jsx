@@ -279,7 +279,14 @@ export default function App() {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default">{character.name}</h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default">{character.name}</h1>
+                {user && (
+                  <div title="Sincronizado con Google" className="bg-green-500/10 text-green-400 border border-green-500/20 rounded-full p-1.5 animate-pulse">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-3 h-3" alt="G" />
+                  </div>
+                )}
+              </div>
               <div className="flex items-center gap-3 mt-1">
                 <div className="w-48 h-2 bg-white/10 rounded-full overflow-hidden border border-white/5">
                   <div className="h-full bg-gradient-to-r from-[var(--atm-accent)] to-magic-500 transition-all duration-1000" style={{ width: `${(character.xp / character.xpToNextLevel) * 100}%` }}></div>

@@ -298,14 +298,14 @@ export default function WelcomeScreen({ onStart }) {
                     onClick={onStart}
                     className="flex-1 py-4 rounded-xl glass border border-white/5 text-gray-400 font-bold hover:text-white hover:bg-white/5 transition uppercase text-[10px] tracking-widest"
                   >
-                    INVITADO
+                    MODO INVITADO
                   </button>
                   <button
                     onClick={handleGoogleLogin}
-                    className="flex-[2] py-4 rounded-xl bg-white text-black font-black hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
+                    className="flex-[1.5] py-4 rounded-xl bg-white text-black font-black hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
                   >
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="G" />
-                    SYNC
+                    INICIAR SESIÓN
                   </button>
                 </div>
               )}
