@@ -11,6 +11,7 @@ import BookSearch from "./components/BookSearch";
 import ThemeToggle from "./components/ThemeToggle";
 import WorldMap from "./components/WorldMap";
 import { useTheme } from "./hooks/useTheme";
+import Store from "./components/Store";
 import { fetchRecommendations } from "./services/api";
 import {
   loadCharacter,
@@ -288,7 +289,7 @@ export default function App() {
           </div>
 
           <nav className="flex bg-black/40 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-inner">
-            {['profile', 'search'].map((tab) => (
+            {['profile', 'search', 'store'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -297,7 +298,7 @@ export default function App() {
                   : 'text-gray-400 hover:text-white'
                   }`}
               >
-                {tab === 'profile' ? 'Dashboard' : 'Catálogo'}
+                {tab === 'profile' ? 'Dashboard' : tab === 'search' ? 'Catálogo' : 'Emporium'}
               </button>
             ))}
           </nav>
@@ -308,6 +309,15 @@ export default function App() {
             {activeTab === 'search' ? (
               <motion.div key="search" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }}>
                 <BookSearch onBookRead={handleBookRead} />
+              </motion.div>
+            ) : activeTab === 'store' ? (
+              <motion.div key="store" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
+                <Store
+                  onUpdateProfile={() => setCharacter(loadCharacter())}
+                  currentCoins={character.coins}
+                  inventory={character.inventory}
+                  equipped={character.equipped}
+                />
               </motion.div>
             ) : (
               <motion.div

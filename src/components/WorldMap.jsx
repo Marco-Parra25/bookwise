@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 
 const BIOMES = [
     {
@@ -6,28 +6,32 @@ const BIOMES = [
         start: 1, end: 5,
         bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300",
         color: "#2ecc71", accent: "#27ae60", icon: "🌲",
-        weather: "fireflies"
+        weather: "fireflies",
+        ambient: "fairies"
     },
     {
         name: "Ruinas Olvidadas",
         start: 6, end: 10,
         bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910",
-        color: "#e67e22", accent: "#d35400", icon: "🔥",
-        weather: "embers"
+        color: "#d35400", accent: "#e67e22", icon: "🔥",
+        weather: "embers",
+        ambient: "dragon"
     },
     {
         name: "Tundra de Cristal",
         start: 11, end: 15,
         bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
-        color: "#a29bfe", accent: "#6c5ce7", icon: "❄️",
-        weather: "snow"
+        color: "#6c5ce7", accent: "#a29bfe", icon: "💎",
+        weather: "snow",
+        ambient: "aurora"
     },
     {
         name: "Reino de los Cielos",
         start: 16, end: 99,
         bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d",
-        color: "#74b9ff", accent: "#0984e3", icon: "🏰",
-        weather: "clouds"
+        color: "#0984e3", accent: "#74b9ff", icon: "🏰",
+        weather: "clouds",
+        ambient: "airships"
     },
 ];
 
@@ -41,29 +45,50 @@ export default function WorldMap({
     history = EMPTY_ARRAY,
     avatar = "🧙‍♂️"
 }) {
-    // --- v4.0 GOD TIER UPGRADE: 3D PERSPECTIVE, WEATHER SYSTEMS, FLOATING ISLANDS ---
+    // --- v5.0 GOD TIER: HYPER-IMMERSIVE 3D ENGINE ---
 
+    // Progression Logic
     const progressionLevel = (booksRead || 0) + 1;
     const currentBiome = BIOMES.find(b => progressionLevel >= b.start && progressionLevel <= b.end) || BIOMES[BIOMES.length - 1];
     const LEVELS_PER_SCREEN = 5;
     const currentScreenIndex = Math.floor((progressionLevel - 1) / LEVELS_PER_SCREEN);
     const startLevelView = (currentScreenIndex * LEVELS_PER_SCREEN) + 1;
 
-    // Generate Nodes with "Height" for 3D effect
+    // 3D Tilt State
+    const [tilt, setTilt] = useState({ x: 0, y: 0 });
+    const containerRef = useRef(null);
+
+    const handleMouseMove = (e) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        // Calculate tilt: -10deg to 10deg range
+        const tiltX = (0.5 - y) * 20;
+        const tiltY = (x - 0.5) * 20;
+        setTilt({ x: tiltX, y: tiltY });
+    };
+
+    const handleMouseLeave = () => {
+        setTilt({ x: 5, y: 0 }); // Reset to a cinematic slight angle
+    };
+
+    // Generate Volumetric Nodes
     const nodes = useMemo(() => {
         const list = [];
         for (let i = startLevelView; i < startLevelView + LEVELS_PER_SCREEN; i++) {
             const relativeIndex = i - startLevelView;
-            const isEven = i % 2 === 0;
             const isBoss = i % 5 === 0;
             const bookData = history[i - 1];
 
+            // S-Curve Generation for path
+            const xBase = 50;
+            const xOffset = Math.sin(relativeIndex * 1.5) * 35;
+
             list.push({
                 level: i,
-                // Sinuosity for 3D path perception
-                x: isEven ? 70 : 30,
-                y: 85 - (relativeIndex * 15),
-                z: relativeIndex * 10, // Simulated depth
+                x: xBase + xOffset,
+                y: 85 - (relativeIndex * 18), // Spread out vertically
                 locked: i > progressionLevel,
                 current: i === progressionLevel,
                 completed: i < progressionLevel,
@@ -74,245 +99,260 @@ export default function WorldMap({
         return list;
     }, [progressionLevel, startLevelView, history]);
 
-    // Advanced Particle System
+    // Particle System (Optimized)
     const [particles, setParticles] = useState([]);
     useEffect(() => {
-        const count = 30; // More particles!
-        const p = Array.from({ length: count }).map((_, i) => ({
+        const count = currentBiome.weather === 'snow' ? 50 : 25;
+        const newParticles = Array.from({ length: count }).map((_, i) => ({
             id: i,
-            x: Math.random() * 100,
-            y: Math.random() * 100,
-            size: Math.random() * (currentBiome.weather === 'snow' ? 4 : 6) + 2,
-            duration: Math.random() * 5 + 5,
-            delay: Math.random() * -5,
-            opacity: Math.random() * 0.7 + 0.3
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            size: Math.random() * 3 + 1,
+            speed: Math.random() * 5 + 5,
+            delay: Math.random() * -10
         }));
-        setParticles(p);
-    }, [currentBiome]);
-
-    // CSS for particles based on weather
-    const weatherAnimation = useMemo(() => {
-        if (currentBiome.weather === 'snow') return 'animate-fall';
-        if (currentBiome.weather === 'embers') return 'animate-rise';
-        if (currentBiome.weather === 'clouds') return 'animate-float';
-        return 'animate-pulse'; // fireflies
+        setParticles(newParticles);
     }, [currentBiome]);
 
     return (
-        <div className="group relative w-full h-[600px] perspective-[1000px] overflow-visible mb-12 select-none">
-
-            {/* 3D BOARD CONTAINER */}
-            <div className="relative w-full h-full rounded-3xl transition-transform duration-700 transform-style-3d rotate-x-10 shadow-2xl border-[6px] bg-gray-900 overflow-hidden"
+        <div
+            ref={containerRef}
+            className="group relative w-full h-[650px] perspective-[1200px] overflow-visible mb-16 select-none cursor-crosshair"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+        >
+            {/* --- 3D TILT CONTAINER --- */}
+            <div
+                className="relative w-full h-full rounded-[3rem] transition-transform duration-100 ease-out transform-style-3d shadow-2xl border-[8px] bg-gray-900 border-gray-800"
                 style={{
-                    borderColor: currentBiome.color,
-                    transform: 'rotateX(20deg) scale(0.95)',
-                    boxShadow: `0 25px 50px -12px ${currentBiome.color}40`
-                }}>
-
-                {/* --- LAYER 1: 3D BACKGROUND PARALLAX --- */}
+                    transform: `rotateX(${20 + tilt.x}deg) rotateY(${tilt.y}deg) scale(0.95)`,
+                    boxShadow: `${-tilt.y * 2}px ${tilt.x * 2 + 30}px 60px rgba(0,0,0,0.7)`
+                }}
+            >
+                {/* 1. BACKGROUND PARALLAX LAYER (Deepest) */}
                 <div
-                    className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-110"
+                    className="absolute inset-0 rounded-[2.5rem] bg-cover bg-center transform-style-3d overflow-hidden"
                     style={{ backgroundImage: `url(${currentBiome.bg})` }}
                 >
-                    <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-                    {/* Vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60"></div>
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+                    {/* Parallax elements could go here */}
+                    <div
+                        className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 opacity-90"
+                        style={{ transform: `translateZ(20px) scale(1.1) translateX(${tilt.y}px)` }}
+                    ></div>
                 </div>
 
-                {/* --- LAYER 2: WEATHER SYSTEM --- */}
-                <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-                    {particles.map(p => (
-                        <div
-                            key={p.id}
-                            className={`absolute rounded-full transition-colors duration-1000 ${weatherAnimation}`}
-                            style={{
-                                left: `${p.x}%`,
-                                top: `${p.y}%`,
-                                width: `${p.size}px`,
-                                height: `${p.size}px`,
-                                backgroundColor: currentBiome.weather === 'embers' ? '#e74c3c' : '#ffffff',
-                                opacity: p.opacity,
-                                boxShadow: currentBiome.weather === 'fireflies' ? '0 0 10px #f1c40f' : 'none',
-                                animationDuration: `${p.duration}s`,
-                                animationDelay: `${p.delay}s`
-                            }}
-                        />
-                    ))}
+                {/* 2. AMBIENT CREATURES LAYER */}
+                <div className="absolute inset-0 overflow-hidden transform-style-3d pointer-events-none z-0">
+                    {currentBiome.ambient === 'dragon' && (
+                        <div className="absolute top-10 -right-20 w-32 h-32 animate-float-slow opacity-60 mix-blend-screen"
+                            style={{ transform: 'translateZ(50px)' }}>
+                            🐉
+                        </div>
+                    )}
+                    {currentBiome.ambient === 'airships' && (
+                        <div className="absolute top-20 left-10 text-6xl animate-float opacity-80"
+                            style={{ transform: 'translateZ(80px)' }}>
+                            🛸
+                        </div>
+                    )}
                 </div>
 
-                {/* --- LAYER 3: PATH (DRAWN ON FLOOR) --- */}
-                <div className="absolute inset-0 z-0 mt-8">
-                    <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ filter: 'drop-shadow(0 4px 4px rgba(0,0,0,0.5))' }}>
+                {/* 3. TERRAIN & PATH LAYER */}
+                <div className="absolute inset-0 z-10 transform-style-3d" style={{ transform: 'translateZ(30px)' }}>
+                    <svg className="w-full h-full overflow-visible" style={{ filter: 'drop-shadow(0 10px 5px rgba(0,0,0,0.5))' }}>
+                        <defs>
+                            <linearGradient id="pathGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stopColor={currentBiome.color} stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#fff" stopOpacity="1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
                         {nodes.map((node, index) => {
                             if (index === nodes.length - 1) return null;
                             const next = nodes[index + 1];
+                            const isActive = !node.locked && !next.locked;
                             return (
-                                <path
-                                    key={`path-${node.level}`}
-                                    d={`M ${node.x} ${node.y} C ${node.x} ${node.y - 10}, ${next.x} ${next.y + 10}, ${next.x} ${next.y}`}
-                                    stroke={node.locked ? "#374151" : currentBiome.color} // dark gray if locked
-                                    strokeWidth={node.locked ? "2" : "6"}
-                                    strokeDasharray={node.locked ? "5,5" : "none"}
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    className="transition-all duration-1000"
-                                    style={{ opacity: 0.8 }}
-                                />
+                                <g key={`path-${index}`}>
+                                    {/* Shadow Path */}
+                                    <path
+                                        d={`M ${node.x} ${node.y} C ${node.x} ${node.y - 15}, ${next.x} ${next.y + 15}, ${next.x} ${next.y}`}
+                                        stroke="black"
+                                        strokeWidth="8"
+                                        fill="none"
+                                        opacity="0.5"
+                                        transform="translate(0, 5)"
+                                    />
+                                    {/* Main Path */}
+                                    <path
+                                        d={`M ${node.x} ${node.y} C ${node.x} ${node.y - 15}, ${next.x} ${next.y + 15}, ${next.x} ${next.y}`}
+                                        stroke={isActive ? "url(#pathGradient)" : "#4b5563"}
+                                        strokeWidth={isActive ? "6" : "3"}
+                                        strokeDasharray={isActive ? "none" : "8,4"}
+                                        fill="none"
+                                        strokeLinecap="round"
+                                        className={isActive ? "animate-pulse-slow" : ""}
+                                        filter={isActive ? "url(#glow)" : ""}
+                                    />
+                                </g>
                             );
                         })}
                     </svg>
                 </div>
 
-                {/* --- LAYER 4: FLOATING ISLAND NODES --- */}
-                <div className="absolute inset-0 z-10">
+                {/* 4. VOLUMETRIC NODES LAYER */}
+                <div className="absolute inset-0 z-20 transform-style-3d">
                     {nodes.map((node) => (
                         <div
                             key={node.level}
-                            className={`absolute flex items-center justify-center transition-all duration-500
-                ${node.current ? 'z-50' : 'z-20'}
-              `}
-                            style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                            className="absolute transform-style-3d group/node"
+                            style={{
+                                left: `${node.x}%`,
+                                top: `${node.y}%`,
+                                transform: `translate(-50%, -50%) translateZ(${node.current ? 80 : 40}px)`,
+                                zIndex: node.level
+                            }}
                         >
-                            {/* 3D FLOATING BASE (SHADOW) */}
-                            <div className="absolute top-8 w-12 h-4 bg-black/50 blur-md rounded-[100%]"></div>
+                            {/* VOLUMETRIC STACK (Pseudo-3D) */}
+                            <div className="relative transform-style-3d transition-transform duration-500 hover:scale-110 cursor-pointer">
 
-                            {/* ISLAND CONTAINER (BOBBING ANIMATION) */}
-                            <div className={`
-                  relative flex flex-col items-center
-                  transition-transform duration-1000 ease-in-out
-                  ${node.current ? 'animate-float-fast' : 'animate-float-slow'}
-               `}
-                                style={{ animationDelay: `${node.level * -0.5}s` }}
-                            >
+                                {/* Base Shadow */}
+                                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-16 h-8 bg-black/60 blur-md rounded-[100%]"></div>
 
-                                {/* NODE ISLAND */}
-                                <div className={`
-                      relative flex items-center justify-center 
-                      ${node.isBoss ? 'w-20 h-20' : 'w-16 h-16'}
-                      rounded-2xl transform rotate-45 border-b-8
-                      transition-all duration-300 group-hover:rotate-0 group-hover:rounded-full
-                      ${node.locked
-                                        ? 'bg-gray-800 border-gray-900 grayscale opacity-80'
-                                        : 'shadow-lg cursor-pointer hover:scale-110'}
-                   `}
-                                    style={{
-                                        backgroundColor: !node.locked ? (node.current ? '#ffffff' : currentBiome.accent) : undefined,
-                                        borderColor: !node.locked ? currentBiome.color : undefined,
-                                        boxShadow: node.current ? `0 0 40px ${currentBiome.color}` : undefined
-                                    }}
+                                {/* Layer 1: Base Pillar */}
+                                <div className={`w-16 h-16 rounded-xl border-b-[6px] transform rotate-45 transition-colors duration-300
+                                    ${node.locked ? 'bg-gray-800 border-gray-900' : 'bg-gray-700 border-gray-900'}
+                                `}></div>
+
+                                {/* Layer 2: Platform Top */}
+                                <div className={`absolute -top-2 left-0 w-16 h-16 rounded-xl transform rotate-45 border-4 transition-all duration-300 flex items-center justify-center
+                                    ${node.locked
+                                        ? 'bg-gray-800 border-gray-600 grayscale opacity-80'
+                                        : node.current
+                                            ? 'bg-white border-yellow-400 shadow-[0_0_30px_rgba(255,255,255,0.6)] animate-bounce-subtle'
+                                            : `bg-[${currentBiome.accent}] border-[${currentBiome.color}]`
+                                    }
+                                `}
+                                    style={{ backgroundColor: !node.locked && !node.current ? currentBiome.accent : undefined }}
                                 >
-                                    <div className={`transform -rotate-45 group-hover:rotate-0 transition-transform ${node.locked ? 'opacity-50' : 'text-white'}`}>
-                                        {node.isBoss ? <span className="text-3xl">🏰</span> : <span className="text-xl font-bold font-mono">{node.level}</span>}
+                                    {/* Icon / Number */}
+                                    <div className={`transform -rotate-45 font-black text-xl 
+                                        ${node.locked ? 'text-gray-500' : node.current ? 'text-black' : 'text-white'}
+                                    `}>
+                                        {node.isBoss ? '🏰' : node.level}
                                     </div>
-
-                                    {/* CHECKMARK BADGE */}
-                                    {node.completed && !node.isBoss && (
-                                        <div className="absolute -top-2 -right-2 bg-green-500 border-2 border-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] text-white font-bold z-20">
-                                            ✓
-                                        </div>
-                                    )}
                                 </div>
 
-                                {/* TOOLTIP (ON HOVER) */}
-                                {node.book && (
-                                    <div className="absolute bottom-full mb-4 opacity-0 hover:opacity-100 transition-opacity duration-300 w-48 z-50 pointer-events-none">
-                                        <div className="bg-gray-900/95 text-white p-3 rounded-xl border border-gray-700 shadow-2xl text-center transform scale-90 hover:scale-100 transition-transform">
-                                            <div className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Historia</div>
-                                            <div className="font-bold text-sm text-yellow-400 leading-tight">{node.book}</div>
-                                        </div>
+                                {/* Floating Rewards / Status */}
+                                {node.completed && !node.isBoss && (
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-green-500 text-white text-[9px] font-bold rounded-full shadow-lg transform translate-Z(20px) animate-float">
+                                        LEÍDO
                                     </div>
                                 )}
-
-                                {/* AVATAR (ON CURRENT NODE) */}
-                                {node.current && (
-                                    <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 z-50 filter drop-shadow-2xl">
-                                        <div className="relative">
-                                            <div className="text-6xl animate-bounce" style={{ animationDuration: '2s' }}>
-                                                {avatar?.startsWith('http') ? (
-                                                    <div className="w-20 h-20 rounded-2xl overflow-hidden glass border-2 border-yellow-400 shadow-2xl scale-75">
-                                                        <img src={avatar} alt="Character" className="w-full h-full object-cover" />
-                                                    </div>
-                                                ) : (
-                                                    <span>{avatar || "🧙‍♂️"}</span>
-                                                )}
-                                            </div>
-                                            {/* Aura Ring */}
-                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-2 border-yellow-400 rounded-full animate-ping opacity-20"></div>
-                                        </div>
-                                    </div>
-                                )}
-
                             </div>
+
+                            {/* AVATAR (If Current) */}
+                            {node.current && (
+                                <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-24 h-24 transform-style-3d animate-float-fast pointer-events-none"
+                                    style={{ transform: 'translateZ(60px) translateX(-50%)' }}>
+                                    <div className="relative w-full h-full flex items-center justify-center">
+                                        <div className="text-6xl filter drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
+                                            {avatar?.startsWith('http') ? (
+                                                <img src={avatar} className="w-16 h-16 rounded-2xl border-2 border-white shadow-xl" />
+                                            ) : avatar}
+                                        </div>
+                                        {/* Avatar Aura */}
+                                        <div className="absolute inset-0 bg-yellow-400/20 blur-xl rounded-full animate-pulse"></div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* HOVER TOOLTIP (3D Pop-up) */}
+                            {node.book && (
+                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-48 opacity-0 group-hover/node:opacity-100 transition-all duration-300 transform translate-y-4 group-hover/node:translate-y-0"
+                                    style={{ transform: 'translateZ(100px) translateX(-50%)' }}>
+                                    <div className="bg-black/90 text-white p-3 rounded-xl border border-yellow-500/30 shadow-2xl backdrop-blur-md text-center">
+                                        <div className="text-[9px] text-yellow-500 uppercase font-bold tracking-widest mb-1">Historia Desbloqueada</div>
+                                        <div className="text-xs font-bold leading-tight line-clamp-2">{node.book}</div>
+                                    </div>
+                                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-black/90 mx-auto"></div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
 
-                {/* --- LAYER 5: HUD OVERLAY --- */}
-                <div className="absolute top-0 left-0 p-6 z-50 w-full flex justify-between items-start pointer-events-none">
-                    <div className="flex flex-col text-left">
-                        <h1 className="text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,1)] flex items-center gap-3">
-                            <span className="text-5xl filter drop-shadow-lg">{currentBiome.icon}</span>
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
-                                {currentBiome.name}
-                            </span>
-                        </h1>
-                        <div className="mt-2 flex items-center gap-3">
-                            <div className="h-4 w-64 bg-gray-800/80 backdrop-blur rounded-full border border-gray-600 overflow-hidden relative">
-                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-600 to-yellow-300 transition-all duration-1000"
-                                    style={{ width: `${(xp / xpToNextLevel) * 100}%` }}>
-                                </div>
-                                {/* Gloss */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent"></div>
+                {/* 5. WEATHER & PARTICLES LAYER (Foreground) */}
+                <div className="absolute inset-0 pointer-events-none z-30 transform-style-3d overflow-hidden rounded-[2.5rem]" style={{ transform: 'translateZ(60px)' }}>
+                    {particles.map(p => (
+                        <div
+                            key={p.id}
+                            className={`absolute rounded-full opacity-60 ${currentBiome.weather === 'snow' ? 'bg-white animate-fall' : 'bg-yellow-200 animate-pulse'}`}
+                            style={{
+                                left: `${p.left}%`,
+                                top: `${p.top}%`,
+                                width: `${p.size}px`,
+                                height: `${p.size}px`,
+                                animationDuration: `${p.speed}s`,
+                                animationDelay: `${p.delay}s`,
+                                boxShadow: currentBiome.weather === 'fireflies' ? '0 0 5px #f1c40f' : 'none'
+                            }}
+                        />
+                    ))}
+                    {/* Vignette Overlay */}
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/40 mix-blend-multiply"></div>
+                </div>
+
+                {/* 6. STATIC HUD LAYER (Over everything) */}
+                <div className="absolute top-0 left-0 w-full p-8 z-40 flex justify-between items-start pointer-events-none" style={{ transform: 'translateZ(80px)' }}>
+                    <div>
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="text-4xl filter drop-shadow-xl">{currentBiome.icon}</span>
+                            <h2 className="text-2xl font-black text-white uppercase tracking-tighter drop-shadow-md">{currentBiome.name}</h2>
+                        </div>
+                        <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10">
+                            <div className="w-32 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-yellow-500 to-amber-300 transition-all duration-1000"
+                                    style={{ width: `${(xp / xpToNextLevel) * 100}%` }}></div>
                             </div>
-                            <span className="text-yellow-400 font-bold font-mono text-lg drop-shadow-md">
-                                {xp}/{xpToNextLevel} XP
-                            </span>
+                            <span className="text-[10px] font-bold text-yellow-400 font-mono">{xp}/{xpToNextLevel}</span>
                         </div>
                     </div>
-
-                    {/* Level Badge */}
-                    <div className="bg-gradient-to-b from-gray-800 to-gray-900 p-4 rounded-2xl border-2 border-yellow-500/50 shadow-2xl flex flex-col items-center">
-                        <span className="text-xs text-gray-400 uppercase tracking-widest">Nivel</span>
-                        <span className="text-5xl font-black text-white leading-none">{level}</span>
+                    <div className="bg-gradient-to-b from-gray-800 to-black p-3 rounded-2xl border border-white/10 shadow-2xl text-center">
+                        <div className="text-[8px] text-gray-400 uppercase tracking-widest mb-0.5">NIVEL</div>
+                        <div className="text-3xl font-black text-white leading-none">{level}</div>
                     </div>
                 </div>
 
             </div>
 
-            {/* --- LAYER 6: BOTTOM REFLECTION (Fake Polish) --- */}
-            <div className="absolute -bottom-8 left-10 right-10 h-8 bg-black/20 blur-xl rounded-[100%]"></div>
-
+            {/* CSS ANIMATIONS */}
             <style>{`
-        @keyframes fall {
-          0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
-          10% { opacity: 1; }
-          100% { transform: translateY(120%) rotate(360deg); opacity: 0; }
-        }
-        @keyframes rise {
-          0% { transform: translateY(120%) scale(1); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateY(-20%) scale(0); opacity: 0; }
-        }
-        @keyframes float {
-          0% { transform: translateX(-10%); opacity: 0; }
-          50% { opacity: 0.5; }
-          100% { transform: translateX(110%); opacity: 0; }
-        }
-        @keyframes float-fast {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-6px); }
-        }
-        .animate-fall { animation: fall linear infinite; }
-        .animate-rise { animation: rise linear infinite; }
-        .animate-float { animation: float linear infinite; }
-        .animate-float-fast { animation: float-fast 3s ease-in-out infinite; }
-        .animate-float-slow { animation: float-slow 5s ease-in-out infinite; }
-        .transform-style-3d { transform-style: preserve-3d; }
-      `}</style>
+                .transform-style-3d { transform-style: preserve-3d; }
+                .animate-float-slow { animation: float 6s ease-in-out infinite; }
+                .animate-float-fast { animation: float 3s ease-in-out infinite; }
+                .animate-bounce-subtle { animation: bounceSubtle 2s infinite; }
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px) translateZ(0); }
+                    50% { transform: translateY(-10px) translateZ(0); }
+                }
+                @keyframes bounceSubtle {
+                    0%, 100% { transform: translateY(0) rotate(45deg); }
+                    50% { transform: translateY(-3px) rotate(45deg); }
+                }
+                @keyframes fall {
+                    0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+                    10% { opacity: 1; }
+                    100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+                }
+                .bg-radial-gradient { background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.8) 100%); }
+            `}</style>
         </div>
     );
 }
