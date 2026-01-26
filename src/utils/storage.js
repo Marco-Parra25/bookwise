@@ -56,9 +56,10 @@ export function addBookRead(bookId, bookData) {
   character.booksReadIds.push(bookId);
   character.booksRead += 1;
 
-  // Calcular XP basado en páginas y dificultad
+  // Calculate XP based on pages and difficulty
   const baseXP = 50;
-  const pagesXP = Math.floor((bookData.pages || 200) / 10); // 1 XP cada 10 páginas
+  const pagesXP = Math.floor((bookData.pages || 200) / 10); // 1 XP every 10 pages
+  const difficultyXP = (bookData.difficulty || 3) * 5; // 5 XP per difficulty level
   const totalXP = baseXP + pagesXP + difficultyXP;
 
   // Award Lumina Coins
