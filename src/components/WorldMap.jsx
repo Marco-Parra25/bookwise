@@ -4,7 +4,7 @@ const BIOMES = [
     {
         name: "Bosque Ancestral",
         start: 1, end: 5,
-        bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300",
+        bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300?auto=format&fit=crop&w=1920&q=80",
         color: "#2ecc71", accent: "#27ae60", icon: "🌲",
         weather: "fireflies",
         ambient: "fairies"
@@ -12,7 +12,7 @@ const BIOMES = [
     {
         name: "Ruinas Olvidadas",
         start: 6, end: 10,
-        bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910",
+        bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910?auto=format&fit=crop&w=1920&q=80",
         color: "#d35400", accent: "#e67e22", icon: "🔥",
         weather: "embers",
         ambient: "dragon"
@@ -20,7 +20,7 @@ const BIOMES = [
     {
         name: "Tundra de Cristal",
         start: 11, end: 15,
-        bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
+        bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1920&q=80",
         color: "#6c5ce7", accent: "#a29bfe", icon: "💎",
         weather: "snow",
         ambient: "aurora"
@@ -28,7 +28,7 @@ const BIOMES = [
     {
         name: "Reino de los Cielos",
         start: 16, end: 99,
-        bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d",
+        bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d?auto=format&fit=crop&w=1920&q=80",
         color: "#0984e3", accent: "#74b9ff", icon: "🏰",
         weather: "clouds",
         ambient: "airships"
@@ -121,25 +121,22 @@ export default function WorldMap({
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
-            {/* --- 3D TILT CONTAINER --- */}
-            <div
-                className="relative w-full h-full rounded-[3rem] transition-transform duration-100 ease-out transform-style-3d shadow-2xl border-[8px] bg-gray-900 border-gray-800"
+            {/* 3D BOARD CONTAINER */}
+            <div className="relative w-full h-full rounded-3xl transition-transform duration-700 transform-style-3d rotate-x-10 shadow-2xl border-[6px] bg-white dark:bg-gray-900 overflow-hidden"
                 style={{
-                    transform: `rotateX(${20 + tilt.x}deg) rotateY(${tilt.y}deg) scale(0.95)`,
-                    boxShadow: `${-tilt.y * 2}px ${tilt.x * 2 + 30}px 60px rgba(0,0,0,0.7)`
-                }}
-            >
-                {/* 1. BACKGROUND PARALLAX LAYER (Deepest) */}
+                    borderColor: currentBiome.color,
+                    transform: 'rotateX(20deg) scale(0.95)',
+                    boxShadow: `0 25px 50px -12px ${currentBiome.color}40`
+                }}>
+
+                {/* --- LAYER 1: 3D BACKGROUND PARALLAX --- */}
                 <div
-                    className="absolute inset-0 rounded-[2.5rem] bg-cover bg-center transform-style-3d overflow-hidden"
+                    className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-110"
                     style={{ backgroundImage: `url(${currentBiome.bg})` }}
                 >
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
-                    {/* Parallax elements could go here */}
-                    <div
-                        className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 opacity-90"
-                        style={{ transform: `translateZ(20px) scale(1.1) translateX(${tilt.y}px)` }}
-                    ></div>
+                    <div className="absolute inset-0 bg-white/10 dark:bg-black/30 backdrop-blur-[2px]"></div>
+                    {/* Vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/90 dark:from-black/90 via-transparent to-white/60 dark:to-black/60"></div>
                 </div>
 
                 {/* 2. AMBIENT CREATURES LAYER */}
