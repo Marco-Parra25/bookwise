@@ -35,6 +35,7 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState("");
   const [activeTab, setActiveTab] = useState("profile"); // 'profile' | 'search'
   const [readingHistory, setReadingHistory] = useState([]);
+  const [user, setUser] = useState(null);
 
   // Cargar datos al iniciar
   useEffect(() => {
