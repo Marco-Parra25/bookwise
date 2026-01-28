@@ -75,20 +75,11 @@ export default function WorldMap({
 
     // Generate Volumetric Nodes
     const nodes = useMemo(() => {
-        // DEBUG: Check history
-        console.log("WM: History Length:", history.length);
-        if (history.length > 0) console.log("WM: First History Item:", history[0]);
-
         const list = [];
         for (let i = startLevelView; i < startLevelView + LEVELS_PER_SCREEN; i++) {
             const relativeIndex = i - startLevelView;
             const isBoss = i % 5 === 0;
             const bookData = history[i - 1]; // Level 1 is index 0
-
-            // DEBUG: Check mapping
-            if (i <= progressionLevel && !bookData && i < history.length + 1) {
-                console.warn(`WM: Missing book data for Level ${i} (Index ${i - 1})`);
-            }
 
             // S-Curve Generation for path
             const xBase = 50;
@@ -286,13 +277,13 @@ export default function WorldMap({
 
                             {/* PERMANENT LABEL (Book Title) */}
                             {node.book && (
-                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-40 opacity-100 transition-all duration-300 transform"
-                                    style={{ transform: 'translateZ(100px) translateX(-50%)' }}>
-                                    <div className="bg-black/60 text-white px-3 py-2 rounded-xl border border-white/10 shadow-xl backdrop-blur-[2px] text-center hover:scale-110 hover:bg-black/80 transition-all cursor-help">
-                                        <div className="text-[7px] text-yellow-500 uppercase font-bold tracking-widest mb-0.5">Nivel {node.level}</div>
-                                        <div className="text-[9px] font-bold leading-tight line-clamp-2 text-gray-200">{node.book}</div>
+                                <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-32 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
+                                    style={{ transform: 'translateZ(120px) translateX(-50%)' }}>
+                                    <div className="glass px-3 py-2 rounded-lg border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.3)] backdrop-blur-md text-center">
+                                        <div className="text-[10px] font-bold leading-tight text-white drop-shadow-md line-clamp-2">{node.book}</div>
                                     </div>
-                                    <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-black/60 mx-auto"></div>
+                                    {/* Small arrow */}
+                                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white/10 mx-auto mt-[-1px]"></div>
                                 </div>
                             )}
                         </div>
