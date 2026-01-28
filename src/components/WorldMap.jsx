@@ -75,11 +75,20 @@ export default function WorldMap({
 
     // Generate Volumetric Nodes
     const nodes = useMemo(() => {
+        // DEBUG: Check history
+        console.log("WM: History Length:", history.length);
+        if (history.length > 0) console.log("WM: First History Item:", history[0]);
+
         const list = [];
         for (let i = startLevelView; i < startLevelView + LEVELS_PER_SCREEN; i++) {
             const relativeIndex = i - startLevelView;
             const isBoss = i % 5 === 0;
-            const bookData = history[i - 1];
+            const bookData = history[i - 1]; // Level 1 is index 0
+
+            // DEBUG: Check mapping
+            if (i <= progressionLevel && !bookData && i < history.length + 1) {
+                console.warn(`WM: Missing book data for Level ${i} (Index ${i - 1})`);
+            }
 
             // S-Curve Generation for path
             const xBase = 50;
