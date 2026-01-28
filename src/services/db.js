@@ -44,7 +44,7 @@ export const db = {
             .from('reading_history')
             .select('*')
             .eq('user_id', userId)
-            .order('read_at', { ascending: false });
+            .order('read_at', { ascending: true });
 
         if (error) throw error;
         return data;
