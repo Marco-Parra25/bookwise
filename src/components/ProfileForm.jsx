@@ -142,8 +142,9 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
 
             <div className="space-y-6 max-w-sm mx-auto">
               <div className="text-left">
-                <label className="rpg-label block mb-2">Tu edad</label>
+                <label htmlFor="age-input" className="rpg-label block mb-2">Tu edad</label>
                 <input
+                  id="age-input"
                   type="number"
                   value={selections.age}
                   onChange={(e) => setSelections(prev => ({ ...prev, age: e.target.value }))}
@@ -160,7 +161,7 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
 
               <div className="text-left space-y-3">
                 <div className="flex justify-between items-end">
-                  <label className="rpg-label block">Ritmo de lectura</label>
+                  <label htmlFor="time-range" className="rpg-label block">Ritmo de lectura</label>
                   <span className="text-[10px] font-black uppercase tracking-widest text-[var(--atm-accent)] animate-pulse">
                     {Number(selections.time) <= 20 ? "☕ Lectura Ligera" :
                       Number(selections.time) <= 45 ? "📚 Hábito Diario" :
@@ -171,6 +172,7 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
 
                 <div className="flex items-center gap-6 bg-white/5 p-4 rounded-2xl border border-white/5 group hover:border-white/10 transition-all">
                   <input
+                    id="time-range"
                     type="range"
                     min="5" max="120" step="5"
                     value={selections.time}
