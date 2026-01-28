@@ -147,8 +147,15 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
                   type="number"
                   value={selections.age}
                   onChange={(e) => setSelections(prev => ({ ...prev, age: e.target.value }))}
-                  className="w-full text-xl font-black bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:hud-border text-white transition-all outline-none"
+                  className={`w-full text-xl font-black bg-white/5 border rounded-xl px-4 py-3 focus:hud-border text-white transition-all outline-none ${(Number(selections.age) < 4 || Number(selections.age) > 110) ? 'border-red-500/50 text-red-100' : 'border-white/10'
+                    }`}
+                  placeholder="Ej: 25"
                 />
+                {(Number(selections.age) < 4 || Number(selections.age) > 110) && (
+                  <p className="text-[10px] text-red-400 font-black uppercase tracking-widest mt-2 animate-pulse">
+                    ⚠️ La edad debe estar entre 4 y 110 años
+                  </p>
+                )}
               </div>
 
               <div className="text-left">
@@ -167,7 +174,11 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
 
               <button
                 onClick={handleSubmit}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-[var(--atm-accent)]/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                disabled={Number(selections.age) < 4 || Number(selections.age) > 110}
+                className={`w-full py-4 rounded-xl text-white text-sm font-black uppercase tracking-widest shadow-lg transition-all ${(Number(selections.age) < 4 || Number(selections.age) > 110)
+                    ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-white/5'
+                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-[var(--atm-accent)]/20 hover:scale-[1.02] active:scale-[0.98]'
+                  }`}
               >
                 🔮 Ver Destino
               </button>
