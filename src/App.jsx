@@ -282,8 +282,9 @@ export default function App() {
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default">{character.name}</h1>
                 {user && (
-                  <div title="Sincronizado con Google" className="bg-green-500/10 text-green-400 border border-green-500/20 rounded-full p-1.5 animate-pulse">
+                  <div title="Sincronizado con Google" className="bg-green-500/10 text-green-400 border border-green-500/20 rounded-full pl-2 pr-3 py-1 animate-pulse flex items-center gap-2">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-3 h-3" alt="G" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest">Conectado con Google</span>
                   </div>
                 )}
               </div>
@@ -447,7 +448,10 @@ export default function App() {
                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--atm-accent)]/10 blur-[60px] group-hover:bg-[var(--atm-accent)]/20 transition-all"></div>
                         <div className="flex items-start justify-between gap-4 mb-4">
                           <div className="flex-1">
-                            <p className="rpg-label text-[10px] text-magic-500 mb-1">Volumen Sugerido</p>
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
+                              <p className="rpg-label text-[10px] text-magic-500">Volumen Sugerido</p>
+                              {b.category && <span className="text-[10px] px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold uppercase tracking-wider">{b.category}</span>}
+                            </div>
                             <h4 className="text-xl font-black text-white leading-tight uppercase tracking-tighter group-hover:text-[var(--atm-accent)] transition-colors">{b.title}</h4>
                             <p className="text-sm text-gray-400 font-medium italic mt-1">por {b.author}</p>
                           </div>
@@ -456,7 +460,12 @@ export default function App() {
                             {isRead && <div className="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg border border-green-500/30 text-[10px] font-black tracking-widest flex items-center gap-1"><span>✓</span> CONSUMIDO</div>}
                           </div>
                         </div>
-                        <div className="text-sm text-gray-300/80 leading-relaxed mb-6 line-clamp-3 group-hover:line-clamp-none transition-all duration-700">"{b.why}"</div>
+                        <div className="text-sm text-gray-300/80 leading-relaxed mb-4 line-clamp-3 group-hover:line-clamp-none transition-all duration-700 italic border-l-2 border-[var(--atm-accent)]/30 pl-3">"{b.why}"</div>
+                        {(b.description || b.summary) && (
+                          <div className="text-xs text-gray-300 mb-6 line-clamp-3 group-hover:line-clamp-none transition-all">
+                            {b.description || b.summary}
+                          </div>
+                        )}
                         <div className="flex flex-wrap gap-2 mb-6">{(b.tags ?? []).slice(0, 4).map((t) => <span key={t} className="text-[9px] px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-gray-400 uppercase font-black tracking-tighter group-hover:border-[var(--atm-accent)]/30 group-hover:text-white transition-all">#{t}</span>)}</div>
                         <div className="flex items-center justify-between pt-6 border-t border-white/5 mt-auto">
                           <div className="flex items-center gap-3">{b.pages && <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{b.pages} PÁGS</div>}{b.difficulty && <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <div key={i} className={`w-1.5 h-1.5 rounded-sm ${i < b.difficulty ? 'bg-amber-500 shadow-[0_0_5px_#f59e0b]' : 'bg-white/10'}`}></div>)}</div>}</div>
