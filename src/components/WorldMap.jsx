@@ -275,15 +275,15 @@ export default function WorldMap({
                                 </div>
                             )}
 
-                            {/* HOVER TOOLTIP (3D Pop-up) */}
+                            {/* PERMANENT LABEL (Book Title) */}
                             {node.book && (
-                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-48 opacity-0 group-hover/node:opacity-100 transition-all duration-300 transform translate-y-4 group-hover/node:translate-y-0"
+                                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-40 opacity-100 transition-all duration-300 transform"
                                     style={{ transform: 'translateZ(100px) translateX(-50%)' }}>
-                                    <div className="bg-black/90 text-white p-3 rounded-xl border border-yellow-500/30 shadow-2xl backdrop-blur-md text-center">
-                                        <div className="text-[9px] text-yellow-500 uppercase font-bold tracking-widest mb-1">Historia Desbloqueada</div>
-                                        <div className="text-xs font-bold leading-tight line-clamp-2">{node.book}</div>
+                                    <div className="bg-black/60 text-white px-3 py-2 rounded-xl border border-white/10 shadow-xl backdrop-blur-[2px] text-center hover:scale-110 hover:bg-black/80 transition-all cursor-help">
+                                        <div className="text-[7px] text-yellow-500 uppercase font-bold tracking-widest mb-0.5">Nivel {node.level}</div>
+                                        <div className="text-[9px] font-bold leading-tight line-clamp-2 text-gray-200">{node.book}</div>
                                     </div>
-                                    <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-black/90 mx-auto"></div>
+                                    <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-black/60 mx-auto"></div>
                                 </div>
                             )}
                         </div>
