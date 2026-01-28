@@ -79,10 +79,11 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Name Input */}
             <div>
-              <label className="rpg-label text-[10px] text-gray-400 mb-3 block">
+              <label htmlFor="character-name" className="rpg-label text-[10px] text-gray-400 mb-3 block">
                 Nombre de tu receptáculo
               </label>
               <input
+                id="character-name"
                 type="text"
                 value={name}
                 onChange={(e) => {
