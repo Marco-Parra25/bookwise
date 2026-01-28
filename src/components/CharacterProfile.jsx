@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import AvatarDisplay from "./AvatarDisplay";
+
 export default function CharacterProfile({ character, onEdit }) {
   if (!character) return null;
 
@@ -10,21 +13,7 @@ export default function CharacterProfile({ character, onEdit }) {
     { id: "level-5", name: "Experto", emoji: "👑", unlocked: character.level >= 5 },
   ];
 
-  // Helper to get accessory emoji/icon based on ID
-  const getAccessoryIcon = (id) => {
-    switch (id) {
-      case "hat_wizard": return "🎩";
-      case "hat_cap": return "🧢";
-      case "hat_crown": return "👑";
-      case "hat_cowboy": return "🤠";
-      case "glasses_sun": return "🕶️";
-      case "glasses_nerd": return "👓";
-      case "glasses_vr": return "🥽";
-      case "mask_fox": return "🦊";
-      case "beard_santa": return "🎅";
-      default: return null;
-    }
-  };
+
 
   return (
     <div className="glass p-8 rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
@@ -33,31 +22,13 @@ export default function CharacterProfile({ character, onEdit }) {
 
       <div className="flex items-start justify-between mb-8 relative z-10">
         <div className="flex items-center gap-6">
-          <div className="relative w-24 h-24">
-            <div className="absolute inset-0 rounded-3xl overflow-hidden border-4 border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)] bg-black/40 flex items-center justify-center text-5xl transform transition-transform group-hover:rotate-3 group-hover:scale-110 z-0">
-              {character.avatar?.startsWith('http') ? (
-                <img src={character.avatar} alt={character.name} className="w-full h-full object-cover" />
-              ) : (
-                <span>{character.avatar}</span>
-              )}
-            </div>
-
-            {/* AVATAR LAYERING (ACCESSORIES) */}
-            {character.equipped?.hat && (
-              <div className="absolute -top-6 -right-2 text-4xl filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none">
-                {getAccessoryIcon(character.equipped.hat)}
-              </div>
-            )}
-            {character.equipped?.glasses && (
-              <div className="absolute top-8 left-1/2 -translate-x-1/2 text-3xl z-20 pointer-events-none opacity-90">
-                {getAccessoryIcon(character.equipped.glasses)}
-              </div>
-            )}
-            {character.equipped?.beard && (
-              <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 text-4xl z-20 pointer-events-none">
-                {getAccessoryIcon(character.equipped.beard)}
-              </div>
-            )}
+          <div className="relative">
+            <AvatarDisplay
+              avatar={character.avatar}
+              equipped={character.equipped}
+              size="md"
+              className="group-hover:scale-110 transition-transform duration-500"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{character.name}</h2>
