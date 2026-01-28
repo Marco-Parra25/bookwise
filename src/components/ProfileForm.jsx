@@ -158,9 +158,18 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
                 )}
               </div>
 
-              <div className="text-left">
-                <label className="rpg-label block mb-2">Minutos de lectura / día</label>
-                <div className="flex items-center gap-4">
+              <div className="text-left space-y-3">
+                <div className="flex justify-between items-end">
+                  <label className="rpg-label block">Ritmo de lectura</label>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--atm-accent)] animate-pulse">
+                    {Number(selections.time) <= 20 ? "☕ Lectura Ligera" :
+                      Number(selections.time) <= 45 ? "📚 Hábito Diario" :
+                        Number(selections.time) <= 85 ? "🔥 Lector Comprometido" :
+                          "🚀 Maratón de Lectura"}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-6 bg-white/5 p-4 rounded-2xl border border-white/5 group hover:border-white/10 transition-all">
                   <input
                     type="range"
                     min="5" max="120" step="5"
@@ -168,16 +177,25 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
                     onChange={(e) => setSelections(prev => ({ ...prev, time: e.target.value }))}
                     className="flex-1 accent-[var(--atm-accent)] h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
                   />
-                  <span className="w-12 font-black text-[var(--atm-accent)] text-xs">{selections.time}m</span>
+                  <div className="flex flex-col items-center justify-center min-w-[60px] h-12 glass rounded-xl border border-white/10 shadow-inner">
+                    <span className="font-black text-[var(--atm-accent)] text-sm leading-none">
+                      {Math.floor(selections.time / 60) > 0 ? `${Math.floor(selections.time / 60)}h ` : ''}
+                      {selections.time % 60 > 0 ? `${selections.time % 60}m` : (selections.time % 60 === 0 && Math.floor(selections.time / 60) > 0 ? '' : '0m')}
+                    </span>
+                    <span className="text-[8px] text-gray-500 font-bold uppercase tracking-tighter mt-1">/ día</span>
+                  </div>
                 </div>
+                <p className="text-[11px] text-gray-400 italic px-1">
+                  {Number(selections.time) < 30 ? "* Recomendaremos libros más cortos y ligeros." : "* Buscaremos obras con mayor profundidad y extensión."}
+                </p>
               </div>
 
               <button
                 onClick={handleSubmit}
                 disabled={Number(selections.age) < 4 || Number(selections.age) > 110}
                 className={`w-full py-4 rounded-xl text-white text-sm font-black uppercase tracking-widest shadow-lg transition-all ${(Number(selections.age) < 4 || Number(selections.age) > 110)
-                    ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-white/5'
-                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-[var(--atm-accent)]/20 hover:scale-[1.02] active:scale-[0.98]'
+                  ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-white/5'
+                  : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-[var(--atm-accent)]/20 hover:scale-[1.02] active:scale-[0.98]'
                   }`}
               >
                 🔮 Ver Destino
