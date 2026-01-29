@@ -264,50 +264,50 @@ export default function App() {
       <ThemeToggle />
 
       <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        <header className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6 glass p-6 rounded-[2rem] border-b-4 border-white/5">
-          <div className="flex items-center gap-6">
+        <header className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6 glass p-4 md:p-6 rounded-2xl md:rounded-[2rem] border-b-4 border-white/5">
+          <div className="flex items-center gap-4 md:gap-6">
             <div className="relative group cursor-pointer" onClick={() => setShowCharacterCreation(true)}>
-              <div className="w-20 h-20 rounded-2xl overflow-hidden glass border-2 border-white/20 shadow-2xl transition-transform group-hover:scale-110">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl overflow-hidden glass border-2 border-white/20 shadow-2xl transition-transform group-hover:scale-110">
                 {character.avatar?.startsWith('http') ? (
                   <img src={character.avatar} alt={character.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20">{character.avatar}</div>
+                  <div className="w-full h-full flex items-center justify-center text-3xl md:text-4xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20">{character.avatar}</div>
                 )}
               </div>
-              <div className="absolute -bottom-2 -right-2 bg-gold-500 text-black font-black px-3 py-1 rounded-lg text-xs shadow-lg ring-2 ring-white/50">
+              <div className="absolute -bottom-2 -right-2 bg-gold-500 text-black font-black px-2 md:px-3 py-1 rounded-lg text-[10px] md:text-xs shadow-lg ring-2 ring-white/50">
                 NVL {character.level}
               </div>
             </div>
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default">{character.name}</h1>
+                <h1 className="text-xl md:text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default line-clamp-1">{character.name}</h1>
                 {user && (
-                  <div title="Sincronizado con Google" className="bg-green-500/10 text-green-400 border border-green-500/20 rounded-full pl-2 pr-3 py-1 animate-pulse flex items-center gap-2">
+                  <div title="Sincronizado con Google" className="hidden sm:flex bg-green-500/10 text-green-400 border border-green-500/20 rounded-full pl-2 pr-3 py-1 animate-pulse items-center gap-2">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-3 h-3" alt="G" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest">Conectado con Google</span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest">Google OK</span>
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-3 mt-1">
-                <div className="w-48 h-2 bg-white/10 rounded-full overflow-hidden border border-white/5">
+              <div className="flex items-center gap-2 md:gap-3 mt-1">
+                <div className="w-32 md:w-48 h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden border border-white/5">
                   <div className="h-full bg-gradient-to-r from-[var(--atm-accent)] to-magic-500 transition-all duration-1000" style={{ width: `${(character.xp / character.xpToNextLevel) * 100}%` }}></div>
                 </div>
-                <span className="rpg-label text-[10px]">{character.xp}/{character.xpToNextLevel} XP</span>
+                <span className="rpg-label text-[8px] md:text-[10px] whitespace-nowrap">{character.xp}/{character.xpToNextLevel} XP</span>
               </div>
             </div>
           </div>
 
-          <nav className="flex bg-black/40 backdrop-blur-md p-1.5 rounded-2xl border border-white/10 shadow-inner">
+          <nav className="flex bg-black/40 backdrop-blur-md p-1 rounded-xl md:rounded-2xl border border-white/10 shadow-inner w-full md:w-auto overflow-x-auto no-scrollbar">
             {['profile', 'search', 'store'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${activeTab === tab
+                className={`flex-1 md:flex-none px-4 md:px-6 py-2 md:py-2.5 rounded-lg md:rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 ${activeTab === tab
                   ? 'bg-gradient-to-r from-[var(--atm-accent)] to-indigo-500 text-black shadow-[0_0_20px_var(--atm-glow)] scale-105'
                   : 'text-gray-400 hover:text-white'
                   }`}
               >
-                {tab === 'profile' ? 'Dashboard' : tab === 'search' ? 'Catálogo' : 'Emporium'}
+                {tab === 'profile' ? 'Dashboard' : tab === 'search' ? 'Cátálogo' : 'Emporium'}
               </button>
             ))}
           </nav>

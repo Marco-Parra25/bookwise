@@ -122,16 +122,16 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
             </div>
 
             {/* --- RIGHT: SHOP INTERFACE (60%) --- */}
-            <div className="w-full lg:w-[60%] p-8 flex flex-col bg-black/20 backdrop-blur-sm">
+            <div className="w-full lg:w-[60%] p-4 md:p-8 flex flex-col bg-black/20 backdrop-blur-sm">
 
                 {/* Header */}
-                <div className="flex justify-between items-end mb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
                     <div>
-                        <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Avatar Studio</h2>
+                        <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter">Avatar Studio</h2>
                         <p className="rpg-label text-cyan-500">Personaliza tu Leyenda</p>
                     </div>
                     {/* Filter Tabs */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 overflow-x-auto no-scrollbar w-full sm:w-auto">
                         {[
                             { id: "all", icon: "🛍️" },
                             { id: "hat", icon: "🎩" },
@@ -143,7 +143,7 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
                                 key={cat.id}
                                 onClick={() => setActiveCategory(cat.id)}
                                 aria-label={`Filtrar por ${cat.id}`}
-                                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${activeCategory === cat.id ? 'bg-cyan-500 text-black scale-110 shadow-cyan-500/50 shadow-lg' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}
+                                className={`flex-none w-10 h-10 rounded-xl flex items-center justify-center transition-all ${activeCategory === cat.id ? 'bg-cyan-500 text-black scale-110 shadow-cyan-500/50 shadow-lg' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}
                             >
                                 <span className="text-lg" aria-hidden="true">{cat.icon}</span>
                             </button>
@@ -152,7 +152,7 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
                 </div>
 
                 {/* Items Grid (Scrollable) */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 overflow-y-auto pr-2 custom-scrollbar flex-1 content-start max-h-[600px]">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 overflow-y-auto pr-2 custom-scrollbar flex-1 content-start min-h-[400px] max-h-[600px]">
                     {filteredItems.map((item) => {
                         const isOwned = inventory?.includes(item.id);
                         const isEquipped = previewValues?.[item.category] === item.id;

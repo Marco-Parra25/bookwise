@@ -33,24 +33,24 @@ export default function BookSearch({ onBookRead }) {
 
     return (
         <div className="space-y-8">
-            <div className="glass p-8 rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
+            <div className="glass p-4 md:p-8 rounded-2xl md:rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
                 <div className="flex items-center gap-3 mb-6 relative z-10">
-                    <span className="text-3xl filter drop-shadow-md">🔍</span>
-                    <h2 className="text-2xl font-black text-white tracking-tight uppercase">Explorar Catálogo</h2>
+                    <span className="text-2xl md:text-3xl filter drop-shadow-md">🔍</span>
+                    <h2 className="text-xl md:text-2xl font-black text-white tracking-tight uppercase">Explorar Catálogo</h2>
                 </div>
 
-                <form onSubmit={handleSearch} className="flex gap-4 relative z-10">
+                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 relative z-10">
                     <input
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Busca tu próximo tomo de sabiduría..."
-                        className="flex-1 px-6 py-4 rounded-2xl bg-black/40 border-2 border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-neon-500 focus:ring-4 focus:ring-neon-500/20 active:scale-[0.99] transition-all"
+                        className="flex-1 px-5 md:px-6 py-3 md:py-4 rounded-xl md:rounded-2xl bg-black/40 border-2 border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-neon-500 focus:ring-4 focus:ring-neon-500/20 active:scale-[0.99] transition-all text-sm md:text-base"
                     />
                     <button
                         type="submit"
                         disabled={loading}
-                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-500 to-indigo-600 text-black font-black uppercase tracking-widest hover:shadow-[0_0_30px_rgba(0,242,255,0.4)] hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+                        className="w-full sm:w-auto px-8 py-3 md:py-4 rounded-xl md:rounded-2xl bg-gradient-to-r from-neon-500 to-indigo-600 text-black font-black uppercase tracking-widest hover:shadow-[0_0_30px_rgba(0,242,255,0.4)] hover:scale-105 active:scale-95 transition-all disabled:opacity-50 text-sm md:text-base"
                     >
                         {loading ? 'Buscando...' : 'Buscar'}
                     </button>

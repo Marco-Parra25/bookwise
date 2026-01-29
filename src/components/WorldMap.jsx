@@ -126,12 +126,12 @@ export default function WorldMap({
     return (
         <div
             ref={containerRef}
-            className="group relative w-full h-[650px] perspective-[1200px] overflow-visible mb-16 select-none cursor-crosshair"
+            className="group relative w-full h-[450px] md:h-[650px] perspective-[1200px] overflow-visible mb-16 select-none cursor-crosshair"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
             {/* 3D BOARD CONTAINER */}
-            <div className="relative w-full h-full rounded-3xl transition-transform duration-700 transform-style-3d rotate-x-10 shadow-2xl border-[6px] bg-white dark:bg-gray-900 overflow-hidden"
+            <div className="relative w-full h-full rounded-2xl md:rounded-3xl transition-transform duration-700 transform-style-3d rotate-x-10 shadow-2xl border-4 md:border-[6px] bg-white dark:bg-gray-900 overflow-hidden"
                 style={{
                     borderColor: currentBiome.color,
                     transform: 'rotateX(20deg) scale(0.95)',
