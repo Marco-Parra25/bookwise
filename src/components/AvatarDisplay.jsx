@@ -33,13 +33,16 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                 )}
             </div>
 
-            {/* AVATAR LAYERING (ACCESSORIES) - Final Precision Fix */}
+            {/* AVATAR LAYERING (ACCESSORIES) - Character-Specific Precision */}
             {equipped?.hat && (
                 <div
-                    className={`absolute left-1/2 filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none`}
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
                     style={{
-                        top: equipped.hat === 'hat_cap' ? '14%' : '8%',
-                        transform: `translateX(${equipped.hat === 'hat_cap' ? '-60%' : '-50%'})`
+                        // Logic adjusted by character type (Astronaut vs Wizard)
+                        top: avatar?.includes('🧙')
+                            ? (equipped.hat === 'hat_cap' ? '28%' : '20%') // Wizard: more lowered
+                            : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronaut: original validated positions
+                        marginLeft: (!avatar?.includes('🧙') && equipped.hat === 'hat_cap') ? '-5px' : '0px'
                     }}
                 >
                     {getAccessoryIcon(equipped.hat)}
