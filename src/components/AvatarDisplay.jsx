@@ -40,7 +40,7 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                     style={{
                         // Logic adjusted by character type (Astronaut vs Wizard)
                         top: avatar?.includes('🧙')
-                            ? (equipped.hat === 'hat_cap' ? '28%' : '20%') // Wizard: more lowered
+                            ? (equipped.hat === 'hat_cap' ? '12%' : '6%') // Wizard: more refined (raised)
                             : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronaut: original validated positions
                         marginLeft: (!avatar?.includes('🧙') && equipped.hat === 'hat_cap') ? '-5px' : '0px'
                     }}
