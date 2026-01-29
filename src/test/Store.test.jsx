@@ -10,6 +10,11 @@ vi.mock('../utils/storage', () => ({
     loadCharacter: vi.fn(),
 }));
 
+// Mock Avatar3D to avoid WebGL errors in jsdom
+vi.mock('../components/Avatar3D', () => ({
+    default: () => <div data-testid="avatar-3d-mock">Avatar3D Mock</div>
+}));
+
 describe('Store Component', () => {
     const mockOnUpdate = vi.fn();
     const mockCharacter = { name: 'TestHero', avatar: '🧙', coins: 1000 };
