@@ -29,7 +29,7 @@ describe('WorldMap Component', () => {
         // We use getAllByText because the current level might appear in the HUD too
         expect(screen.getAllByText('1').length).toBeGreaterThanOrEqual(1);
         expect(screen.getByText('2')).toBeInTheDocument();
-        expect(screen.getByText('3')).toBeInTheDocument();
+        expect(screen.getByText('🦉')).toBeInTheDocument(); // Nivel 3: Búho Sabio
         expect(screen.getByText('4')).toBeInTheDocument();
         expect(screen.getByText('🏰')).toBeInTheDocument(); // Level 5 is a boss
     });
