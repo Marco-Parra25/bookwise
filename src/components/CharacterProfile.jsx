@@ -15,7 +15,7 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
 
   return (
     <div className="glass p-8 rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
-      {/* Decorative Aura Background */}
+      {/* Fondo de Aura Decorativa */}
       <div className="absolute -top-20 -right-20 w-40 h-40 bg-magic-500/10 blur-[60px] rounded-full"></div>
 
       <div className="flex flex-col mb-8 relative z-10">
@@ -57,7 +57,7 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
         </div>
       </div>
 
-      {/* XP Bar HUD Style */}
+      {/* Barra de XP estilo HUD */}
       <div className="mb-8 relative z-10">
         <div className="flex justify-between items-end mb-2">
           <span className="rpg-label text-[10px]">Progreso de Alma</span>
@@ -73,7 +73,7 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
         </div>
       </div>
 
-      {/* Stats - Grid RPG Style */}
+      {/* Estadísticas - Estilo Rejilla RPG */}
       <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
         <div className="glass p-5 rounded-2xl border-white/5 hover:bg-white/5 transition-colors text-center">
           <div className="text-3xl mb-1 filter drop-shadow-md">📘</div>
@@ -89,7 +89,7 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
         </div>
       </div>
 
-      {/* Badges - Trophy Case Style */}
+      {/* Insignias - Estilo Vitrina de Trofeos */}
       <div className="relative z-10">
         <h3 className="rpg-label text-[10px] mb-4">Reliquias de Sabiduría</h3>
         <div className="flex flex-wrap gap-3">
@@ -102,7 +102,7 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
                 }`}
             >
               <span className="text-2xl transform transition-transform group-hover/badge:scale-125 duration-300">{badge.emoji}</span>
-              {/* Tooltip Hidden Logic would go here */}
+              {/* La lógica del Tooltip oculto iría aquí */}
               <div className="mt-2 rpg-label text-[8px] tracking-normal">{badge.name}</div>
             </div>
           ))}

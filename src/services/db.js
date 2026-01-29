@@ -2,7 +2,7 @@ import { supabase } from './supabase';
 
 export const db = {
     /**
-     * Fetch profile for the current user
+     * Obtener el perfil del usuario actual
      */
     async getProfile(userId) {
         if (!supabase) return null;
@@ -12,12 +12,12 @@ export const db = {
             .eq('id', userId)
             .single();
 
-        if (error && error.code !== 'PGRST116') throw error; // PGRST116 is 'not found'
+        if (error && error.code !== 'PGRST116') throw error; // PGRST116 es 'not found' (no encontrado)
         return data;
     },
 
     /**
-     * Create or update a profile
+     * Crear o actualizar un perfil
      */
     async upsertProfile(userId, profileData) {
         if (!supabase) return null;
@@ -36,7 +36,7 @@ export const db = {
     },
 
     /**
-     * Get reading history for the current user
+     * Obtener el historial de lectura del usuario actual
      */
     async getReadingHistory(userId) {
         if (!supabase) return [];
@@ -51,7 +51,7 @@ export const db = {
     },
 
     /**
-     * Add a book to reading history
+     * Añadir un libro al historial de lectura
      */
     async addReadingHistory(userId, book, xpGained = 10) {
         if (!supabase) return null;

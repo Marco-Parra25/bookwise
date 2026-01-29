@@ -4,21 +4,23 @@ Una aplicación web moderna y gamificada para crear perfiles de lectura personal
 
 ## ✨ Características
 
-- 🎮 **Sistema Gamificado**: Crea tu personaje, gana XP, sube de nivel y desbloquea badges
-- 🤖 **Recomendaciones con IA**: Usa Gemini AI para recomendaciones personalizadas
-- 📚 **Catálogo de Bibliometro**: Integración con catálogo de Bibliometro vía Firebase
-- 🏆 **Sistema de Recompensas**: Gana XP leyendo libros y generando recomendaciones
-- 📍 **Ubicaciones de Bibliotecas**: Encuentra dónde conseguir cada libro en Santiago
-- 🌙 **Modo Oscuro**: Interfaz con soporte para tema claro/oscuro
-- 📱 **Responsive**: Diseño adaptado para móviles y tablets
+- 🎮 **Sistema Gamificado**: Crea tu personaje, gana XP, sube de nivel y desbloquea badges.
+- 🤖 **Recomendaciones con IA**: Usa Gemini AI para recomendaciones personalizadas basadas en tu perfil.
+- 🎨 **Avatar Studio Pro**: Sistema avanzado de personalización con alineación 3D para accesorios (Astronauta, Mago, etc.).
+- 📚 **Catálogo de Bibliometro**: Integración con el catálogo de Bibliometro para disponibilidad real.
+- 🧪 **Calidad de Código**: Suite completa de pruebas unitarias para asegurar la estabilidad del núcleo.
+- 🇪🇸 **Documentación en Español**: Comentarios del código íntegramente en español para mejor mantenimiento.
+- 🌙 **Modo Oscuro**: Interfaz premium con soporte para tema claro/oscuro.
+- 📱 **Responsive**: Diseño adaptado para una experiencia perfecta en móviles y tablets.
 
 ## 🏗️ Arquitectura
 
 ### Frontend
-- React 19 + Vite
-- Tailwind CSS v4
-- Desplegado en Vercel
-- Consume API externa configurada en `VITE_API_URL`
+- **React 19 + Vite**: Última versión para máximo rendimiento.
+- **Tailwind CSS v4**: Framework de estilos de última generación.
+- **Vitest**: Motor de pruebas unitarias rápido y fiable.
+- **Framer Motion**: Animaciones fluidas y efectos 3D.
+- **Supabase**: Gestión de perfiles y persistencia de datos.
 
 ## 🚀 Inicio Rápido
 
@@ -30,76 +32,22 @@ Una aplicación web moderna y gamificada para crear perfiles de lectura personal
 ### Instalación
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/bookwise.git
-cd bookwise
-
-# Instalar dependencias
+# Iniciar el proyecto
 npm install
 
 # Configurar variables de entorno
 cp .env.example .env
-# Editar .env y agregar la URL de tu backend
+# Configurar VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY
 ```
 
-### Desarrollo
+### Desarrollo y Pruebas
 
 ```bash
 # Iniciar servidor de desarrollo
 npm run dev
-```
 
-La aplicación estará disponible en `http://localhost:5173`
-
-### Producción
-
-```bash
-# Construir para producción
-npm run build
-
-# Previsualizar build
-npm run preview
-```
-
-## ⚙️ Configuración
-
-### Variables de Entorno
-
-Crea un archivo `.env` en la raíz:
-
-```env
-# URL de la API (backend externo)
-VITE_API_URL=http://localhost:3001
-```
-
-**Para producción en Vercel:**
-- Configura `VITE_API_URL` en las variables de entorno de Vercel
-- Apunta a tu API desplegada
-
-## 🚢 Despliegue en Vercel
-
-### Opción 1: Desde GitHub (Recomendado)
-
-1. **Conecta tu repositorio a Vercel:**
-   - Ve a [Vercel](https://vercel.com)
-   - Importa tu repositorio de GitHub
-   - Vercel detectará automáticamente que es un proyecto Vite
-
-2. **Configura Variables de Entorno:**
-   - En la configuración del proyecto en Vercel
-   - Agrega: `VITE_API_URL` = `https://tu-backend.com`
-
-3. **Despliega:**
-   - Vercel desplegará automáticamente en cada push a `main`
-
-### Opción 2: Desde CLI
-
-```bash
-# Instalar Vercel CLI
-npm i -g vercel
-
-# Desplegar
-vercel
+# Ejecutar pruebas unitarias
+npm test
 ```
 
 ## 📁 Estructura del Proyecto
@@ -107,58 +55,26 @@ vercel
 ```
 bookwise/
 ├── src/
-│   ├── components/          # Componentes React
-│   │   ├── WelcomeScreen.jsx
-│   │   ├── CharacterCreation.jsx
-│   │   ├── CharacterProfile.jsx
-│   │   ├── ProfileForm.jsx
-│   │   └── ThemeToggle.jsx
-│   ├── hooks/               # Custom hooks
-│   │   └── useTheme.js
-│   ├── services/            # Servicios API
-│   │   └── api.js
-│   ├── utils/               # Utilidades
-│   │   └── storage.js
-│   ├── App.jsx              # Componente principal
-│   ├── main.jsx             # Punto de entrada
-│   └── index.css            # Estilos globales
-├── public/                  # Archivos estáticos
-├── .env.example            # Ejemplo de variables de entorno
-├── vercel.json             # Configuración de Vercel
-├── vite.config.js          # Configuración de Vite
-└── package.json            # Dependencias
+│   ├── components/       # Componentes React (Avatar, Store, Map, etc.)
+│   ├── hooks/            # Hooks personalizados (useTheme, etc.)
+│   ├── services/         # Servicios de API y Base de Datos (Supabase)
+│   ├── test/             # ✅ Suite de Pruebas Unitarias
+│   ├── utils/            # Utilidades de almacenamiento y lógica
+│   ├── App.jsx           # Componente raíz
+│   └── main.jsx          # Punto de entrada (Configuración de Tema)
+├── public/               # Activos estáticos
+└── package.json          # Dependencias y Scripts
 ```
 
-## 🎮 Funcionalidades
+## 🎮 Funcionalidades Premium
 
-### Sistema Gamificado
+### Avatar Studio
+Personalización milimétrica para diferentes tipos de avatares. Incluye lógica de posicionamiento específica para que los accesorios (máscaras, sombreros, lentes) se ajusten perfectamente a la fisionomía de cada emoji.
 
-- **Creación de Personaje**: Elige nombre y avatar
-- **Sistema de XP**: Gana experiencia leyendo libros
-- **Niveles**: Sube de nivel automáticamente
-- **Badges**: Desbloquea logros especiales
-- **Recompensas**: XP por generar recomendaciones
-
-### Recomendaciones
-
-- **Perfil Personalizado**: Basado en edad, gustos y objetivos
-- **IA Inteligente**: Recomendaciones con Gemini AI
-- **Explicaciones**: Cada recomendación incluye por qué es perfecta para ti
-- **Bibliotecas**: Muestra dónde conseguir cada libro
-
-## 🔧 Scripts Disponibles
-
-- `npm run dev` - Inicia servidor de desarrollo
-- `npm run build` - Construye para producción
-- `npm run preview` - Previsualiza build de producción
-- `npm run lint` - Ejecuta el linter
-
-
-## 🛠️ Tecnologías
-
-- **React 19** - Biblioteca de UI
-- **Vite** - Build tool y dev server
-- **Tailwind CSS v4** - Framework de estilos
+### Sistema de Progresión
+- **XP Quántica**: Ganancia dinámica basada en páginas y dificultad.
+- **Mapa Evolutivo**: Un mapamundi 3D interactivo que muestra tu avance.
+- **Emporium**: Tienda de accesorios con previsualización en tiempo real.
 
 ## 📝 Licencia
 

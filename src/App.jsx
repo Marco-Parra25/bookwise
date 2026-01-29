@@ -33,7 +33,7 @@ export default function App() {
   const [recs, setRecs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [activeTab, setActiveTab] = useState("profile"); // 'profile' | 'search'
+  const [activeTab, setActiveTab] = useState("profile"); // 'profile' (perfil) | 'search' (búsqueda)
   const [readingHistory, setReadingHistory] = useState([]);
   const [user, setUser] = useState(null);
 
@@ -43,6 +43,11 @@ export default function App() {
     const savedProfile = loadProfile();
 
     if (savedCharacter) {
+      // Inyección de monedas para pruebas de Emporium local
+      if ((savedCharacter.coins || 0) < 30000) {
+        savedCharacter.coins = 30000;
+        saveCharacter(savedCharacter);
+      }
       setCharacter(savedCharacter);
       if (savedProfile) {
         setProfile(savedProfile);
@@ -90,7 +95,7 @@ export default function App() {
         if (dbProfile.preferences) {
           handleProfile(dbProfile.preferences, false);
         }
-        // Load reading history from Supabase
+        // Cargar historial de lectura desde Supabase
         const history = await db.getReadingHistory(supabaseUser.id);
         if (history) setReadingHistory(history);
 
@@ -192,7 +197,7 @@ export default function App() {
             xp_to_next_level: updatedCharacter.xpToNextLevel,
             books_read_count: updatedCharacter.booksRead
           });
-          // Update local history state
+          // Actualizar estado del historial local
           const newHistory = await db.getReadingHistory(user.id);
           if (newHistory) setReadingHistory(newHistory);
         } catch (err) {
@@ -337,7 +342,7 @@ export default function App() {
                 transition={{ duration: 0.4 }}
                 className="space-y-8"
               >
-                {/* Upper Section: Stats & Map */}
+                {/* Sección Superior: Estadísticas y Mapa */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                   <div className="lg:col-span-8 space-y-8">
                     <MotionCard>
@@ -384,7 +389,7 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Profile Creation Centered & Symmetric */}
+                {/* Creación de Perfil Centrada y Simétrica */}
                 {!profile && (
                   <div className="max-w-4xl mx-auto pt-8">
                     <motion.div

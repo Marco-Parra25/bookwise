@@ -22,7 +22,7 @@ describe('CharacterCreation Component', () => {
         render(<CharacterCreation onComplete={mockOnComplete} />);
         const input = screen.getByLabelText(/Nombre de tu receptáculo/i);
         fireEvent.change(input, { target: { value: 'A' } });
-        // Click the button to trigger validation
+        // Hacer clic en el botón para activar la validación
         fireEvent.click(screen.getByText(/MANIFESTAR AVATAR/i));
         expect(screen.getByText(/El nombre debe tener al menos 2 caracteres/i)).toBeInTheDocument();
     });
@@ -31,7 +31,7 @@ describe('CharacterCreation Component', () => {
         render(<CharacterCreation onComplete={mockOnComplete} />);
         const dragonBtn = screen.getByText(/Dragón/i).closest('button');
         fireEvent.click(dragonBtn);
-        // Checking for visual feedback (border-neon-500 class)
+        // Verificando retroalimentación visual (clase border-neon-500)
         expect(dragonBtn).toHaveClass('border-neon-500');
     });
 

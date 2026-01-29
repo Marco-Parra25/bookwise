@@ -63,7 +63,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden animate-aurora">
-      {/* Background Overlay */}
+      {/* Capa de fondo (Overlay) */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-0"></div>
 
       <ThemeToggle />
@@ -77,7 +77,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Name Input */}
+            {/* Entrada de Nombre */}
             <div>
               <label htmlFor="character-name" className="rpg-label text-[10px] text-gray-400 mb-3 block">
                 Nombre de tu receptáculo
@@ -102,7 +102,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
               )}
             </div>
 
-            {/* Avatar Selection */}
+            {/* Selección de Avatar */}
             <div>
               <label className="rpg-label text-[10px] text-gray-400 mb-4 block">
                 Sintonía Espiritual (Avatar)
@@ -125,7 +125,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
               </div>
             </div>
 
-            {/* Preview HUD */}
+            {/* HUD de Vista Previa */}
             {name.trim() && (
               <div className="rounded-3xl glass p-6 border border-white/10 relative overflow-hidden group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-neon-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -150,7 +150,7 @@ export default function CharacterCreation({ onComplete, initialCharacter, onCanc
               </div>
             )}
 
-            {/* Submit */}
+            {/* Enviar */}
             <div className="flex gap-4">
               {initialCharacter && onCancel && (
                 <button

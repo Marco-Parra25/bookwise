@@ -26,15 +26,15 @@ describe('CharacterProfile Component', () => {
     it('displays unlocked badges', () => {
         render(<CharacterProfile character={mockCharacter} />);
 
-        // With 12 books, "Primer Libro" (1), "Lector Novato" (5), and "Lector Avanzado" (10) should be unlocked.
-        // Level 3 means "Experto" (Lvl 5) is locked.
+        // Con 12 libros, "Primer Libro" (1), "Lector Novato" (5), y "Lector Avanzado" (10) deberían estar desbloqueados.
+        // El Nivel 3 significa que "Experto" (Lvl 5) está bloqueado.
 
         expect(screen.getByText('Primer Libro')).toBeInTheDocument();
         expect(screen.getByText('Lector Novato')).toBeInTheDocument();
         expect(screen.getByText('Lector Avanzado')).toBeInTheDocument();
 
-        // Count unlocked badges (those without grease-scale/opacity class)
-        // Hard to test CSS classes precisely in JSDOM, but we can verify text exists.
+        // Contar insignias desbloqueadas (aquellas sin clase de escala de grises/opacidad)
+        // Es difícil probar clases CSS con precisión en JSDOM, pero podemos verificar que el texto existe.
     });
 
     it('calls onEdit when Ajustes button is clicked', () => {

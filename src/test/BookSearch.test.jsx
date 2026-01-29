@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import BookSearch from '../components/BookSearch';
 import * as api from '../services/api';
 
-// Mock the API service
+// Mock del servicio API
 vi.mock('../services/api', () => ({
     searchBooks: vi.fn(),
 }));

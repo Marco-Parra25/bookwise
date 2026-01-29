@@ -1,6 +1,6 @@
 
 export default function AvatarDisplay({ avatar, equipped = {}, size = "md", className = "" }) {
-    // Helper to get accessory emoji/icon based on ID (Shared logic)
+    // Auxiliar para obtener el emoji/icono del accesorio basado en el ID (Lógica compartida)
     const getAccessoryIcon = (id) => {
         switch (id) {
             case "hat_wizard": return "🎩";
@@ -19,7 +19,7 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
     const sizeClasses = {
         sm: "w-12 h-12 text-2xl",
         md: "w-24 h-24 text-5xl",
-        lg: "w-64 h-64 text-9xl", // Store size
+        lg: "w-64 h-64 text-9xl", // Tamaño de la tienda
         xl: "w-96 h-96 text-[10rem]"
     };
 
@@ -33,15 +33,15 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                 )}
             </div>
 
-            {/* AVATAR LAYERING (ACCESSORIES) - Character-Specific Precision */}
+            {/* CAPAS DEL AVATAR (ACCESORIOS) - Precisión específica por personaje */}
             {equipped?.hat && (
                 <div
                     className="absolute left-1/2 -translate-x-1/2 text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
                     style={{
-                        // Logic adjusted by character type (Astronaut vs Wizard)
+                        // Lógica ajustada por tipo de personaje (Astronauta vs Mago)
                         top: (avatar?.includes('🧙') || avatar?.includes('wizard'))
-                            ? (equipped.hat === 'hat_cap' ? '8%' : '2%') // Wizard: definitive height (highest)
-                            : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronaut: original validated positions
+                            ? (equipped.hat === 'hat_cap' ? '8%' : '2%') // Mago: altura definitiva (más alta)
+                            : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronauta: posiciones originales validadas
                         marginLeft: ((!avatar?.includes('🧙') && !avatar?.includes('wizard')) && equipped.hat === 'hat_cap') ? '-5px' : '0px'
                     }}
                 >
