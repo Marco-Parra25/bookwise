@@ -108,9 +108,9 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
                 {/* Character Name */}
                 <div className="mt-12 text-center relative z-10">
                     <h2 className="text-4xl font-black text-white tracking-widest uppercase mb-1">{character?.name}</h2>
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
-                        <span className="text-yellow-400">🪙</span>
-                        <span className="text-yellow-400 font-bold font-mono text-lg">{currentCoins}</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10" aria-label={`Monedas actuales: ${currentCoins}`}>
+                        <span className="text-yellow-400" aria-hidden="true">🪙</span>
+                        <span className="text-yellow-400 font-bold font-mono text-lg" id="current-coins-display">{currentCoins}</span>
                     </div>
                 </div>
 
@@ -142,9 +142,10 @@ export default function Store({ onUpdateProfile, currentCoins, inventory, equipp
                             <button
                                 key={cat.id}
                                 onClick={() => setActiveCategory(cat.id)}
+                                aria-label={`Filtrar por ${cat.id}`}
                                 className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${activeCategory === cat.id ? 'bg-cyan-500 text-black scale-110 shadow-cyan-500/50 shadow-lg' : 'bg-white/5 text-gray-500 hover:bg-white/10'}`}
                             >
-                                <span className="text-lg">{cat.icon}</span>
+                                <span className="text-lg" aria-hidden="true">{cat.icon}</span>
                             </button>
                         ))}
                     </div>
