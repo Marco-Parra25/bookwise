@@ -282,9 +282,9 @@ export default function App() {
               <div className="flex items-center gap-3">
                 <h1 className="text-xl md:text-3xl font-black tracking-tighter magic-text uppercase glitch-hover cursor-default line-clamp-1">{character.name}</h1>
                 {user && (
-                  <div title="Sincronizado con Google" className="hidden sm:flex bg-green-500/10 text-green-400 border border-green-500/20 rounded-full pl-2 pr-3 py-1 animate-pulse items-center gap-2">
+                  <div title="Sincronizado con Google" className="flex bg-green-500/10 text-green-400 border border-green-500/20 rounded-full pl-2 pr-3 py-1 animate-pulse items-center gap-2">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-3 h-3" alt="G" />
-                    <span className="text-[9px] font-bold uppercase tracking-widest">Google OK</span>
+                    <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest">Conectado</span>
                   </div>
                 )}
               </div>
@@ -378,7 +378,7 @@ export default function App() {
                       <CharacterProfile
                         character={character}
                         onEdit={() => setShowCharacterCreation(true)}
-                        isDashboardView={true}
+                        onLogout={handleLogout}
                       />
                     </MotionCard>
                   </div>
@@ -425,7 +425,6 @@ export default function App() {
               <div className="flex flex-wrap justify-center gap-3">
                 <button onClick={() => setProfile(null)} className="px-5 py-2 rounded-xl glass border border-white/10 text-xs font-bold hover:hud-border transition-all uppercase tracking-widest text-gray-400 hover:text-white">⚙️ Gustos</button>
                 {recs.length > 0 && <button onClick={() => handleProfile(profile, false)} className="px-5 py-2 rounded-xl glass border border-white/10 text-xs font-bold hover:hud-border transition-all uppercase tracking-widest text-gray-400 hover:text-white">🔄 Act.</button>}
-                <button onClick={handleLogout} className="px-5 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all uppercase tracking-widest">🚪 Salir</button>
               </div>
             </div>
 

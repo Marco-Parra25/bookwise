@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import AvatarDisplay from "./AvatarDisplay";
 
-export default function CharacterProfile({ character, onEdit }) {
+export default function CharacterProfile({ character, onEdit, onLogout }) {
   if (!character) return null;
 
   const xpPercentage = (character.xp / character.xpToNextLevel) * 100;
@@ -13,14 +13,31 @@ export default function CharacterProfile({ character, onEdit }) {
     { id: "level-5", name: "Experto", emoji: "👑", unlocked: character.level >= 5 },
   ];
 
-
-
   return (
     <div className="glass p-8 rounded-[2.5rem] relative overflow-hidden group hover:neon-border transition-all duration-500 shadow-2xl">
       {/* Decorative Aura Background */}
       <div className="absolute -top-20 -right-20 w-40 h-40 bg-magic-500/10 blur-[60px] rounded-full"></div>
 
-      <div className="flex items-start justify-between mb-8 relative z-10">
+      <div className="flex flex-col mb-8 relative z-10">
+        <div className="flex gap-2 mb-4">
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 hover:scale-105 transition-all"
+            >
+              Salir
+            </button>
+          )}
+          {onEdit && (
+            <button
+              onClick={onEdit}
+              className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg glass border-white/10 hover:bg-white/10 hover:scale-105 transition-all text-white"
+            >
+              Ajustes
+            </button>
+          )}
+        </div>
+
         <div className="flex items-center gap-6">
           <div className="relative">
             <AvatarDisplay
@@ -38,14 +55,6 @@ export default function CharacterProfile({ character, onEdit }) {
             </div>
           </div>
         </div>
-        {onEdit && (
-          <button
-            onClick={onEdit}
-            className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl glass border-white/10 hover:bg-white/10 hover:scale-105 transition-all text-white"
-          >
-            Ajustes
-          </button>
-        )}
       </div>
 
       {/* XP Bar HUD Style */}
