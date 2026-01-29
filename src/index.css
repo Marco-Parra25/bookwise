@@ -216,3 +216,25 @@ body {
   --atm-accent: #c026d3;
   --atm-glow: rgba(192, 38, 211, 0.3);
 }
+
+/* Deep Dark Mode Overrides */
+.dark {
+  --bg-deep: #020205;
+  --bg-card: rgba(5, 5, 10, 0.85);
+  --border-glass: rgba(255, 255, 255, 0.05);
+  --text-secondary: #808080;
+  
+  /* Overriding atmosphere variables for a more intense look */
+  --atm-start: #010103;
+  --atm-end: #0a0a15;
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.dark .glass-heavy {
+  background: rgba(0, 0, 0, 0.95);
+}
