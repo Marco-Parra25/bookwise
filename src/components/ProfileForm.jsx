@@ -60,19 +60,19 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
   };
 
   const handleSubmit = () => {
-    // Collect tags from all selections
+    // Recolectar etiquetas de todas las selecciones
     const movieTags = STEPS[0].options.find(o => o.id === selections.movieGenre)?.tags || [];
     const hobbyTags = STEPS[1].options.find(o => o.id === selections.hobby)?.tags || [];
     const moodTags = STEPS[2].options.find(o => o.id === selections.mood)?.tags || [];
 
-    // Merge and deduplicate
+    // Combinar y eliminar duplicados
     const finalTags = Array.from(new Set([...movieTags, ...hobbyTags, ...moodTags]));
 
     const profile = {
       age: Number(selections.age),
       minutesPerDay: Number(selections.time),
       goal: "entretener",
-      prefersShort: selections.time < 30, // Heuristic
+      prefersShort: selections.time < 30, // Heurística
       difficultyMax: selections.hobby === "historia" || selections.hobby === "personas" ? 4 : 3,
       tags: finalTags
     };
@@ -86,7 +86,7 @@ export default function ProfileForm({ onSubmitProfile, initialProfile }) {
     <div className="w-full mx-auto flex flex-col justify-center">
       <div className="rounded-[2rem] overflow-hidden transition-all duration-500">
 
-        {/* Progress Bar */}
+        {/* Barra de Progreso */}
         <div className="h-1.5 bg-white/5 w-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-[var(--atm-accent)] to-magic-500 transition-all duration-500 shadow-[0_0_10px_var(--atm-glow)]"

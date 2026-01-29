@@ -114,6 +114,22 @@ body {
   animation: aurora 15s ease infinite;
 }
 
+@keyframes bounce-subtle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 3s ease-in-out infinite;
+}
+
 .animate-float-slow {
   animation: float-y 6s ease-in-out infinite;
 }
@@ -153,6 +169,7 @@ body {
 .magic-text {
   background: linear-gradient(to right, var(--accent-neon), var(--accent-magic));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

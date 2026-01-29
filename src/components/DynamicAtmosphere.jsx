@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 /**
- * DynamicAtmosphere handles the global environmental aesthetic based on local time.
- * Vesper (Dawn): 5am - 8am
- * Zenith (Day): 8am - 6pm
- * Twilight (Sunset): 6pm - 9pm
- * Nadir (Night): 9pm - 5am
+ * DynamicAtmosphere maneja la estética ambiental global basada en la hora local.
+ * Vesper (Amanecer): 5am - 8am
+ * Zenith (Día): 8am - 6pm
+ * Twilight (Atardecer): 6pm - 9pm
+ * Nadir (Noche): 9pm - 5am
  */
 export default function DynamicAtmosphere() {
     const [atmClass, setAtmClass] = useState('atm-nadir');
@@ -26,12 +26,12 @@ export default function DynamicAtmosphere() {
         };
 
         updateAtmosphere();
-        const interval = setInterval(updateAtmosphere, 60000); // Check every minute
+        const interval = setInterval(updateAtmosphere, 60000); // Verificar cada minuto
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
-        // Apply atmosphere class to body for global variables
+        // Aplicar clase de atmósfera al body para variables globales
         const body = document.body;
         body.classList.remove('atm-vesper', 'atm-zenith', 'atm-twilight', 'atm-nadir');
         body.classList.add(atmClass);

@@ -7,7 +7,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 let supabase = null;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase credentials missing! Check your .env.local file or Vercel Settings.');
+  console.warn('⚠️ ¡Faltan las credenciales de Supabase! Revisa tu archivo .env.local o la configuración en Vercel.');
 } else {
   supabase = createClient(supabaseUrl, supabaseAnonKey);
 }

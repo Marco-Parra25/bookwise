@@ -1,6 +1,6 @@
 
 export default function AvatarDisplay({ avatar, equipped = {}, size = "md", className = "" }) {
-    // Helper to get accessory emoji/icon based on ID (Shared logic)
+    // Auxiliar para obtener el emoji/icono del accesorio basado en el ID (Lógica compartida)
     const getAccessoryIcon = (id) => {
         switch (id) {
             case "hat_wizard": return "🎩";
@@ -19,7 +19,7 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
     const sizeClasses = {
         sm: "w-12 h-12 text-2xl",
         md: "w-24 h-24 text-5xl",
-        lg: "w-64 h-64 text-9xl", // Store size
+        lg: "w-64 h-64 text-9xl", // Tamaño de la tienda
         xl: "w-96 h-96 text-[10rem]"
     };
 
@@ -33,19 +33,34 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                 )}
             </div>
 
-            {/* AVATAR LAYERING (ACCESSORIES) */}
+            {/* CAPAS DEL AVATAR (ACCESORIOS) - Precisión específica por personaje */}
             {equipped?.hat && (
-                <div className="absolute -top-[15%] -right-[5%] text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none">
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
+                    style={{
+                        // Lógica ajustada por tipo de personaje (Astronauta vs Mago)
+                        top: (avatar?.includes('🧙') || avatar?.includes('wizard'))
+                            ? (equipped.hat === 'hat_cap' ? '8%' : '2%') // Mago: altura definitiva (más alta)
+                            : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronauta: posiciones originales validadas
+                        marginLeft: ((!avatar?.includes('🧙') && !avatar?.includes('wizard')) && equipped.hat === 'hat_cap') ? '-5px' : '0px'
+                    }}
+                >
                     {getAccessoryIcon(equipped.hat)}
                 </div>
             )}
             {equipped?.glasses && (
-                <div className="absolute top-[35%] left-1/2 -translate-x-1/2 text-[0.5em] z-20 pointer-events-none opacity-90">
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.5em] z-30 pointer-events-none opacity-90"
+                    style={{ top: equipped.glasses === 'glasses_vr' ? '26%' : '32%' }}
+                >
                     {getAccessoryIcon(equipped.glasses)}
                 </div>
             )}
             {equipped?.beard && (
-                <div className="absolute bottom-[0%] left-1/2 -translate-x-1/2 text-[0.6em] z-20 pointer-events-none">
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.6em] z-20 pointer-events-none drop-shadow-md"
+                    style={{ top: (equipped.beard === 'mask_fox' || equipped.beard === 'beard_santa' || equipped.beard === 'hat_cowboy') ? '28%' : '52%' }}
+                >
                     {getAccessoryIcon(equipped.beard)}
                 </div>
             )}

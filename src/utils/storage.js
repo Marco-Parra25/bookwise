@@ -6,7 +6,7 @@ export function saveCharacter(character) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(character));
     return true;
   } catch (error) {
-    console.error("Error saving character:", error);
+    console.error("Error al guardar personaje:", error);
     return false;
   }
 }
@@ -16,7 +16,7 @@ export function loadCharacter() {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : null;
   } catch (error) {
-    console.error("Error loading character:", error);
+    console.error("Error al cargar personaje:", error);
     return null;
   }
 }
@@ -26,7 +26,7 @@ export function saveProfile(profile) {
     localStorage.setItem(STORAGE_PROFILE_KEY, JSON.stringify(profile));
     return true;
   } catch (error) {
-    console.error("Error saving profile:", error);
+    console.error("Error al guardar perfil:", error);
     return false;
   }
 }
@@ -36,7 +36,7 @@ export function loadProfile() {
     const data = localStorage.getItem(STORAGE_PROFILE_KEY);
     return data ? JSON.parse(data) : null;
   } catch (error) {
-    console.error("Error loading profile:", error);
+    console.error("Error al cargar perfil:", error);
     return null;
   }
 }
@@ -56,13 +56,13 @@ export function addBookRead(bookId, bookData) {
   character.booksReadIds.push(bookId);
   character.booksRead += 1;
 
-  // Calculate XP based on pages and difficulty
+  // Calcular XP basado en páginas y dificultad
   const baseXP = 50;
-  const pagesXP = Math.floor((bookData.pages || 200) / 10); // 1 XP every 10 pages
-  const difficultyXP = (bookData.difficulty || 3) * 5; // 5 XP per difficulty level
+  const pagesXP = Math.floor((bookData.pages || 200) / 10); // 1 XP cada 10 páginas
+  const difficultyXP = (bookData.difficulty || 3) * 5; // 5 XP por nivel de dificultad
   const totalXP = baseXP + pagesXP + difficultyXP;
 
-  // Award Lumina Coins
+  // Otorgar Monedas Lumina
   const baseCoins = 50;
   const difficultyBonus = (bookData.difficulty || 1) * 10;
   const totalCoins = baseCoins + difficultyBonus;
@@ -70,7 +70,7 @@ export function addBookRead(bookId, bookData) {
   if (character.coins === undefined) character.coins = 0;
   character.coins += totalCoins;
 
-  // Initialize Inventory/Equipped if new
+  // Inicializar Inventario/Equipado si son nuevos
   if (!character.inventory) character.inventory = [];
   if (!character.equipped) character.equipped = {};
 
@@ -135,13 +135,13 @@ export function addXPForRecommendations(xpAmount) {
 
 export function purchaseItem(item) {
   const character = loadCharacter();
-  if (!character) return { success: false, message: "No character found" };
+  if (!character) return { success: false, message: "No se encontró el personaje" };
 
   if ((character.coins || 0) < item.price) {
     return { success: false, message: "No tienes suficiente Lumina" };
   }
 
-  // Handle Inventory Check for Non-Consumables
+  // Manejar verificación de inventario para No-Consumibles
   if (item.type !== 'consumable') {
     if (!character.inventory) character.inventory = [];
     if (character.inventory.includes(item.id)) {
@@ -150,18 +150,18 @@ export function purchaseItem(item) {
     character.inventory.push(item.id);
   }
 
-  // Deduct Cost
+  // Deducir Costo
   character.coins -= item.price;
 
-  // Handle Consumable Effects
+  // Manejar efectos de consumibles
   if (item.type === 'consumable') {
     if (item.effect === 'level_up') {
       character.level += 1;
-      character.xp = 0; // Reset XP for new level
+      character.xp = 0; // Restablecer XP para el nuevo nivel
       character.xpToNextLevel = Math.floor(character.xpToNextLevel * 1.5);
     } else if (item.effect === 'xp_boost') {
       character.xp += (item.value || 500);
-      // Check level up from boost
+      // Verificar subida de nivel por potenciador
       while (character.xp >= character.xpToNextLevel) {
         character.xp -= character.xpToNextLevel;
         character.level += 1;
@@ -185,11 +185,11 @@ export function equipItem(category, itemId) {
 
   if (!character.equipped) character.equipped = {};
 
-  // If itemId is null, unequip
+  // Si itemId es nulo, desequipar
   if (itemId === null) {
     delete character.equipped[category];
   } else {
-    // Verify ownership
+    // Verificar propiedad
     if (!character.inventory?.includes(itemId)) return false;
     character.equipped[category] = itemId;
   }

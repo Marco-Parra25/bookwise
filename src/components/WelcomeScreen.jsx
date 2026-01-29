@@ -6,9 +6,9 @@ export default function WelcomeScreen({ onStart }) {
   const [step, setStep] = useState(0);
   const [demoLevel, setDemoLevel] = useState(1);
 
-  // Cycle demo level for the "Evolución" slide
+  // Ciclo de nivel de demostración para la diapositiva de "Evolución"
   useEffect(() => {
-    if (step === 2) { // Index of "ARSENAL DE LEYENDA"
+    if (step === 2) { // Índice de "ARSENAL DE LEYENDA"
       const interval = setInterval(() => {
         setDemoLevel((prev) => (prev === 1 ? 25 : prev === 25 ? 99 : 1));
       }, 2000);
@@ -32,7 +32,7 @@ export default function WelcomeScreen({ onStart }) {
             <div className="relative p-6 rounded-full glass neon-border animate-float-slow z-10">
               <span className="text-7xl drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">📖</span>
             </div>
-            {/* Particles */}
+            {/* Partículas */}
             <div className="absolute -top-4 -right-4 text-2xl animate-bounce delay-700">✨</div>
             <div className="absolute bottom-0 -left-6 text-xl animate-bounce delay-100">✨</div>
           </div>
@@ -78,7 +78,7 @@ export default function WelcomeScreen({ onStart }) {
         <div className="w-full text-center">
           <div className="relative h-64 w-full flex items-center justify-center">
 
-            {/* Evolution Stage Indicator */}
+            {/* Indicador de Etapa de Evolución */}
             <div className="absolute top-0 left-0 right-0 flex justify-center gap-8 z-0 opacity-30">
               <div className={`transition-all duration-500 ${demoLevel === 1 ? 'scale-125 opacity-100 text-white' : 'scale-90'}`}>NOVATO</div>
               <div className={`transition-all duration-500 ${demoLevel === 25 ? 'scale-125 opacity-100 text-cyan-400' : 'scale-90'}`}>VETERANO</div>
@@ -101,7 +101,7 @@ export default function WelcomeScreen({ onStart }) {
                       'w-64 h-64 bg-yellow-500/40 animate-pulse'}`}
                 />
 
-                {/* Avatar Container */}
+                {/* Contenedor del Avatar */}
                 <div className={`relative w-40 h-40 rounded-3xl glass flex items-center justify-center text-8xl border-4 transition-all duration-500 shadow-2xl
                   ${demoLevel === 1 ? 'border-gray-600' :
                     demoLevel === 25 ? 'border-cyan-400 shadow-[0_0_30px_rgba(6,182,212,0.4)]' :
@@ -111,7 +111,7 @@ export default function WelcomeScreen({ onStart }) {
                   {demoLevel === 25 && "🧙‍♂️"}
                   {demoLevel === 99 && "🤴"}
 
-                  {/* Accessories */}
+                  {/* Accesorios */}
                   {demoLevel >= 25 && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -129,7 +129,7 @@ export default function WelcomeScreen({ onStart }) {
                   )}
                 </div>
 
-                {/* Level Badge */}
+                {/* Insignia de Nivel */}
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-black px-4 py-1 rounded-full border border-white/20 text-xs font-black tracking-widest uppercase">
                   Nivel {demoLevel}
                 </div>
@@ -217,10 +217,10 @@ export default function WelcomeScreen({ onStart }) {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-6 overflow-hidden animate-aurora selection:bg-cyan-500/30">
-      {/* Background Overlay */}
+      {/* Capa de fondo (Overlay) */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-0"></div>
 
-      {/* Cinematic Bars */}
+      {/* Barras Cinemáticas */}
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/80 to-transparent pointer-events-none z-10"></div>
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none z-10"></div>
 
@@ -234,16 +234,16 @@ export default function WelcomeScreen({ onStart }) {
           transition={{ duration: 0.5, ease: "backOut" }}
           className="glass-heavy rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-12 border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden"
         >
-          {/* Decorative Glow */}
+          {/* Brillo Decorativo */}
           <div className="absolute -top-32 -right-32 w-64 h-64 bg-cyan-500/20 rounded-full blur-[80px]"></div>
           <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px]"></div>
 
-          {/* Theme Toggle in Welcome (Mobile fix) */}
+          {/* Alternador de Tema en Bienvenida (Corrección para móviles) */}
           <div className="absolute top-4 right-4 z-50 md:hidden scale-75 origin-top-right">
             <ThemeToggle />
           </div>
 
-          {/* Header */}
+          {/* Cabecera */}
           <div className="text-center mb-6 md:mb-8 relative z-10">
             <p className="rpg-label text-cyan-400 mb-2 tracking-[0.4em] uppercase text-[9px] md:text-[10px]">{currentStep.subtitle}</p>
             <h1 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase drop-shadow-lg leading-tight">
@@ -251,12 +251,12 @@ export default function WelcomeScreen({ onStart }) {
             </h1>
           </div>
 
-          {/* Content Area */}
+          {/* Área de Contenido */}
           <div className="mb-6 md:mb-8 min-h-[300px] md:min-h-[340px] flex items-center justify-center relative z-10">
             {currentStep.content}
           </div>
 
-          {/* Progress Indicators */}
+          {/* Indicadores de Progreso */}
           <div className="flex justify-center gap-2 mb-6 md:mb-8">
             {steps.map((_, i) => (
               <button
@@ -271,7 +271,7 @@ export default function WelcomeScreen({ onStart }) {
             ))}
           </div>
 
-          {/* Navigation & Actions */}
+          {/* Navegación y Acciones */}
           <div className="flex flex-col gap-3 relative z-10">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
               {step > 0 ? (

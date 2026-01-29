@@ -45,17 +45,17 @@ export default function WorldMap({
     history = EMPTY_ARRAY,
     avatar = "🧙‍♂️"
 }) {
-    // --- v5.0 GOD TIER: HYPER-IMMERSIVE 3D ENGINE ---
+    // --- v5.0 NIVEL DIOS: MOTOR 3D HIPER-INMERSIVO ---
 
-    // Progression Logic
+    // Lógica de Progresión
     const progressionLevel = (booksRead || 0) + 1;
     const LEVELS_PER_SCREEN = 5;
     const maxScreenIndex = Math.floor((progressionLevel - 1) / LEVELS_PER_SCREEN);
 
-    // State for map navigation
+    // Estado para la navegación del mapa
     const [viewedScreenIndex, setViewedScreenIndex] = useState(maxScreenIndex);
 
-    // Sync viewed screen when progression moves to a new section
+    // Sincronizar pantalla visualizada cuando la progresión se mueve a una nueva sección
     useEffect(() => {
         setViewedScreenIndex(maxScreenIndex);
     }, [maxScreenIndex]);
@@ -63,7 +63,7 @@ export default function WorldMap({
     const startLevelView = (viewedScreenIndex * LEVELS_PER_SCREEN) + 1;
     const currentBiome = BIOMES.find(b => startLevelView >= b.start && startLevelView <= b.end) || BIOMES[BIOMES.length - 1];
 
-    // 3D Tilt State
+    // Estado de Inclinación 3D
     const [tilt, setTilt] = useState({ x: 0, y: 0 });
     const containerRef = useRef(null);
 
@@ -72,17 +72,17 @@ export default function WorldMap({
         const rect = containerRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
-        // Calculate tilt: -10deg to 10deg range
+        // Calcular inclinación: rango de -10deg a 10deg
         const tiltX = (0.5 - y) * 20;
         const tiltY = (x - 0.5) * 20;
         setTilt({ x: tiltX, y: tiltY });
     };
 
     const handleMouseLeave = () => {
-        setTilt({ x: 5, y: 0 }); // Reset to a cinematic slight angle
+        setTilt({ x: 5, y: 0 }); // Restablecer a un ángulo cinematográfico leve
     };
 
-    // Generate Volumetric Nodes
+    // Generar Nodos Volumétricos
     const nodes = useMemo(() => {
         const list = [];
         for (let i = startLevelView; i < startLevelView + LEVELS_PER_SCREEN; i++) {
@@ -90,7 +90,7 @@ export default function WorldMap({
             const isBoss = i % 5 === 0;
             const bookData = history[i - 1]; // Level 1 is index 0
 
-            // S-Curve Generation for path
+            // Generación de Curva en S para el camino
             const xBase = 50;
             const xOffset = Math.sin(relativeIndex * 1.5) * 35;
 
@@ -108,7 +108,7 @@ export default function WorldMap({
         return list;
     }, [progressionLevel, startLevelView, history]);
 
-    // Particle System (Optimized)
+    // Sistema de Partículas (Optimizado)
     const [particles, setParticles] = useState([]);
     useEffect(() => {
         const count = currentBiome.weather === 'snow' ? 50 : 25;
@@ -130,7 +130,7 @@ export default function WorldMap({
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
         >
-            {/* 3D BOARD CONTAINER */}
+            {/* CONTENEDOR DE TABLERO 3D */}
             <div className="relative w-full h-full rounded-2xl md:rounded-3xl transition-transform duration-700 transform-style-3d rotate-x-10 shadow-2xl border-4 md:border-[6px] bg-white dark:bg-gray-900 overflow-hidden"
                 style={{
                     borderColor: currentBiome.color,
@@ -138,22 +138,22 @@ export default function WorldMap({
                     boxShadow: `0 25px 50px -12px ${currentBiome.color}40`
                 }}>
 
-                {/* --- LAYER 1: 3D BACKGROUND PARALLAX --- */}
+                {/* --- CAPA 1: PARALAJE DE FONDO 3D --- */}
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-all duration-1000 transform scale-110"
                     style={{
                         backgroundImage: `url(${currentBiome.bg})`,
-                        backgroundColor: currentBiome.color // Fallback color if image fails
+                        backgroundColor: currentBiome.color // Color de respaldo si falla la imagen
                     }}
                 >
-                    {/* Light Overlay for blending */}
+                    {/* Capa de luz para mezcla */}
                     <div className="absolute inset-0 bg-current opacity-10 mix-blend-overlay"></div>
 
-                    {/* Vignette - Reduced opacity for better visibility */}
+                    {/* Viñeta - Opacidad reducida para mejor visibilidad */}
                     <div className="absolute inset-0 bg-gradient-to-t from-white/60 dark:from-black/80 via-transparent to-white/20 dark:to-black/40"></div>
                 </div>
 
-                {/* 2. AMBIENT CREATURES LAYER */}
+                {/* 2. CAPA DE CRIATURAS AMBIENTALES */}
                 <div className="absolute inset-0 overflow-hidden transform-style-3d pointer-events-none z-0">
                     {currentBiome.ambient === 'dragon' && (
                         <div className="absolute top-10 -right-20 w-32 h-32 animate-float-slow opacity-60 mix-blend-screen"
@@ -169,7 +169,7 @@ export default function WorldMap({
                     )}
                 </div>
 
-                {/* 3. TERRAIN & PATH LAYER */}
+                {/* 3. CAPA DE TERRENO Y CAMINO */}
                 <div className="absolute inset-0 z-10 transform-style-3d" style={{ transform: 'translateZ(30px)' }}>
                     <svg className="w-full h-full overflow-visible" style={{ filter: 'drop-shadow(0 10px 5px rgba(0,0,0,0.5))' }}>
                         <defs>
@@ -191,7 +191,7 @@ export default function WorldMap({
                             const isActive = !node.locked && !next.locked;
                             return (
                                 <g key={`path-${index}`}>
-                                    {/* Shadow Path */}
+                                    {/* Camino de Sombra */}
                                     <path
                                         d={`M ${node.x} ${node.y} C ${node.x} ${node.y - 15}, ${next.x} ${next.y + 15}, ${next.x} ${next.y}`}
                                         stroke="black"
@@ -200,7 +200,7 @@ export default function WorldMap({
                                         opacity="0.5"
                                         transform="translate(0, 5)"
                                     />
-                                    {/* Main Path */}
+                                    {/* Camino Principal */}
                                     <path
                                         d={`M ${node.x} ${node.y} C ${node.x} ${node.y - 15}, ${next.x} ${next.y + 15}, ${next.x} ${next.y}`}
                                         stroke={isActive ? "url(#pathGradient)" : "#4b5563"}
@@ -217,7 +217,7 @@ export default function WorldMap({
                     </svg>
                 </div>
 
-                {/* 4. VOLUMETRIC NODES LAYER */}
+                {/* 4. CAPA DE NODOS VOLUMÉTRICOS */}
                 <div className="absolute inset-0 z-20 transform-style-3d">
                     {nodes.map((node) => (
                         <div
@@ -230,18 +230,18 @@ export default function WorldMap({
                                 zIndex: node.level
                             }}
                         >
-                            {/* VOLUMETRIC STACK (Pseudo-3D) */}
+                            {/* PILA VOLUMÉTRICA (Pseudo-3D) */}
                             <div className="relative transform-style-3d transition-transform duration-500 hover:scale-110 cursor-pointer">
 
-                                {/* Base Shadow */}
+                                {/* Sombra de Base */}
                                 <div className="absolute top-10 left-1/2 -translate-x-1/2 w-16 h-8 bg-black/60 blur-md rounded-[100%]"></div>
 
-                                {/* Layer 1: Base Pillar */}
+                                {/* Capa 1: Pilar de Base */}
                                 <div className={`w-16 h-16 rounded-xl border-b-[6px] transform rotate-45 transition-colors duration-300
                                     ${node.locked ? 'bg-gray-800 border-gray-900' : 'bg-gray-700 border-gray-900'}
                                 `}></div>
 
-                                {/* Layer 2: Platform Top */}
+                                {/* Capa 2: Parte Superior de la Plataforma */}
                                 <div className={`absolute -top-2 left-0 w-16 h-16 rounded-xl transform rotate-45 border-4 transition-all duration-300 flex items-center justify-center
                                     ${node.locked
                                         ? 'bg-gray-800 border-gray-600 grayscale opacity-80'
@@ -252,7 +252,7 @@ export default function WorldMap({
                                 `}
                                     style={{ backgroundColor: !node.locked && !node.current ? currentBiome.accent : undefined }}
                                 >
-                                    {/* Icon / Number */}
+                                    {/* Icono / Número */}
                                     <div className={`transform -rotate-45 font-black text-xl 
                                         ${node.locked ? 'text-gray-500' : node.current ? 'text-black' : 'text-white'}
                                     `}>
@@ -260,7 +260,7 @@ export default function WorldMap({
                                     </div>
                                 </div>
 
-                                {/* Floating Rewards / Status */}
+                                {/* Recompensas / Estado Flotantes */}
                                 {node.completed && !node.isBoss && (
                                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-green-500 text-white text-[9px] font-bold rounded-full shadow-lg transform translate-Z(20px) animate-float">
                                         LEÍDO
@@ -268,7 +268,7 @@ export default function WorldMap({
                                 )}
                             </div>
 
-                            {/* AVATAR (If Current) */}
+                            {/* AVATAR (Si es el actual) */}
                             {node.current && (
                                 <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-24 h-24 transform-style-3d animate-float-fast pointer-events-none"
                                     style={{ transform: 'translateZ(60px) translateX(-50%)' }}>
@@ -278,20 +278,20 @@ export default function WorldMap({
                                                 <img src={avatar} className="w-16 h-16 rounded-2xl border-2 border-white shadow-xl" />
                                             ) : avatar}
                                         </div>
-                                        {/* Avatar Aura */}
+                                        {/* Aura del Avatar */}
                                         <div className="absolute inset-0 bg-yellow-400/20 blur-xl rounded-full animate-pulse"></div>
                                     </div>
                                 </div>
                             )}
 
-                            {/* PERMANENT LABEL (Book Title) */}
+                            {/* ETIQUETA PERMANENTE (Título del Libro) */}
                             {node.book && (
                                 <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-32 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1"
                                     style={{ transform: 'translateZ(120px) translateX(-50%)' }}>
                                     <div className="glass px-3 py-2 rounded-lg border border-white/20 shadow-[0_4px_15px_rgba(0,0,0,0.3)] backdrop-blur-md text-center">
                                         <div className="text-[10px] font-bold leading-tight text-white drop-shadow-md line-clamp-2">{node.book}</div>
                                     </div>
-                                    {/* Small arrow */}
+                                    {/* Flecha pequeña */}
                                     <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-white/10 mx-auto mt-[-1px]"></div>
                                 </div>
                             )}
@@ -299,7 +299,7 @@ export default function WorldMap({
                     ))}
                 </div>
 
-                {/* 5. WEATHER & PARTICLES LAYER (Foreground) */}
+                {/* 5. CAPA DE CLIMA Y PARTÍCULAS (Primer Plano) */}
                 <div className="absolute inset-0 pointer-events-none z-30 transform-style-3d overflow-hidden rounded-[2.5rem]" style={{ transform: 'translateZ(60px)' }}>
                     {particles.map(p => (
                         <div
@@ -316,11 +316,11 @@ export default function WorldMap({
                             }}
                         />
                     ))}
-                    {/* Vignette Overlay */}
+                    {/* Superposición de Viñeta */}
                     <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/40 mix-blend-multiply"></div>
                 </div>
 
-                {/* 6. STATIC HUD LAYER (Over everything) */}
+                {/* 6. CAPA HUD ESTÁTICA (Sobre todo) */}
                 <div className="absolute top-0 left-0 w-full p-8 z-40 flex justify-between items-start pointer-events-none" style={{ transform: 'translateZ(80px)' }}>
                     <div>
                         <div className="flex items-center gap-3 mb-2">
@@ -341,7 +341,7 @@ export default function WorldMap({
                     </div>
                 </div>
 
-                {/* --- NAVIGATION CONTROLS --- */}
+                {/* --- CONTROLES DE NAVEGACIÓN --- */}
                 <div className="absolute inset-y-0 left-0 flex items-center p-4 z-50">
                     <button
                         onClick={() => setViewedScreenIndex(prev => Math.max(0, prev - 1))}
@@ -366,7 +366,7 @@ export default function WorldMap({
 
             </div>
 
-            {/* CSS ANIMATIONS */}
+            {/* ANIMACIONES CSS */}
             <style>{`
                 .transform-style-3d { transform-style: preserve-3d; }
                 .animate-float-slow { animation: float 6s ease-in-out infinite; }

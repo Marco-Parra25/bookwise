@@ -19,7 +19,7 @@ describe('MotionCard Component', () => {
                 <div>Test</div>
             </MotionCard>
         );
-        // The first child of the rendered component should have the motion.div attributes
+        // El primer hijo del componente renderizado debe tener los atributos de motion.div
         expect(container.firstChild).toHaveClass('custom-class');
     });
 
@@ -32,15 +32,15 @@ describe('MotionCard Component', () => {
 
         const card = container.firstChild;
 
-        // Trigger mouse move
+        // Activar movimiento del ratón
         fireEvent.mouseMove(card, { clientX: 50, clientY: 50 });
 
-        // Trigger mouse leave
+        // Activar salida del ratón
         fireEvent.mouseLeave(card);
 
-        // Since tilt values are handled by framer-motion internals and spring animation,
-        // it's complex to verify the exact style transform value in a unit test without mocking 
-        // framer-motion heavily. For now, we verify it doesn't crash on these events.
+        // Dado que los valores de inclinación (tilt) son manejados por las entrañas de framer-motion y la animación spring,
+        // es complejo verificar el valor de transformación de estilo exacto en una prueba unitaria sin mockear 
+        // framer-motion intensamente. Por ahora, verificamos que no falle en estos eventos.
         expect(card).toBeInTheDocument();
     });
 });
