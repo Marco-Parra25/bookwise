@@ -9,7 +9,6 @@ const ITEMS_DB = [
     { id: "hat_wizard", name: "Sombrero Arcano", price: 500, category: "hat", icon: "🎩", rarity: "rare", desc: "Tejido con hilos de magia pura." },
     { id: "hat_cap", name: "Gorra Urbana", price: 150, category: "hat", icon: "🧢", rarity: "common", desc: "Ideal para leer en el metro." },
     { id: "hat_crown", name: "Corona Real", price: 5000, category: "hat", icon: "👑", rarity: "legendary", desc: "Solo para los verdaderos reyes de la lectura." },
-    { id: "hat_cowboy", name: "Sombrero Vaquero", price: 300, category: "hat", icon: "🤠", rarity: "common", desc: "Yee-haw, libro vaquero." },
 
     // --- GLASSES ---
     { id: "glasses_sun", name: "Gafas de Sol", price: 200, category: "glasses", icon: "🕶️", rarity: "common", desc: "Protege tu vista del brillo de la sabiduría." },
@@ -19,6 +18,7 @@ const ITEMS_DB = [
     // --- BEARDS / MASKS ---
     { id: "mask_fox", name: "Máscara Kitsune", price: 800, category: "beard", icon: "🦊", rarity: "rare", desc: "Astuta como un zorro." },
     { id: "beard_santa", name: "Barba Sabia", price: 400, category: "beard", icon: "🎅", rarity: "common", desc: "Canas ganadas con experiencia." },
+    { id: "hat_cowboy", name: "Máscara de Emoticon Vaquero", price: 300, category: "beard", icon: "🤠", rarity: "common", desc: "Yee-haw, un rostro de libertad." },
 
     // --- CONSUMABLES (MAGIC) ---
     { id: "potion_xp", name: "Poción Sapiencia", price: 300, category: "magic", icon: "🧪", rarity: "epic", desc: "+500 XP Instantáneos. Sabe a tinta.", type: "consumable", effect: "xp_boost", value: 500 },

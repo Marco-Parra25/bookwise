@@ -39,10 +39,10 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                     className="absolute left-1/2 -translate-x-1/2 text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
                     style={{
                         // Logic adjusted by character type (Astronaut vs Wizard)
-                        top: avatar?.includes('🧙')
-                            ? (equipped.hat === 'hat_cap' ? '12%' : '6%') // Wizard: more refined (raised)
+                        top: (avatar?.includes('🧙') || avatar?.includes('wizard'))
+                            ? (equipped.hat === 'hat_cap' ? '8%' : '2%') // Wizard: definitive height (highest)
                             : (equipped.hat === 'hat_cap' ? '14%' : '8%'),   // Astronaut: original validated positions
-                        marginLeft: (!avatar?.includes('🧙') && equipped.hat === 'hat_cap') ? '-5px' : '0px'
+                        marginLeft: ((!avatar?.includes('🧙') && !avatar?.includes('wizard')) && equipped.hat === 'hat_cap') ? '-5px' : '0px'
                     }}
                 >
                     {getAccessoryIcon(equipped.hat)}
