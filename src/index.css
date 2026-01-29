@@ -44,6 +44,25 @@ body {
   border: 1px solid var(--border-glass);
 }
 
+@media (max-width: 640px) {
+  .glass {
+    padding: 1rem !important;
+    border-radius: 1.5rem !important;
+  }
+
+  h1 {
+    font-size: 1.875rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+  }
+}
+
 .glass-heavy {
   background: rgba(10, 11, 30, 0.85);
   backdrop-filter: blur(20px);
@@ -223,7 +242,7 @@ body {
   --bg-card: rgba(5, 5, 10, 0.85);
   --border-glass: rgba(255, 255, 255, 0.05);
   --text-secondary: #808080;
-  
+
   /* Overriding atmosphere variables for a more intense look */
   --atm-start: #010103;
   --atm-end: #0a0a15;
