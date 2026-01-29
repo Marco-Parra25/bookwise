@@ -147,7 +147,7 @@ export default function WelcomeScreen({ onStart }) {
       subtitle: "Tu progreso es tu poder",
       content: (
         <div className="space-y-6 w-full max-w-md">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {[
               {
                 label: "EXPERIENCIA",
@@ -178,24 +178,19 @@ export default function WelcomeScreen({ onStart }) {
                 bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400"
               },
             ].map((stat, i) => (
-              <div key={i} className={`rounded-2xl p-4 border ${stat.border} ${stat.bg} hover:scale-105 transition-transform duration-300 group flex flex-col justify-between h-full`}>
+              <div key={i} className={`rounded-2xl p-3 md:p-4 border ${stat.border} ${stat.bg} hover:scale-105 transition-transform duration-300 group flex flex-col justify-between h-full`}>
                 <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="text-3xl group-hover:rotate-12 transition-transform">{stat.icon}</div>
-                    <div className={`rpg-label text-[9px] opacity-80 ${stat.text}`}>{stat.label}</div>
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="text-2xl md:text-3xl group-hover:rotate-12 transition-transform">{stat.icon}</div>
+                    <div className={`rpg-label text-[8px] md:text-[9px] opacity-80 ${stat.text}`}>{stat.label}</div>
                   </div>
-                  <div className="font-bold text-white text-sm mb-2">{stat.val}</div>
+                  <div className="font-bold text-white text-[13px] md:text-sm mb-2 uppercase">{stat.val}</div>
                 </div>
                 <p className="text-[10px] text-gray-400 leading-tight border-t border-white/5 pt-2 mt-1">
                   {stat.desc}
                 </p>
               </div>
             ))}
-          </div>
-          <div className="flex justify-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-white/20"></span>
-            <span className="w-2 h-2 rounded-full bg-white/20"></span>
-            <span className="w-8 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_cyan]"></span>
           </div>
         </div>
       ),
@@ -237,34 +232,39 @@ export default function WelcomeScreen({ onStart }) {
           initial={{ opacity: 0, rotateX: -10, y: 20 }}
           animate={{ opacity: 1, rotateX: 0, y: 0 }}
           transition={{ duration: 0.5, ease: "backOut" }}
-          className="glass-heavy rounded-[2.5rem] p-8 md:p-12 border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden"
+          className="glass-heavy rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-12 border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden"
         >
           {/* Decorative Glow */}
           <div className="absolute -top-32 -right-32 w-64 h-64 bg-cyan-500/20 rounded-full blur-[80px]"></div>
           <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-purple-500/20 rounded-full blur-[80px]"></div>
 
+          {/* Theme Toggle in Welcome (Mobile fix) */}
+          <div className="absolute top-4 right-4 z-50 md:hidden scale-75 origin-top-right">
+            <ThemeToggle />
+          </div>
+
           {/* Header */}
-          <div className="text-center mb-8 relative z-10">
-            <p className="rpg-label text-cyan-400 mb-2 tracking-[0.4em] uppercase text-[10px]">{currentStep.subtitle}</p>
-            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tighter uppercase drop-shadow-lg">
+          <div className="text-center mb-6 md:mb-8 relative z-10">
+            <p className="rpg-label text-cyan-400 mb-2 tracking-[0.4em] uppercase text-[9px] md:text-[10px]">{currentStep.subtitle}</p>
+            <h1 className="text-2xl md:text-4xl font-black text-white tracking-tighter uppercase drop-shadow-lg leading-tight">
               {currentStep.title}
             </h1>
           </div>
 
           {/* Content Area */}
-          <div className="mb-8 min-h-[340px] flex items-center justify-center relative z-10">
+          <div className="mb-6 md:mb-8 min-h-[300px] md:min-h-[340px] flex items-center justify-center relative z-10">
             {currentStep.content}
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex justify-center gap-2 mb-8">
+          <div className="flex justify-center gap-2 mb-6 md:mb-8">
             {steps.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setStep(i)}
                 className={`h-1.5 rounded-full transition-all duration-500 ${i === step
-                  ? "w-10 bg-cyan-400 shadow-[0_0_10px_#06b6d4]"
-                  : "w-2 bg-white/10 hover:bg-white/30"
+                  ? "w-8 md:w-10 bg-cyan-400 shadow-[0_0_10px_#06b6d4]"
+                  : "w-1.5 md:w-2 bg-white/10 hover:bg-white/30"
                   }`}
                 aria-label={`Paso ${i + 1}`}
               />
@@ -273,36 +273,36 @@ export default function WelcomeScreen({ onStart }) {
 
           {/* Navigation & Actions */}
           <div className="flex flex-col gap-3 relative z-10">
-            <div className="flex justify-between items-center gap-3">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
               {step > 0 ? (
                 <button
                   onClick={() => setStep(step - 1)}
-                  className="flex-1 py-4 rounded-xl glass border border-white/5 text-gray-400 font-bold hover:text-white hover:bg-white/5 transition uppercase text-[10px] tracking-widest"
+                  className="w-full sm:flex-1 py-3.5 md:py-4 rounded-xl glass border border-white/5 text-gray-400 font-bold hover:text-white hover:bg-white/5 transition uppercase text-[10px] tracking-widest order-2 sm:order-1"
                 >
                   ATRÁS
                 </button>
               ) : (
-                <div className="flex-1"></div>
+                <div className="hidden sm:flex-1"></div>
               )}
 
               {step < steps.length - 1 ? (
                 <button
                   onClick={() => setStep(step + 1)}
-                  className="flex-[2] py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white font-black hover:brightness-110 transition shadow-[0_0_20px_rgba(6,182,212,0.4)] uppercase text-[10px] tracking-widest flex items-center justify-center gap-2"
+                  className="w-full sm:flex-[2] py-3.5 md:py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white font-black hover:brightness-110 transition shadow-[0_0_20px_rgba(6,182,212,0.4)] uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 order-1 sm:order-2"
                 >
                   CONTINUAR <span>→</span>
                 </button>
               ) : (
-                <div className="flex-[2] flex gap-3">
+                <div className="w-full sm:flex-[2] flex flex-col sm:flex-row gap-3 order-1 sm:order-2">
                   <button
                     onClick={onStart}
-                    className="flex-1 py-4 rounded-xl glass border border-white/5 text-gray-400 font-bold hover:text-white hover:bg-white/5 transition uppercase text-[10px] tracking-widest"
+                    className="flex-1 py-3.5 md:py-4 rounded-xl glass border border-white/5 text-gray-400 font-bold hover:text-white hover:bg-white/5 transition uppercase text-[10px] tracking-widest"
                   >
                     MODO INVITADO
                   </button>
                   <button
                     onClick={handleGoogleLogin}
-                    className="flex-[1.5] py-4 rounded-xl bg-white text-black font-black hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
+                    className="flex-[1.5] py-3.5 md:py-4 rounded-xl bg-white text-black font-black hover:bg-gray-100 transition shadow-xl flex items-center justify-center gap-2 uppercase text-[10px] tracking-widest"
                   >
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="G" />
                     INICIAR SESIÓN
