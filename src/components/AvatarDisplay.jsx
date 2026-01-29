@@ -37,7 +37,7 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
             {equipped?.hat && (
                 <div
                     className="absolute right-[-5%] text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
-                    style={{ top: '20%' }}
+                    style={{ top: '35%' }}
                 >
                     {getAccessoryIcon(equipped.hat)}
                 </div>
