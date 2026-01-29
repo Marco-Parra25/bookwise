@@ -36,8 +36,11 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
             {/* AVATAR LAYERING (ACCESSORIES) - Final Precision Fix */}
             {equipped?.hat && (
                 <div
-                    className="absolute left-1/2 -translate-x-1/2 text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
-                    style={{ top: equipped.hat === 'hat_cap' ? '14%' : '8%' }}
+                    className={`absolute left-1/2 filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none`}
+                    style={{
+                        top: equipped.hat === 'hat_cap' ? '14%' : '8%',
+                        transform: `translateX(${equipped.hat === 'hat_cap' ? '-60%' : '-50%'})`
+                    }}
                 >
                     {getAccessoryIcon(equipped.hat)}
                 </div>
