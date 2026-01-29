@@ -4,7 +4,7 @@ const BIOMES = [
     {
         name: "Bosque Ancestral",
         start: 1, end: 5,
-        bg: "https://images.unsplash.com/photo-1448375240586-dfd8f3793300?auto=format&fit=crop&w=1920&q=80",
+        bg: "/assets/maps/bosque_ancestral.png",
         color: "#2ecc71", accent: "#27ae60", icon: "🌲",
         weather: "fireflies",
         ambient: "fairies"
@@ -12,7 +12,7 @@ const BIOMES = [
     {
         name: "Ruinas Olvidadas",
         start: 6, end: 10,
-        bg: "https://images.unsplash.com/photo-1599593257608-8e6bf7656910?auto=format&fit=crop&w=1920&q=80",
+        bg: "/assets/maps/ruinas_olvidadas.png",
         color: "#d35400", accent: "#e67e22", icon: "🔥",
         weather: "embers",
         ambient: "dragon"
@@ -20,7 +20,7 @@ const BIOMES = [
     {
         name: "Tundra de Cristal",
         start: 11, end: 15,
-        bg: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1920&q=80",
+        bg: "/assets/maps/tundra_cristal.png",
         color: "#6c5ce7", accent: "#a29bfe", icon: "💎",
         weather: "snow",
         ambient: "aurora"
@@ -28,7 +28,7 @@ const BIOMES = [
     {
         name: "Reino de los Cielos",
         start: 16, end: 99,
-        bg: "https://images.unsplash.com/photo-1506259091721-347f793bb76d?auto=format&fit=crop&w=1920&q=80",
+        bg: "/assets/maps/reino_cielos.png",
         color: "#0984e3", accent: "#74b9ff", icon: "🏰",
         weather: "clouds",
         ambient: "airships"
@@ -49,10 +49,19 @@ export default function WorldMap({
 
     // Progression Logic
     const progressionLevel = (booksRead || 0) + 1;
-    const currentBiome = BIOMES.find(b => progressionLevel >= b.start && progressionLevel <= b.end) || BIOMES[BIOMES.length - 1];
     const LEVELS_PER_SCREEN = 5;
-    const currentScreenIndex = Math.floor((progressionLevel - 1) / LEVELS_PER_SCREEN);
-    const startLevelView = (currentScreenIndex * LEVELS_PER_SCREEN) + 1;
+    const maxScreenIndex = Math.floor((progressionLevel - 1) / LEVELS_PER_SCREEN);
+
+    // State for map navigation
+    const [viewedScreenIndex, setViewedScreenIndex] = useState(maxScreenIndex);
+
+    // Sync viewed screen when progression moves to a new section
+    useEffect(() => {
+        setViewedScreenIndex(maxScreenIndex);
+    }, [maxScreenIndex]);
+
+    const startLevelView = (viewedScreenIndex * LEVELS_PER_SCREEN) + 1;
+    const currentBiome = BIOMES.find(b => startLevelView >= b.start && startLevelView <= b.end) || BIOMES[BIOMES.length - 1];
 
     // 3D Tilt State
     const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -247,7 +256,7 @@ export default function WorldMap({
                                     <div className={`transform -rotate-45 font-black text-xl 
                                         ${node.locked ? 'text-gray-500' : node.current ? 'text-black' : 'text-white'}
                                     `}>
-                                        {node.isBoss ? '🏰' : node.level}
+                                        {node.level === 3 ? '🦉' : (node.isBoss ? '🏰' : node.level)}
                                     </div>
                                 </div>
 
@@ -330,6 +339,29 @@ export default function WorldMap({
                         <div className="text-[8px] text-gray-400 uppercase tracking-widest mb-0.5">NIVEL</div>
                         <div className="text-3xl font-black text-white leading-none">{level}</div>
                     </div>
+                </div>
+
+                {/* --- NAVIGATION CONTROLS --- */}
+                <div className="absolute inset-y-0 left-0 flex items-center p-4 z-50">
+                    <button
+                        onClick={() => setViewedScreenIndex(prev => Math.max(0, prev - 1))}
+                        disabled={viewedScreenIndex === 0}
+                        className={`w-12 h-12 rounded-full glass border border-white/10 text-white flex items-center justify-center transition-all ${viewedScreenIndex === 0 ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 hover:hud-borderactive:scale-95 cursor-pointer pointer-events-auto shadow-2xl'}`}
+                        title="Ver mapa anterior"
+                    >
+                        ◀
+                    </button>
+                </div>
+
+                <div className="absolute inset-y-0 right-0 flex items-center p-4 z-50">
+                    <button
+                        onClick={() => setViewedScreenIndex(prev => Math.min(maxScreenIndex, prev + 1))}
+                        disabled={viewedScreenIndex === maxScreenIndex}
+                        className={`w-12 h-12 rounded-full glass border border-white/10 text-white flex items-center justify-center transition-all ${viewedScreenIndex === maxScreenIndex ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110 hover:hud-border active:scale-95 cursor-pointer pointer-events-auto shadow-2xl'}`}
+                        title="Ver mapa siguiente"
+                    >
+                        ▶
+                    </button>
                 </div>
 
             </div>
