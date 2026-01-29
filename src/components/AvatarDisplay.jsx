@@ -33,19 +33,28 @@ export default function AvatarDisplay({ avatar, equipped = {}, size = "md", clas
                 )}
             </div>
 
-            {/* AVATAR LAYERING (ACCESSORIES) */}
+            {/* AVATAR LAYERING (ACCESSORIES) - Final Precision Fix */}
             {equipped?.hat && (
-                <div className="absolute -top-[15%] -right-[5%] text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none">
+                <div
+                    className="absolute right-[-5%] text-[0.6em] filter drop-shadow-lg z-10 animate-bounce-subtle pointer-events-none"
+                    style={{ top: '20%' }}
+                >
                     {getAccessoryIcon(equipped.hat)}
                 </div>
             )}
             {equipped?.glasses && (
-                <div className="absolute top-[35%] left-1/2 -translate-x-1/2 text-[0.5em] z-20 pointer-events-none opacity-90">
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.5em] z-30 pointer-events-none opacity-90"
+                    style={{ top: equipped.glasses === 'glasses_vr' ? '26%' : '32%' }}
+                >
                     {getAccessoryIcon(equipped.glasses)}
                 </div>
             )}
             {equipped?.beard && (
-                <div className="absolute bottom-[0%] left-1/2 -translate-x-1/2 text-[0.6em] z-20 pointer-events-none">
+                <div
+                    className="absolute left-1/2 -translate-x-1/2 text-[0.6em] z-20 pointer-events-none drop-shadow-md"
+                    style={{ top: (equipped.beard === 'mask_fox' || equipped.beard === 'beard_santa' || equipped.beard === 'hat_cowboy') ? '28%' : '52%' }}
+                >
                     {getAccessoryIcon(equipped.beard)}
                 </div>
             )}
