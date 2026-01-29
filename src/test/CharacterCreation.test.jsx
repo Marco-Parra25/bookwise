@@ -2,6 +2,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import CharacterCreation from '../components/CharacterCreation';
 
+// Mock ThemeToggle to avoid side effects or context issues
+vi.mock('../components/ThemeToggle', () => ({
+    default: () => <div data-testid="theme-toggle-mock">Toggle</div>
+}));
+
 describe('CharacterCreation Component', () => {
     const mockOnComplete = vi.fn();
 
