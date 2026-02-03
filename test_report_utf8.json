@@ -1,0 +1,179 @@
+﻿{
+  "config": {
+    "configFile": "C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\playwright.config.js",
+    "rootDir": "C:/Users/Darki/OneDrive/Escritorio/proyecto2.o/bookwise/.features-gen",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Darki/OneDrive/Escritorio/proyecto2.o/bookwise/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Darki/OneDrive/Escritorio/proyecto2.o/bookwise/.features-gen",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.1",
+    "workers": 6,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:5173",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "tests\\e2e\\features\\onboarding.feature.spec.js",
+      "file": "tests/e2e/features/onboarding.feature.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Onboarding de Usuario",
+          "file": "tests/e2e/features/onboarding.feature.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Onboarding completo desde cero hasta el Dashboard",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30224,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\pages\\DashboardPage.js",
+                            "column": 65,
+                            "line": 16
+                          },
+                          "message": "Error: locator.innerText: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=INICIADO').first()\u001b[22m\n\n\n   at ..\\tests\\e2e\\pages\\DashboardPage.js:16\n\n  14 |     async getLevelText() {\n  15 |         // Look for the text in the preview or the header badge\n> 16 |         return await this.page.locator('text=INICIADO').first().innerText();\n     |                                                                 ^\n  17 |     }\n  18 | }\n  19 |\n    at DashboardPage.getLevelText (C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\pages\\DashboardPage.js:16:65)\n    at Object.<anonymous> (C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\steps\\onboarding.steps.js:35:44)\n    at C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\.features-gen\\tests\\e2e\\features\\onboarding.feature.spec.js:11:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Dado que un nuevo usuario entra a la aplicaci├│n",
+                          "duration": 86
+                        },
+                        {
+                          "title": "Cuando completa el recorrido de bienvenida",
+                          "duration": 4630
+                        },
+                        {
+                          "title": "Y forja un nuevo personaje llamado \"Aragorn\" con el avatar \"Mago\"",
+                          "duration": 1837
+                        },
+                        {
+                          "title": "Y define sus gustos literarios como:",
+                          "duration": 4115
+                        },
+                        {
+                          "title": "Entonces deber├¡a ver su Dashboard con el rango \"INICIADO\" y el nombre \"ARAGORN\"",
+                          "duration": 19495,
+                          "error": {
+                            "message": "Error: locator.innerText: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=INICIADO').first()\u001b[22m\n",
+                            "stack": "Error: locator.innerText: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=INICIADO').first()\u001b[22m\n\n    at DashboardPage.getLevelText (C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\pages\\DashboardPage.js:16:65)\n    at Object.<anonymous> (C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\steps\\onboarding.steps.js:35:44)\n    at C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\.features-gen\\tests\\e2e\\features\\onboarding.feature.spec.js:11:5",
+                            "location": {
+                              "file": "C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\tests\\e2e\\pages\\DashboardPage.js",
+                              "column": 65,
+                              "line": 16
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39m..\\tests\\e2e\\pages\\DashboardPage.js:16\n\n\u001b[0m \u001b[90m 14 |\u001b[39m     \u001b[36masync\u001b[39m getLevelText() {\n \u001b[90m 15 |\u001b[39m         \u001b[90m// Look for the text in the preview or the header badge\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mreturn\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m'text=INICIADO'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m.\u001b[39minnerText()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m     }\n \u001b[90m 18 |\u001b[39m }\n \u001b[90m 19 |\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-02-03T21:37:59.721Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\test-results\\tests-e2e-features-onboard-e610e-sde-cero-hasta-el-Dashboard-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Darki\\OneDrive\\Escritorio\\proyecto2.o\\bookwise\\test-results\\tests-e2e-features-onboard-e610e-sde-cero-hasta-el-Dashboard-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4d82150e71941cba18e5-9f8648932c3b24fc7e42",
+              "file": "tests/e2e/features/onboarding.feature.spec.js",
+              "line": 6,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-02-03T21:37:57.832Z",
+    "duration": 32363.401,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
