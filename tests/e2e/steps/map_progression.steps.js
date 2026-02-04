@@ -4,20 +4,6 @@ import { expect } from '@playwright/test';
 
 const { Given, When, Then } = createBdd(test);
 
-Given('que el usuario "MAPA-MASTER" ya ha completado su perfil inicial', async ({ welcomePage, characterCreationPage, profilePage }) => {
-    await welcomePage.navigate();
-    await welcomePage.proceedToGuestMode();
-    await characterCreationPage.ingresarNombreReceptaculo('MAPA-MASTER');
-    await characterCreationPage.seleccionarAvatar('Dragón');
-    await characterCreationPage.confirmarAventura();
-    await profilePage.completarCuestionario({
-        genre: 'Viajes al Futuro',
-        hobby: 'Aprender del Pasado',
-        mood: 'Con el cerebro a mil',
-        age: '25'
-    });
-});
-
 Given('se encuentra en el {string} viendo el mapa', async ({ page }, tabName) => {
     // Cambiamos el tema para que el video sea visualmente distinto
     await page.getByRole('button', { name: /Cambiar tema/i }).click();

@@ -4,24 +4,6 @@ import { test } from './fixtures';
 
 const { Given, When, Then } = createBdd(test);
 
-Given('que el usuario ya ha completado su perfil inicial', async ({ welcomePage, characterCreationPage, profilePage }) => {
-    await welcomePage.navigate();
-    await welcomePage.proceedToGuestMode();
-    await characterCreationPage.ingresarNombreReceptaculo('BUSCADOR-PRO');
-    await characterCreationPage.seleccionarAvatar('Mago');
-    await characterCreationPage.confirmarAventura();
-    await profilePage.completarCuestionario({
-        genre: 'Viajes al Futuro',
-        hobby: 'Aprender del Pasado',
-        mood: 'Con el cerebro a mil',
-        age: '25'
-    });
-});
-
-When('navega a la pestaña de {string}', async ({ page }, tabName) => {
-    await page.getByRole('button', { name: tabName }).click();
-});
-
 When('busca el tomo {string}', async ({ bookSearchPage }, query) => {
     await bookSearchPage.search(query);
 });
