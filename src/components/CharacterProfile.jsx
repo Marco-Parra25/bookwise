@@ -50,7 +50,9 @@ export default function CharacterProfile({ character, onEdit, onLogout }) {
           <div>
             <h2 className="text-3xl font-black text-white tracking-tight leading-none mb-2">{character.name}</h2>
             <div className="flex items-center gap-2">
-              <span className="bg-gold-500 text-black text-[10px] font-black px-2 py-0.5 rounded shadow-sm">MASTER</span>
+              <span className="bg-gold-500 text-black text-[10px] font-black px-2 py-0.5 rounded shadow-sm uppercase">
+                {character.level <= 1 ? "Iniciado" : "Leyenda"}
+              </span>
               <span className="rpg-label text-xs" aria-label={`Nivel ${character.level}`}>Nivel {character.level}</span>
             </div>
           </div>
