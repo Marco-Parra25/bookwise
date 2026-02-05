@@ -48,6 +48,12 @@ npm run dev
 
 # Ejecutar pruebas unitarias
 npm test
+
+# Ejecutar pruebas E2E (End-to-End)
+npm run test:e2e
+
+# Abrir UI de pruebas E2E (Interactivo)
+npm run test:e2e:ui
 ```
 
 ## 📁 Estructura del Proyecto
